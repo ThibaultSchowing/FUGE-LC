@@ -90,11 +90,16 @@ void ComputeThread::run()
     qDebug() << "RUN : ComputeThread;";
     try {
         QString coevMembershipConfig = QCoreApplication::applicationDirPath()+QString("/coev-memberships.conf");
+        if( !QFileInfo(coevMembershipConfig).exists() )
+            coevMembershipConfig = ":/coev/coev-memberships.conf";
         qDebug() << coevMembershipConfig;
-        QString coevRulesConfig = QCoreApplication::applicationDirPath()+QString("/coev-rules.conf");
-        qDebug() << coevRulesConfig;
         loadConfiguration(vars, coevMembershipConfig);
+        QString coevRulesConfig = QCoreApplication::applicationDirPath()+QString("/coev-rules.conf");
+        if( !QFileInfo(coevRulesConfig).exists() )
+            coevRulesConfig = ":/coev/coev-rules.conf";
+        qDebug() << coevRulesConfig;
         loadConfiguration(rules, coevRulesConfig);
+
         ComputeThread::sysParams = &SystemParameters::getInstance();
 
         vars.genotypeSize = fSystemLeft->getMembershipsBitStringSize();

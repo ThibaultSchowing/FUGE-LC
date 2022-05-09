@@ -1,8 +1,12 @@
 <RCC>
-    <qresource prefix="/icons" >
+    <qresource prefix="/icons">
         <file>icons/delete-64x64.png</file>
         <file>icons/fuzzy.png</file>
         <file>icons/info.png</file>
         <file>icons/help.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>coev/coev-memberships.conf</file>
+        <file>coev/coev-rules.conf</file>
     </qresource>
 </RCC>

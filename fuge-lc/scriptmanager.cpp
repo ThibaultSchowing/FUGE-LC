@@ -1,9 +1,9 @@
 /**
   * @file   scriptmanager.cpp
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
-  * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
-  * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
   * @date   07.2009
+  * @author Rochus Keller <me@rochus-keller.ch> (switched from QtScript to duktape)
+  * @date   05.2022
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
@@ -31,29 +31,136 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QSemaphore>
-#include <QtScript>
+#include <QtDebug>
+#include <QDir>
+#include <duktape.h>
 
 #include "scriptmanager.h"
 #include "systemparameters.h"
 
 extern QSemaphore scriptSema;
 
+static ScriptManager* s_this = 0;
+
 struct ScriptManager::Imp
 {
-    QScriptEngine *engine;
-    QScriptValue thisObject;
+    duk_context* engine;
     QString fileName;
+    bool scriptReady;
+    Imp():engine(0),scriptReady(false){}
+
+    void doRun()
+    {
+        duk_get_global_string (engine , "doRun" );
+        duk_get_global_string(engine , "$this$");
+        const duk_int_t res = duk_pcall_method(engine, 0 );
+        if( res != DUK_EXEC_SUCCESS )
+            qCritical() << duk_to_string(engine, -1);
+        duk_pop(engine);
+    }
+
+    void doSetParams()
+    {
+        duk_get_global_string (engine , "doSetParams" );
+        duk_get_global_string(engine , "$this$");
+        const duk_int_t res = duk_pcall_method(engine, 0 );
+        if( res != DUK_EXEC_SUCCESS )
+            qCritical() << duk_to_string(engine, -1);
+        duk_pop(engine);
+    }
 };
+
+static duk_ret_t _setParams(duk_context * ctx)
+{
+    if( s_this == 0 )
+        return 0;
+    s_this->setParams(
+            QString::fromUtf8(duk_safe_to_string(ctx,0)), //QString experimentName
+            QString::fromUtf8(duk_safe_to_string(ctx,1)), //QString savePath
+            duk_to_boolean(ctx,2), //bool fixedVars
+            duk_to_int(ctx,3), //int nbRules
+            duk_to_int(ctx,4), //int nbMaxVarPerRule
+            duk_to_int(ctx,5), //int nbOutVars
+            duk_to_int(ctx,6), //int nbInSets
+            duk_to_int(ctx,7), //int nbOutSets
+            duk_to_int(ctx,8), //int inVarsCodeSize
+            duk_to_int(ctx,9), //int outVarsCodeSize
+            duk_to_int(ctx,10), //int inSetsCodeSize
+            duk_to_int(ctx,11), //int outSetsCodeSize
+            duk_to_int(ctx,12), //int inSetsPosCodeSize
+            duk_to_int(ctx,13), //int outSetPosCodeSize
+            duk_to_int(ctx,14), //int maxGenPop1
+            duk_to_number(ctx,15), //float maxFitPop1
+            duk_to_int(ctx,16), //int elitePop1
+            duk_to_int(ctx,17), //int popSizePop1
+            duk_to_number(ctx,18), //float cxProbPop1
+            duk_to_number(ctx,19), //float mutFlipIndPop1
+            duk_to_number(ctx,20), //float mutFlipBitPop1
+            duk_to_int(ctx,21), //int maxGenPop2
+            duk_to_number(ctx,22), //float maxFitPop2
+            duk_to_int(ctx,23), //int elitePop2
+            duk_to_int(ctx,24), //int popSizePop2
+            duk_to_number(ctx,25), //float cxProbPop2
+            duk_to_number(ctx,26), //float mutFlipIndPop2
+            duk_to_number(ctx,27), //float mutFlipBitPop2
+            duk_to_number(ctx,28), //float sensiW
+            duk_to_number(ctx,29), //float speciW
+            duk_to_number(ctx,30), //float accuracyW
+            duk_to_number(ctx,31), //float ppvW
+            duk_to_number(ctx,32), //float rmseW
+            duk_to_number(ctx,33), //float rrseW
+            duk_to_number(ctx,34), //float raeW
+            duk_to_number(ctx,35), //float mseW
+            duk_to_number(ctx,36), //float distanceThresholdW
+            duk_to_number(ctx,37), //float distanceMinThresholdW
+            duk_to_number(ctx,38), //float dontCareW
+            duk_to_number(ctx,39), //float overLearnW
+            duk_to_number(ctx,40), //float thresh
+            duk_to_boolean(ctx,41) //bool threshActivated
+                );
+    return 0;
+}
+
+static duk_ret_t _runEvo(duk_context * ctx)
+{
+    if( s_this == 0 )
+        return 0;
+    s_this->runEvo();
+    return 0;
+}
+
+static duk_ret_t _print(duk_context * ctx)
+{
+    qDebug() << duk_safe_to_string(ctx, -1);
+    return 0;
+}
 
 ScriptManager::ScriptManager()
 {
+    s_this = this;
     d_imp = new Imp();
-    d_imp->engine = new QScriptEngine();
-    d_imp->thisObject = d_imp->engine->newQObject(this);
+    d_imp->engine = duk_create_heap_default();
+
+    duk_push_object(d_imp->engine);
+
+    duk_push_c_function ( d_imp->engine , _setParams , 42 );
+    duk_put_prop_string ( d_imp->engine , - 2 , "setParams" );
+
+    duk_push_c_function ( d_imp->engine , _runEvo , 0 );
+    duk_put_prop_string ( d_imp->engine , - 2 , "runEvo" );
+
+    duk_put_global_string ( d_imp->engine , "$this$" );
+
+    duk_push_c_function ( d_imp->engine , _print , 1 );
+    duk_put_global_string ( d_imp->engine , "print" );
+
 }
 
 ScriptManager::~ScriptManager()
 {
+    s_this = 0;
+    if( d_imp->engine )
+        duk_destroy_heap( d_imp->engine );
     delete d_imp;
 }
 
@@ -62,9 +169,9 @@ ScriptManager::~ScriptManager()
   */
 void ScriptManager::run()
 {
-    QScriptValue runFunc = d_imp->engine->evaluate("doRun");
-    runFunc.call(d_imp->thisObject);
-    //runEvo();
+    if( !d_imp->scriptReady )
+        return;
+    d_imp->doRun();
     emit scriptFinished();
 }
 
@@ -179,10 +286,6 @@ void ScriptManager::setParams(QString experimentName,
     sysParams.setDistanceMinThresholdW(distanceMinThresholdW);
     sysParams.setDontCareW(dontCareW);
     sysParams.setOverLearnW(overLearnW);
-    /*QVector<float> threshold;
-    threshold.resize(1);
-    threshold.replace(0, thresh);
-    sysParams.setThreshold(threshold);*/
     for (int i = 0; i < nbOutVars; i++)
         sysParams.setThresholdVal(i, thresh);
     sysParams.setThreshActivated(threshActivated);
@@ -197,53 +300,24 @@ void ScriptManager::readScript()
     if (! file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QMessageBox::critical(0, "Error", "Could not open script file!");
-        std::cout << "Script error : cannot find script file !" << std::endl;
+        qCritical() << "Script error : cannot find script file !";
         return;
     }
 
-    QString strProgram = file.readAll();
+    const QByteArray strProgram = file.readAll();
 
-    // Static check of the script
-    if (! d_imp->engine->canEvaluate(strProgram) )
+    // Check and evaluate the script
+    if( duk_peval_string( d_imp->engine, strProgram.constData() ) != DUK_EXEC_SUCCESS )
     {
-        QMessageBox::critical(0, "Error", "script : canEvaluate returned false!");
-        std::cout << "Script error : cannot evaluate script !" << std::endl;
+        d_imp->scriptReady = false;
+        QMessageBox::critical(0, "Script error", duk_safe_to_string ( d_imp->engine , - 1 ) );
+        duk_pop( d_imp->engine );
         return;
     }
+    duk_pop( d_imp->engine );
 
-    // Evaluate the script
-    d_imp->engine->evaluate(strProgram);
-
-    // Check if we have an uncaught exception ?
-    if (d_imp->engine->hasUncaughtException())
-    {
-        QScriptValue exception = d_imp->engine->uncaughtException();
-        QMessageBox::critical(0, "Script error", QString("Script threw an uncaught exception : ") + exception.toString());
-        std::cout << "Script error ! : script threw an uncaught exception : " << exception.toString().toStdString() << std::endl;
-        return;
-    }
-
-    if (! d_imp->engine->canEvaluate("doSetParams") )
-    {
-        QMessageBox::critical(0, "Error", "canEvaluate returned false!");
-        std::cout << "Script error : cannot evaluate script !" << std::endl;
-        return;
-    }
-
-
-    QScriptValue setParamsFunc = d_imp->engine->evaluate("doSetParams", strProgram);
-    if (d_imp->engine->hasUncaughtException())
-    {
-        QScriptValue exception = d_imp->engine->uncaughtException();
-        QMessageBox::critical(0, "Script error", QString("Script threw an uncaught exception : ") + exception.toString());
-        std::cout << "Script error ! : script threw an uncaught exception : " << exception.toString().toStdString() << std::endl;
-        return;
-    }
-
-    QScriptSyntaxCheckResult result = d_imp->engine->checkSyntax("doSetParams");
-    std::cout << result.errorMessage().toStdString() << std::endl;
-
-    setParamsFunc.call(d_imp->thisObject);
+    d_imp->scriptReady = true;
+    d_imp->doSetParams();
 }
 
 /**
@@ -251,8 +325,17 @@ void ScriptManager::readScript()
   */
 void ScriptManager::runScript()
 {
-    QScriptValue runFunc = d_imp->engine->evaluate("doRun");
-    runFunc.call(d_imp->thisObject);
+    if( !d_imp->scriptReady )
+    {
+        QMessageBox::critical(0, "Error calling doRun", "The script has errors and cannot be run");
+        return;
+    }
+    d_imp->doRun();
+}
+
+bool ScriptManager::isScriptReady() const
+{
+    return d_imp->scriptReady;
 }
 
 /**
@@ -260,9 +343,7 @@ void ScriptManager::runScript()
   */
 void ScriptManager::runEvo()
 {
-    
-    QScriptValue setParamsFunc = d_imp->engine->evaluate("doSetParams");
-    setParamsFunc.call(d_imp->thisObject);
+    d_imp->doSetParams();
 
     emit startRun();
     scriptSema.acquire();

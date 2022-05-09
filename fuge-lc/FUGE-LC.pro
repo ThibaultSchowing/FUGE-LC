@@ -9,14 +9,13 @@
 TARGET = FUGE-LC
 TEMPLATE = app
 
-QT += xml \
-    script \
-    core gui widgets
+QT += core gui widgets xml
 
 include(libGGA/libGGA.pri)
 include(fuzzy/Fuzzy.pri)
 include(coev/Coev.pri)
 include(Dependencies/qwt/qwt.pri)
+include(Dependencies/duktape/duktape.pri)
 
 SOURCES += main.cpp \
     fugemain.cpp \

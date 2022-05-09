@@ -125,12 +125,12 @@ FugeMain::FugeMain(QWidget *parent)
 
 FugeMain::~FugeMain()
 {
-    delete computeThread;
+    computeThread->deleteLater();
     delete listFile;
     delete statsPlot;
     delete aboutDial;
     delete ui;
-    delete sMan;
+    sMan->deleteLater();
 }
 
 /**
@@ -360,6 +360,8 @@ FuzzySystem* FugeMain::getNewFuzzySystem(QList<QStringList>* listFile){
  */
 void FugeMain::onActRun()
 {
+    try
+    {
     if(fSystemRules != 0)
         delete fSystemRules;
     if(fSystemVars != 0)
@@ -422,6 +424,11 @@ void FugeMain::onActRun()
     this->actEvalFuzzy->setEnabled(false);
     ui->btEditFuzzy->setEnabled(false);
     this->actEditFuzzy->setEnabled(false);
+    }catch(...)
+    {
+        qCritical() << "Exception in FugeMain::onActRun";
+        scriptSema.release();
+    }
 }
 
 /**
@@ -915,15 +922,15 @@ void FugeMain::onActOpenScript()
         this->actCloseScript->setEnabled(true);
         ui->label_scriptInfo->setText("<font color = green> Script loaded : " + fileName +"<font>");
         ui->label_paramInfo->setText("<font color = green> Parameters loaded from script <font>");
-        if (dataLoaded) {
+
+        sMan->setScriptFileName(fileName);
+        sMan->readScript();
+        if (dataLoaded && sMan->isScriptReady()) {
             ui->btRunScript->setEnabled(true);
             actRunScript->setEnabled(true);
             ui->btRun->setEnabled(false);
             actRun->setEnabled(false);
         }
-
-        sMan->setScriptFileName(fileName);
-        sMan->readScript();
     }
 }
 
@@ -977,7 +984,7 @@ void FugeMain::onComputeFinished()
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     computeThread->wait();
-    delete computeThread;
+    computeThread->deleteLater();
     computeThread = 0;
 
     isRunning = false;

@@ -42,6 +42,7 @@ public:
     void setScriptFileName(QString fileName);
     void readScript();
     void runScript();
+    bool isScriptReady() const;
 
 protected:
     void run();
