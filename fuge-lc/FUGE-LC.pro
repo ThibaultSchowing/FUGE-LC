@@ -5,6 +5,8 @@
 #   on behalf of thibault.schowing@heig-vd.ch
 # it is recommended to subject the original source code to a design review, as there
 #   seem to be unnecessary copy operations and likely memory leaks
+# this version also compiles with Qt 5.x, but there are crashes with Qt 5.x on all
+#   platforms (Linux i386, Mac x64, Windows x86) which don't occur with Qt 4.x.
 
 TARGET = FUGE-LC
 TEMPLATE = app

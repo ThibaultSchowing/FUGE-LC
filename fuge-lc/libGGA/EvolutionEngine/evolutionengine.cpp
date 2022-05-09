@@ -17,6 +17,8 @@ EvolutionEngine::EvolutionEngine(Population *population, quint32 generationCount
 
 void EvolutionEngine::startEvolution(QMutex *leftLock, QMutex *rightLock, quint32 generationCount, EntitySelection *eliteSelection, quint32 eliteSelectionCount, EntitySelection *individualsSelection, quint32 individualsSelectionCount, Mutate *mutateMethod, Crossover *crossoverMethod, quint32 cooperatorsCount)
 {
+    // TODO: crashes here when run under Qt 5 (but not under Qt 4) because leftLock and rightLock are invalid
+
     setEntitySelector(eliteSelection,eliteSelectionCount,individualsSelection,individualsSelectionCount);
 
     this->mutateMethod = mutateMethod;

@@ -46,6 +46,13 @@
 #define QWT_EXPORT
 #endif
 
+#ifndef QT_STATIC_CONST
+#define QT_STATIC_CONST static const
+#endif
+#ifndef QT_STATIC_CONST_IMPL
+#define QT_STATIC_CONST_IMPL const
+#endif
+
 // #define QWT_NO_COMPAT 1 // disable withdrawn functionality
 
 #endif // QWT_GLOBAL_H

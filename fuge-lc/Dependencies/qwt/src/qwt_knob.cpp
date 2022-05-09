@@ -521,7 +521,9 @@ void QwtKnob::scaleChange()
 */
 void QwtKnob::fontChange(const QFont &f)
 {
+#if QT_VERSION >= 0x040000 && QT_VERSION < 0x050000
     QwtAbstractSlider::fontChange( f );
+#endif
     layoutKnob();
 }
 
