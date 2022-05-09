@@ -10,8 +10,13 @@ TARGET = FUGE-LC
 # Agressive flags for release
 # (Edit : Yvan Da Silva, I do not recommend using 03, it can produce unexpected behaviors)
 # (Take a look at the end of this file for more explanations)
-QMAKE_CXXFLAGS_RELEASE += -O2
-QMAKE_CXXFLAGS_DEBUG += -O2
+CONFIG(debug, debug|release) {
+        DEFINES += _DEBUG
+}else{
+    message("release build")
+    QMAKE_CXXFLAGS_RELEASE += -O2
+    QMAKE_CXXFLAGS_DEBUG += -O2
+}
 
 win32 {
     ## Windows common
@@ -20,22 +25,9 @@ win32 {
     !contains(QMAKE_HOST.arch, x86_64) {
         message("windows x86 build")
         ## Windows x86
-        LIBS += -lqwt5 \
-                -L$$_PRO_FILE_PWD_/Dependencies/include/qwt \
-                -L$$_PRO_FILE_PWD_/Dependencies/lib
-
-        INCLUDEPATH += $$_PRO_FILE_PWD_/Dependencies/include/qwt \
-                       $$_PRO_FILE_PWD_/Dependencies/lib
-
     } else {
         message("windows x64 build")
         ## Windows x64
-        LIBS += -lqwt5 \
-                -L$$_PRO_FILE_PWD_/Dependencies/include/qwt \
-                -L$$_PRO_FILE_PWD_/Dependencies/lib
-
-        INCLUDEPATH += $$_PRO_FILE_PWD_/Dependencies/include/qwt \
-                       $$_PRO_FILE_PWD_/Dependencies/lib
     }
 }
 
@@ -44,20 +36,7 @@ unix {
     ## Linux common. (/!\ Mac OS will use the same parameters. There is a special tag for macox in qmake if needed, but it shouldn't be.)
     QMAKE_CXXFLAGS_RELEASE += -std=c++0x
     QMAKE_CXXFLAGS_DEBUG += -std=c++0x
-    LIBS += -lqwt \
-##CONFIG_SERVER_IICT
-##CONFIG_PERSONAL_COMPUTER
-        -L/usr/local/qwt-5.2.1/lib \
-        -L/usr/include/qwt \
-        -L/usr/local/lib
-##CONFIG_SERVER_IICT
-INCLUDEPATH += /usr/include/qwt \
-##CONFIG_PERSONAL_COMPUTER
-INCLUDEPATH += /usr/local/qwt-5.2.1/include \
-                   /usr/local/lib
 }
-CONFIG += static \
-        qwt
 
 QT += xml \
     script \
@@ -68,6 +47,7 @@ TEMPLATE = app
 include(libGGA/libGGA.pri)
 include(fuzzy/Fuzzy.pri)
 include(coev/Coev.pri)
+include(Dependencies/qwt/qwt.pri)
 
 SOURCES += main.cpp \
     fugemain.cpp \
@@ -109,10 +89,6 @@ FORMS += fugemain.ui \
     fuzzyeditor.ui \
     helpdialog.ui
 
-OBJECTS_DIR = build
-MOC_DIR = build
-UI_DIR = build
-DESTDIR = bin
 
 RESOURCES += fuzzyResources.qrc
 
