@@ -31,7 +31,6 @@
 #define FUZZYSYSTEM_H
 #include <cmath>
 #include <algorithm>
-#include <unistd.h>
 
 #include <QList>
 #include <QDomDocument>

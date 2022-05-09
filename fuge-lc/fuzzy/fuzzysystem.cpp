@@ -549,7 +549,7 @@ void FuzzySystem::evaluateSample(int sampleNum)
 {
 
     assert(sampleNum >= 0 && sampleNum < nbSamples);
-    float maxFiredRule[nbOutVars];
+    QVector<float> maxFiredRule(nbOutVars);
 
     // Clean the previous evaluation values in the output variables sets
     for (int i = 0; i < nbOutVars; i++) {
@@ -672,13 +672,19 @@ QVector<float> FuzzySystem::doEvaluateFitness()
     return computedResults;
 }
 
+struct RuleInGeneralityFuzzy
+{
+    float _0,_1,_2,_3;
+    RuleInGeneralityFuzzy():_0(0),_1(0),_2(0),_3(0){}
+};
+
 float FuzzySystem::evaluateFitness()
 {
 
     CoevStats& coevStats = CoevStats::getInstance();
     SystemParameters& sysParams = SystemParameters::getInstance();
 
-    fitnessStruct fitVector[nbOutVars];
+    QVector<fitnessStruct> fitVector(nbOutVars);
 
     for (int i = 0; i < nbOutVars; i++) {
         fitVector[i].tPosCount = 0;
@@ -935,23 +941,26 @@ float FuzzySystem::evaluateFitness()
     //Over learn, the grade is given by fuzzy system
 
     //Membership function for Firing
-    float const mfLow = 0.1; //trapez
-    float const mfHigh = 0.5; //trapez
+    const float mfLow = 0.1; //trapez
+    const float mfHigh = 0.5; //trapez
 
     //Membership function for Winner
-    float const mfNever = 0.1; //trapez
-    float const mfSometime = 0.4; // triangle
-    float const mfAlways = 0.7; //trapez
+    const float mfNever = 0.1; //trapez
+    const float mfSometime = 0.4; // triangle
+    const float mfAlways = 0.7; //trapez
 
-    int const nbRuleInGeneralityFuzzy = 4;
-    float arrTruthLvl[nbRules][nbRuleInGeneralityFuzzy];
-    float arrRuleGrade[nbRules];
+    const int nbRuleInGeneralityFuzzy = 4;
+
+    QVector<RuleInGeneralityFuzzy> arrTruthLvl(nbRules);
+    QVector<float> arrRuleGrade(nbRules);
 
     for ( int i = 0; i < nbRules; i++ ) {
         arrRuleGrade[i] = 1.0;
+#if 0 // already zeroed
         for ( int j = 0; j < nbRuleInGeneralityFuzzy; j++) {
             arrTruthLvl[i][j] = 0.0;
         }
+#endif
     }
 
     for( int i = 0; i < nbRules; i++ ) {
@@ -1017,20 +1026,20 @@ float FuzzySystem::evaluateFitness()
         }
 
         //Generality Rule
-        arrTruthLvl[i][0] = firingHigh;
-        arrTruthLvl[i][1] = std::min( firingLow, winnerNever );
-        arrTruthLvl[i][2] = std::min( firingLow, winnerSometime );
-        arrTruthLvl[i][3] = std::min( firingLow, winnerAlways );
+        arrTruthLvl[i]._0 = firingHigh;
+        arrTruthLvl[i]._1 = std::min( firingLow, winnerNever );
+        arrTruthLvl[i]._2 = std::min( firingLow, winnerSometime );
+        arrTruthLvl[i]._3 = std::min( firingLow, winnerAlways );
 
-        const float evalProduct = arrTruthLvl[i][0] * 1.0 +  //high
-                                  arrTruthLvl[i][1] * 0.7 +  //med high
-                                  arrTruthLvl[i][2] * 0.3 +  //med low
-                                  arrTruthLvl[i][3] * 0.0;   //low
+        const float evalProduct = arrTruthLvl[i]._0 * 1.0 +  //high
+                                  arrTruthLvl[i]._1 * 0.7 +  //med high
+                                  arrTruthLvl[i]._2 * 0.3 +  //med low
+                                  arrTruthLvl[i]._3 * 0.0;   //low
 
-        const float evalSum = arrTruthLvl[i][0] +
-                              arrTruthLvl[i][1] +
-                              arrTruthLvl[i][2] +
-                              arrTruthLvl[i][3];
+        const float evalSum = arrTruthLvl[i]._0 +
+                              arrTruthLvl[i]._1 +
+                              arrTruthLvl[i]._2 +
+                              arrTruthLvl[i]._3;
 
         arrRuleGrade[i] = evalProduct / evalSum;
     }
@@ -1527,7 +1536,7 @@ void FuzzySystem::loadFromFile(QString fileName)
                                                       1,1,1,1);
         // Create an empty instring
         int intStringSize = nodesRulesInVars.size()*2 + nodesRulesOutVars.size()*2;
-        quint16 intString[intStringSize];
+        QVector<quint16> intString(intStringSize);
 
         for (int k = 0, l = 0; k < nodesRulesInVars.size(); k++, l+=2) {
             intString[l] = getVarIndex(nodesRulesInVars.at(k).toElement().text());
@@ -1538,7 +1547,7 @@ void FuzzySystem::loadFromFile(QString fileName)
             intString[l+1] = outVarArray[intString[l]]->getSetIndexByName(nodesRulesOutSets.at(k).toElement().text());
          }
         // Load the instring into the genome
-        ruleGen->readGenomeIntString(intString, intStringSize);
+        ruleGen->readGenomeIntString(intString.data(), intStringSize);
 
         // Create the rule
         rulesArray[i] = new FuzzyRule(inVarArray, outVarArray, ruleGen);

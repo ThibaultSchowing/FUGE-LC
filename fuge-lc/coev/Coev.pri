@@ -1,10 +1,10 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += coevcooperator.cpp \
-    coevolution.cpp \
-    coevstats.cpp
+SOURCES += $$PWD/coevcooperator.cpp \
+    $$PWD/coevolution.cpp \
+    $$PWD/coevstats.cpp
     
-HEADERS += coevcooperator.h \
-    coevolution.h \
-    coevstats.h
+HEADERS += $$PWD/coevcooperator.h \
+    $$PWD/coevolution.h \
+    $$PWD/coevstats.h

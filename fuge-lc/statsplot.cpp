@@ -44,7 +44,8 @@ StatsPlot::StatsPlot(QWidget *parent) :
     if (!tempDir.exists(sysParams.getSavePath()+"temp")) {
         tempDir.mkdir(sysParams.getSavePath()+"temp");
     }
-    logFileName = QString(sysParams.getSavePath()+"temp/running_") + QString::number(getpid()) + QString(".csv");
+    logFileName = QString(sysParams.getSavePath()+"temp/running_") +
+            QString::number(QCoreApplication::applicationPid()) + QString(".csv");
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "Generations");

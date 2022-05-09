@@ -28,6 +28,7 @@
 
 #include <assert.h>
 #include <iostream>
+#include <QVector>
 
 #include "defuzzmethodcoa.h"
 
@@ -56,7 +57,7 @@ double DefuzzMethodCOA::defuzzVariable(FuzzyVariable* fVar)
         int setsCount = fVar->getSetsCount();
         int nbSteps = this->getPrecision();
         double step;
-        double valuesTab[nbSteps ];
+        QVector<double> valuesTab(nbSteps);
         double xValue;
         double yValue;
         double thisSetEval;

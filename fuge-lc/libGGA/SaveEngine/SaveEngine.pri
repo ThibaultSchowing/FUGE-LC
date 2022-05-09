@@ -1,7 +1,7 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += saveengine.cpp
+SOURCES += $$PWD/saveengine.cpp
 
-HEADERS += saveengine.h
+HEADERS += $$PWD/saveengine.h
 

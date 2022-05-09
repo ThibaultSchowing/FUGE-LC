@@ -1,48 +1,17 @@
-# -------------------------------------------------
-# Project created by QtCreator 2009-06-15T13:25:19
-# -------------------------------------------------
+# the original application seems to have been written for Qt 4.7 and Qwt 5.2.1 on Unix
+#   assumingly by jean-philippe.meylan_at_heig-vd.ch
+# this version was successfully compiled and run with Qt 4.8.7 on Linux and Win32
+#   with only the minimal required changes done by me@rochus-keller.ch on 2022-05-04
+#   on behalf of thibault.schowing@heig-vd.ch
+# it is recommended to subject the original source code to a design review, as there
+#   seem to be unnecessary copy operations and likely memory leaks
+
 TARGET = FUGE-LC
-
-# Profiling
-#QMAKE_CXXFLAGS_DEBUG += -pg
-#QMAKE_LFLAGS_DEBUG += -pg
-
-# Agressive flags for release
-# (Edit : Yvan Da Silva, I do not recommend using 03, it can produce unexpected behaviors)
-# (Take a look at the end of this file for more explanations)
-CONFIG(debug, debug|release) {
-        DEFINES += _DEBUG
-}else{
-    message("release build")
-    QMAKE_CXXFLAGS_RELEASE += -O2
-    QMAKE_CXXFLAGS_DEBUG += -O2
-}
-
-win32 {
-    ## Windows common
-    QMAKE_CXXFLAGS_RELEASE += -std=gnu++0x
-    QMAKE_CXXFLAGS_DEBUG += -std=gnu++0x
-    !contains(QMAKE_HOST.arch, x86_64) {
-        message("windows x86 build")
-        ## Windows x86
-    } else {
-        message("windows x64 build")
-        ## Windows x64
-    }
-}
-
-unix {
-    message("unix build")
-    ## Linux common. (/!\ Mac OS will use the same parameters. There is a special tag for macox in qmake if needed, but it shouldn't be.)
-    QMAKE_CXXFLAGS_RELEASE += -std=c++0x
-    QMAKE_CXXFLAGS_DEBUG += -std=c++0x
-}
+TEMPLATE = app
 
 QT += xml \
     script \
-    core
-
-TEMPLATE = app
+    core gui widgets
 
 include(libGGA/libGGA.pri)
 include(fuzzy/Fuzzy.pri)
@@ -89,14 +58,5 @@ FORMS += fugemain.ui \
     fuzzyeditor.ui \
     helpdialog.ui
 
-
 RESOURCES += fuzzyResources.qrc
 
-#From GCC developers discussion :
-#The -O3 optimization level may increase the speed of the resulting executable, but can also increase its size.
-#Under some circumstances where these optimizations are not favorable, this option might actually make a program slower.
-#In fact it should not be used system-wide with gcc 4.x. The behavior of gcc has changed significantly since version 3.x.
-#In 3.x, -O3 has been shown to lead to marginally faster execution times over -O2, but this is no longer the case with gcc 4.x.
-#Compiling all your packages with -O3 will result in larger binaries that require more memory,
-#and will significantly increase the odds of compilation failure or unexpected program behavior (including errors).
-#The downsides outweigh the benefits; remember the principle of diminishing returns. Using -O3 is not recommended for gcc 4.x.

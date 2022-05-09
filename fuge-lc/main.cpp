@@ -24,7 +24,7 @@
   * and run the application main window.
   */
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QString>
 #include <iostream>
 

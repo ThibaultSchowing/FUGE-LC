@@ -3,9 +3,9 @@ include(SelectionMethod/SelectionMethod.pri)
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-INCLUDEPATH += EvolutionEngine
+INCLUDEPATH += $$PWD/EvolutionEngine
 
-SOURCES += evolutionengine.cpp
+SOURCES += $$PWD/evolutionengine.cpp
 
-HEADERS += evolutionengine.h
+HEADERS += $$PWD/evolutionengine.h
 

@@ -29,8 +29,7 @@
 #ifndef SCRIPTMANAGER_H
 #define SCRIPTMANAGER_H
 
-#include <QObject>
-#include <QtScript>
+#include <QThread>
 
 class ScriptManager : public QThread
 {
@@ -38,6 +37,7 @@ class ScriptManager : public QThread
 
 public:
     ScriptManager();
+    ~ScriptManager();
 
     void setScriptFileName(QString fileName);
     void readScript();
@@ -96,9 +96,8 @@ public slots:
                 bool threshActivated);
 
 private:
-    QScriptEngine *engine;
-    QScriptValue thisObject;
-    QString fileName;
+    struct Imp;
+    Imp* d_imp;
 };
 
 #endif // SCRIPTMANAGER_H

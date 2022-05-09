@@ -28,7 +28,7 @@
 #ifndef EDITPARAMSDIALOG_H
 #define EDITPARAMSDIALOG_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QVBoxLayout>
 
 namespace Ui {

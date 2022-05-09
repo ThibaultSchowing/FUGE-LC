@@ -29,7 +29,7 @@
 #ifndef EVALPLOT_H
 #define EVALPLOT_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>

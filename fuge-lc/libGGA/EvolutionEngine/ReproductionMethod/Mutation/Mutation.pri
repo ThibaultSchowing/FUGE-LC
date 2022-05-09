@@ -1,8 +1,8 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += mutate.cpp \
-    toggling.cpp
+SOURCES += $$PWD/mutate.cpp \
+    $$PWD/toggling.cpp
 
-HEADERS += mutate.h \
-    toggling.h
+HEADERS += $$PWD/mutate.h \
+    $$PWD/toggling.h

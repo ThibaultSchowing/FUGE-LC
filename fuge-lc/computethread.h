@@ -37,12 +37,12 @@
 #include <QStringList>
 #include <QString>
 #include <QMutex>
+#include <QTime>
 
 #include "coevolution.h"
 #include "fuzzysystem.h"
 #include "systemparameters.h"
 #include "evolutionengine.h"
-#include "timertool.h"
 
 class CoEvolution;
 
@@ -93,7 +93,7 @@ private:
         quint8 loggerFileLevel, loggerConsoleLevel;
     }rules, vars;
 
-    struct timeval startTime, endTime;
+    QTime startTime, endTime;
     qreal elapsedTime;
 
     void loadConfiguration(POPULATION_CONFIG_TYPE &config, QString fileNameWithDirPath);

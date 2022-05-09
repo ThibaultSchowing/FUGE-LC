@@ -1,6 +1,6 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += genotype.cpp
+SOURCES += $$PWD/genotype.cpp
 
-HEADERS += genotype.h
+HEADERS += $$PWD/genotype.h

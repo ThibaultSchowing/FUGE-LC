@@ -3,6 +3,6 @@ include(Individual/Individual.pri)
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += population.cpp
+SOURCES += $$PWD/population.cpp
 
-HEADERS += population.h
+HEADERS += $$PWD/population.h

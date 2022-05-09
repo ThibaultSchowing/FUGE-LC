@@ -25,7 +25,7 @@
   * @brief This class implements the singleton defuzzification algorithm.
   */
 #include <iostream>
-
+#include <QVector>
 #include "defuzzmethodsingleton.h"
 
 DefuzzMethodSingleton::DefuzzMethodSingleton()
@@ -40,7 +40,7 @@ DefuzzMethodSingleton::DefuzzMethodSingleton()
 double DefuzzMethodSingleton::defuzzVariable(FuzzyVariable* fVar)
 {
     int setsCount = fVar->getSetsCount();
-    double eval[setsCount];
+    QVector<double> eval(setsCount);
     double evalSum = 0.0;
     double evalProduct = 0.0;
 

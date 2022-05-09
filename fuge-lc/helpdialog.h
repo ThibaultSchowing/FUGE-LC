@@ -28,7 +28,7 @@
 #ifndef HELPDIALOG_H
 #define HELPDIALOG_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 namespace Ui {
     class HelpDialog;

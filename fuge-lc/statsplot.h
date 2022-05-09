@@ -29,7 +29,7 @@
 #ifndef STATSPLOT_H
 #define STATSPLOT_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QFile>
 #include <QTextStream>
 #include <QDir>
@@ -42,7 +42,6 @@
 #include <qwt_legend.h>
 
 #include <iostream>
-#include <unistd.h>
 
 #include "ui_statsplot.h"
 #include "systemparameters.h"

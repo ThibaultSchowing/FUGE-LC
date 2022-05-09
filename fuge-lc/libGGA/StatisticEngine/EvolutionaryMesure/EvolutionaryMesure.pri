@@ -3,8 +3,8 @@ include(PopulationDiversity/PopulationDiversity.pri)
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-INCLUDEPATH += EvolutionaryMesure
+INCLUDEPATH += $$PWD/EvolutionaryMesure
 
-SOURCES += evolutionarymesure.cpp
+SOURCES += $$PWD/evolutionarymesure.cpp
 
-HEADERS += evolutionarymesure.h
+HEADERS += $$PWD/evolutionarymesure.h

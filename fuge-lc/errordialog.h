@@ -28,7 +28,7 @@
 #ifndef ERRORDIALOG_H
 #define ERRORDIALOG_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QLabel>
 
 

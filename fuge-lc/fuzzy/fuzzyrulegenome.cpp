@@ -140,8 +140,8 @@ int FuzzyRuleGenome::readGenomeBitString(quint16* bitString, int stringSize)
 
     int varNum;
     int setNum;
-    bool usedInVarsTab[inputCount];
-    bool usedOutVarsTab[outputCount];
+    QVector<bool> usedInVarsTab(inputCount);
+    QVector<bool> usedOutVarsTab(outputCount);
 
     SystemParameters& sysParams = SystemParameters::getInstance();
 

@@ -28,7 +28,7 @@
 #ifndef FUGEMAIN_H
 #define FUGEMAIN_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #include <QFile>
 #include <iostream>
 #include <cstdlib>
@@ -36,7 +36,6 @@
 #include <stdexcept>
 #include <vector>
 #include <numeric>
-#include <unistd.h>
 
 #include <QFileDialog>
 #include <QLabel>

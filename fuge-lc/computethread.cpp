@@ -70,7 +70,7 @@ void ComputeThread::setFuzzySystem(FuzzySystem *fSystemLeft, FuzzySystem *fSyste
 void ComputeThread::run()
 {
     // Begin timer
-    gettimeofday(&startTime, NULL);
+    startTime = QTime::currentTime();
 
     ComputeThread::stop = false;
     ComputeThread::bestFitness = 0.0;
@@ -144,8 +144,8 @@ void ComputeThread::run()
     }
 
     // End Timer
-    gettimeofday(&endTime, NULL);
-    elapsedTime = TimerTool::getElapsedTime(startTime,endTime);
+    endTime = QTime::currentTime();
+    elapsedTime = startTime.msecsTo(endTime);
     qDebug() << "ElapsedTime in seconds : " << elapsedTime / 1000 ;
 
     emit computeFinished();

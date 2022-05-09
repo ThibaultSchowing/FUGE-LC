@@ -31,16 +31,30 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QSemaphore>
+#include <QtScript>
 
 #include "scriptmanager.h"
 #include "systemparameters.h"
 
 extern QSemaphore scriptSema;
 
+struct ScriptManager::Imp
+{
+    QScriptEngine *engine;
+    QScriptValue thisObject;
+    QString fileName;
+};
+
 ScriptManager::ScriptManager()
 {
-    engine = new QScriptEngine();
-    thisObject = engine->newQObject(this);
+    d_imp = new Imp();
+    d_imp->engine = new QScriptEngine();
+    d_imp->thisObject = d_imp->engine->newQObject(this);
+}
+
+ScriptManager::~ScriptManager()
+{
+    delete d_imp;
 }
 
 /**
@@ -48,8 +62,8 @@ ScriptManager::ScriptManager()
   */
 void ScriptManager::run()
 {
-    QScriptValue runFunc = engine->evaluate("doRun");
-    runFunc.call(thisObject);
+    QScriptValue runFunc = d_imp->engine->evaluate("doRun");
+    runFunc.call(d_imp->thisObject);
     //runEvo();
     emit scriptFinished();
 }
@@ -61,7 +75,7 @@ void ScriptManager::run()
   */
 void ScriptManager::setScriptFileName(QString fileName)
 {
-    this->fileName = fileName;
+    d_imp->fileName = fileName;
 }
 
 /**
@@ -179,7 +193,7 @@ void ScriptManager::setParams(QString experimentName,
   */
 void ScriptManager::readScript()
 {
-    QFile file(fileName);
+    QFile file(d_imp->fileName);
     if (! file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QMessageBox::critical(0, "Error", "Could not open script file!");
@@ -190,7 +204,7 @@ void ScriptManager::readScript()
     QString strProgram = file.readAll();
 
     // Static check of the script
-    if (! engine->canEvaluate(strProgram) )
+    if (! d_imp->engine->canEvaluate(strProgram) )
     {
         QMessageBox::critical(0, "Error", "script : canEvaluate returned false!");
         std::cout << "Script error : cannot evaluate script !" << std::endl;
@@ -198,18 +212,18 @@ void ScriptManager::readScript()
     }
 
     // Evaluate the script
-    engine->evaluate(strProgram);
+    d_imp->engine->evaluate(strProgram);
 
     // Check if we have an uncaught exception ?
-    if (engine->hasUncaughtException())
+    if (d_imp->engine->hasUncaughtException())
     {
-        QScriptValue exception = engine->uncaughtException();
+        QScriptValue exception = d_imp->engine->uncaughtException();
         QMessageBox::critical(0, "Script error", QString("Script threw an uncaught exception : ") + exception.toString());
         std::cout << "Script error ! : script threw an uncaught exception : " << exception.toString().toStdString() << std::endl;
         return;
     }
 
-    if (! engine->canEvaluate("doSetParams") )
+    if (! d_imp->engine->canEvaluate("doSetParams") )
     {
         QMessageBox::critical(0, "Error", "canEvaluate returned false!");
         std::cout << "Script error : cannot evaluate script !" << std::endl;
@@ -217,19 +231,19 @@ void ScriptManager::readScript()
     }
 
 
-    QScriptValue setParamsFunc = engine->evaluate("doSetParams", strProgram);
-    if (engine->hasUncaughtException())
+    QScriptValue setParamsFunc = d_imp->engine->evaluate("doSetParams", strProgram);
+    if (d_imp->engine->hasUncaughtException())
     {
-        QScriptValue exception = engine->uncaughtException();
+        QScriptValue exception = d_imp->engine->uncaughtException();
         QMessageBox::critical(0, "Script error", QString("Script threw an uncaught exception : ") + exception.toString());
         std::cout << "Script error ! : script threw an uncaught exception : " << exception.toString().toStdString() << std::endl;
         return;
     }
 
-    QScriptSyntaxCheckResult result = engine->checkSyntax("doSetParams");
+    QScriptSyntaxCheckResult result = d_imp->engine->checkSyntax("doSetParams");
     std::cout << result.errorMessage().toStdString() << std::endl;
 
-    setParamsFunc.call(thisObject);
+    setParamsFunc.call(d_imp->thisObject);
 }
 
 /**
@@ -237,8 +251,8 @@ void ScriptManager::readScript()
   */
 void ScriptManager::runScript()
 {
-    QScriptValue runFunc = engine->evaluate("doRun");
-    runFunc.call(thisObject);
+    QScriptValue runFunc = d_imp->engine->evaluate("doRun");
+    runFunc.call(d_imp->thisObject);
 }
 
 /**
@@ -247,8 +261,8 @@ void ScriptManager::runScript()
 void ScriptManager::runEvo()
 {
     
-    QScriptValue setParamsFunc = engine->evaluate("doSetParams");
-    setParamsFunc.call(thisObject);
+    QScriptValue setParamsFunc = d_imp->engine->evaluate("doSetParams");
+    setParamsFunc.call(d_imp->thisObject);
 
     emit startRun();
     scriptSema.acquire();

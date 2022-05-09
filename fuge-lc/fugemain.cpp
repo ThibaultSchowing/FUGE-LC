@@ -650,7 +650,8 @@ void FugeMain::onActEditFuzzy()
 
     FuzzyEditor fEditor(this, ComputeThread::bestFSystem);
     if (currentOpennedSystem == "")
-        currentOpennedSystem = QString(sysParams.getSavePath()+"temp/currentBest_") + QString::number(getpid()) + QString(".ffs");
+        currentOpennedSystem = QString(sysParams.getSavePath()+"temp/currentBest_") +
+                QString::number(QCoreApplication::applicationPid()) + QString(".ffs");
 
     fEditor.setSystemFile(currentOpennedSystem);
 
@@ -1027,7 +1028,8 @@ void FugeMain::onComputeFinished()
         if (!tempDir.exists(sysParams.getSavePath()+"temp")) {
             tempDir.mkdir(sysParams.getSavePath()+"temp");
         }
-        fileN = QString(sysParams.getSavePath()+"temp/currentBest_") + QString::number(getpid()) + QString(".ffs");
+        fileN = QString(sysParams.getSavePath()+"temp/currentBest_") +
+                QString::number(QCoreApplication::applicationPid()) + QString(".ffs");
         QFile file(fileN);
         SystemParameters& sysParams = SystemParameters::getInstance();
         CoevStats& stats = CoevStats::getInstance();
@@ -1104,8 +1106,10 @@ void FugeMain::closeEvent(QCloseEvent*)
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     // Delete the temporary fuzzy system file
-    QString fileN = QString(sysParams.getSavePath()+"temp/currentBest_") + QString::number(getpid()) + QString(".ffs");
-    QString logFile = QString(sysParams.getSavePath()+"temp/running_") + QString::number(getpid()) + QString(".csv");
+    QString fileN = QString(sysParams.getSavePath()+"temp/currentBest_") +
+            QString::number(QCoreApplication::applicationPid()) + QString(".ffs");
+    QString logFile = QString(sysParams.getSavePath()+"temp/running_") +
+            QString::number(QCoreApplication::applicationPid()) + QString(".csv");
     QFile file(fileN);
     QFile lFile(logFile);
     file.remove();

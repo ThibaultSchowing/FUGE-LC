@@ -1,10 +1,10 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += allpairpossibility.cpp \
-    entropic.cpp \
-    populationdiversity.cpp
+SOURCES += $$PWD/allpairpossibility.cpp \
+    $$PWD/entropic.cpp \
+    $$PWD/populationdiversity.cpp
 
-HEADERS += allpairpossibility.h \
-    entropic.h \
-    populationdiversity.h
+HEADERS += $$PWD/allpairpossibility.h \
+    $$PWD/entropic.h \
+    $$PWD/populationdiversity.h

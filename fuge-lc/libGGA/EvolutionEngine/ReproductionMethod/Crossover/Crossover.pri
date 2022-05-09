@@ -1,12 +1,12 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += arithmetic.cpp \
-    crossover.cpp \
-    onepoint.cpp \
-    uniform.cpp
+SOURCES += $$PWD/arithmetic.cpp \
+    $$PWD/crossover.cpp \
+    $$PWD/onepoint.cpp \
+    $$PWD/uniform.cpp
     
-HEADERS += arithmetic.h \
-    crossover.h \
-    onepoint.h \
-    uniform.h
+HEADERS += $$PWD/arithmetic.h \
+    $$PWD/crossover.h \
+    $$PWD/onepoint.h \
+    $$PWD/uniform.h

@@ -28,7 +28,7 @@
 #ifndef FUZZYVIEWER_H
 #define FUZZYVIEWER__H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QGridLayout>

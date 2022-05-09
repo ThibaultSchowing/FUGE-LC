@@ -1,11 +1,9 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += qbitarrayutility.cpp \
-    randomgenerator.cpp \
-    libGGA/Utility/timertool.cpp
+SOURCES += $$PWD/qbitarrayutility.cpp \
+    $$PWD/randomgenerator.cpp
     
-HEADERS += qbitarrayutility.h \
-    randomgenerator.h \
-    libGGA/Utility/timertool.h
+HEADERS += $$PWD/qbitarrayutility.h \
+    $$PWD/randomgenerator.h
     

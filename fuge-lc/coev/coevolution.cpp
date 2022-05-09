@@ -165,10 +165,10 @@ void CoEvolution::calcFitness(PopEntity *inX, PopEntity *inY)
 {
     QBitArray *genotypeDataX = inX->getGenotype()->getData();
     QBitArray *genotypeDataY = inY->getGenotype()->getData();
-    quint16 ruleBitString[ComputeThread::ruleGenSize];
+    QVector<quint16> ruleBitString(ComputeThread::ruleGenSize);
 
     FuzzyMembershipsGenome* membGen = new FuzzyMembershipsGenome(fSystem->getNbInVars(),fSystem->getNbOutVars(), fSystem->getNbInSets(),fSystem->getNbOutSets(), fSystem->getInSetsPosCodeSize(), fSystem->getOutSetsPosCodeSize());
-    FuzzyRuleGenome* ruleGenTab[ComputeThread::nbRules];
+    QVector<FuzzyRuleGenome*> ruleGenTab(ComputeThread::nbRules);
 
     for (int i = 0; i < ComputeThread::nbRules; i++) {
         ruleGenTab[i] = new FuzzyRuleGenome(fSystem->getNbVarPerRule(), fSystem->getNbInVars(),fSystem->getNbOutVars(),
@@ -204,7 +204,7 @@ void CoEvolution::calcFitness(PopEntity *inX, PopEntity *inY)
                 }
             }
             // Read the rule
-            ruleGenTab[k]->readGenomeBitString(ruleBitString, ComputeThread::ruleGenSize);
+            ruleGenTab[k]->readGenomeBitString(ruleBitString.data(), ComputeThread::ruleGenSize);
         }
     }
     // Genome transcription with EVOLVING VARS
@@ -214,13 +214,13 @@ void CoEvolution::calcFitness(PopEntity *inX, PopEntity *inY)
             for (int l = 0; l < ComputeThread::ruleGenSize; l++) {
                 ruleBitString[l] = genotypeDataY->at(l + k*ComputeThread::ruleGenSize);
             }
-            ruleGenTab[k]->readGenomeBitString(ruleBitString, ComputeThread::ruleGenSize);
+            ruleGenTab[k]->readGenomeBitString(ruleBitString.data(), ComputeThread::ruleGenSize);
         }
     }
     // Default rules transcription
     int defRulesSize = fSystem->getDefaultRulesBitStringSize();
     int defRulesPos = fSystem->getRuleBitStringSize()*ComputeThread::nbRules;
-    int defRules[defRulesSize];
+    QVector<int> defRules(defRulesSize);
     for (int i = 0; i < defRulesSize; i++) {
         defRules[i] = genotypeDataY->at(defRulesPos+i);
     }
@@ -230,7 +230,7 @@ void CoEvolution::calcFitness(PopEntity *inX, PopEntity *inY)
 
     // Load the genomes
     fSystem->loadMembershipsGenome(membGen);
-    fSystem->loadRulesGenome(ruleGenTab, defRules);
+    fSystem->loadRulesGenome(ruleGenTab.data(), defRules.data());
     // Get the textual systemDescription
     fitness = fSystem->evaluateFitness();
 

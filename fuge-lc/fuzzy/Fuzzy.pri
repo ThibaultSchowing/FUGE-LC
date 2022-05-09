@@ -1,32 +1,32 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += fuzzyvariable.cpp \
-    fuzzyset.cpp \
-    fuzzymemberships.cpp \
-    fuzzymembershipscoco.cpp \
-    fuzzyrule.cpp \
-    fuzzyrulegenome.cpp \
-    fuzzyoperator.cpp \
-    fuzzyoperatorand.cpp \
-    defuzzmethod.cpp \
-    defuzzmethodcoa.cpp \
-    fuzzysystem.cpp \
-    fuzzymembershipsgenome.cpp \
-    defuzzmethodsingleton.cpp
+SOURCES += $$PWD/fuzzyvariable.cpp \
+    $$PWD/fuzzyset.cpp \
+    $$PWD/fuzzymemberships.cpp \
+    $$PWD/fuzzymembershipscoco.cpp \
+    $$PWD/fuzzyrule.cpp \
+    $$PWD/fuzzyrulegenome.cpp \
+    $$PWD/fuzzyoperator.cpp \
+    $$PWD/fuzzyoperatorand.cpp \
+    $$PWD/defuzzmethod.cpp \
+    $$PWD/defuzzmethodcoa.cpp \
+    $$PWD/fuzzysystem.cpp \
+    $$PWD/fuzzymembershipsgenome.cpp \
+    $$PWD/defuzzmethodsingleton.cpp
 
-HEADERS += fuzzyvariable.h \
-    fuzzyset.h \
-    fuzzymemberships.h \
-    fuzzymembershipscoco.h \
-    fuzzyrule.h \
-    fuzzyrulegenome.h \
-    fuzzyoperator.h \
-    fuzzyoperatorand.h \
-    defuzzmethod.h \
-    defuzzmethodcoa.h \
-    fuzzysystem.h \
-    fuzzymembershipsgenome.h \
-    defuzzmethodsingleton.h
+HEADERS += $$PWD/fuzzyvariable.h \
+    $$PWD/fuzzyset.h \
+    $$PWD/fuzzymemberships.h \
+    $$PWD/fuzzymembershipscoco.h \
+    $$PWD/fuzzyrule.h \
+    $$PWD/fuzzyrulegenome.h \
+    $$PWD/fuzzyoperator.h \
+    $$PWD/fuzzyoperatorand.h \
+    $$PWD/defuzzmethod.h \
+    $$PWD/defuzzmethodcoa.h \
+    $$PWD/fuzzysystem.h \
+    $$PWD/fuzzymembershipsgenome.h \
+    $$PWD/defuzzmethodsingleton.h
 
 

@@ -28,7 +28,7 @@
 #ifndef INFODIALOG_H
 #define INFODIALOG_H
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 namespace Ui {
     class InfoDialog;
