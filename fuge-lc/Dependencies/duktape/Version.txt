@@ -1,0 +1,2 @@
+Version 1.5.2
+https://duktape.org/duktape-1.5.2.tar.xz
