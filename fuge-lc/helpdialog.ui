@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HelpDialog</class>
+ <widget class="QDialog" name="HelpDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>710</width>
+    <height>476</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>FUGE-LC Help</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="fuzzyResources.qrc">
+    <normaloff>:/icons/icons/help.png</normaloff>:/icons/icons/help.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QTextBrowser" name="textBrowser">
+       <property name="html">
+        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#0000ff;&quot;&gt;FUGE-LC User guide&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Introduction&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This application implements the FuzzyCoCo algorithm. It constructs systems that predict the outcome of a human decision-making process while providing an understandable explanation of a possible reasoning leading to it. The constructed fuzzy systems are composed of rules and linguistic variables. For more information about the method, please refer to Prof. Carlos Andrés Peña Reyes' thesis entitled &quot;&lt;span style=&quot; font-style:italic;&quot;&gt;Coevolutionary Fuzzy Modeling&lt;/span&gt;&quot;.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Functionalities&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The two main functionalities of FUGE-LC are the following:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Modeling of a fuzzy system by coevolution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Analysis and edition of a fuzzy system&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The steps required to perform these two actions are described below.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Fuzzy system modeling&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In order to find a good system by coevolution, the following steps must be performed:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;1.&lt;/span&gt; Choose a dataset&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;2.&lt;/span&gt; Edit the fuzzy, coevolution and fitness parameters&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;3.&lt;/span&gt; Run the evolution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;4.&lt;/span&gt; Wait for the end of the evolution or manually stop it when a satisfying system has emerged  &lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;1. Dataset choice&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The dataset can be selected via the &lt;span style=&quot; font-style:italic;&quot;&gt;Dataset&lt;/span&gt; menu or directly from the main window. The dataset file &lt;span style=&quot; color:#ff0000;&quot;&gt;must &lt;/span&gt;meet the following requirements: &lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- CSV file type, separated by&lt;span style=&quot; font-weight:600;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;semicolons&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- Each row (samples) and each column (variables) &lt;span style=&quot; color:#ff0000;&quot;&gt;must start with a label&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;- The output variables must be placed in the last columns&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;2. Parameters edition&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;The parameters can be divided in four distinct categories: experiment, fuzzy system, coevolution, fitness evaluation. These parameters can also be selected via a script file (see script section).&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:6px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#000000;&quot;&gt;Experiment parameters&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;These parameters allow to specify a name prefix to all files and to select the directory where files are saved. This allows multiple users to run FUGE-LC simultaneously.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:5px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#000000;&quot;&gt;Fuzzy system parameters&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;These parameters determine the shape of the emerged fuzzy systems (number of rules, maximum number of variables per rule, number of input/output sets) and the number of bits used to code the different elements (variables, rules, membership functions) in the genome. &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;There is also parameter that indicates to the software &lt;/span&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;how much output variables&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt; are present in the database. Without this indication, the application has no means to know the number output variables. &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ff0000;&quot;&gt;Be very careful&lt;/span&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;when editing these parameters. Incoherent values can lead to erroneous results and even to the crash of the application.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#000000;&quot;&gt;Coevolution parameters&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;The coevolution algorithm can be configured via the following parameters:&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Number of generations to reach before stopping the evolution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maximum fitness threshold to reach before stopping the evolution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Size of the populations (number of individuals)&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Size of the elite (best individuals kept unchanged between to generations)&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Crossover probability&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Probability that an individual is a target for a mutation&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Probability that a bit of an individual is mutated&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:5px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; text-decoration: underline; color:#000000;&quot;&gt;Fitness evaluation parameters&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;These parameters determine how the overall fitness of a system will be evaluated. A value is computed for all the following measurements and a weight for each one can be selected. The fitness value is the sum of these measurements multiplied by their weight. The measurements available are:&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Sensitivity : &lt;span style=&quot; font-style:italic;&quot;&gt;TruePos / (TruePos + FalseNeg)&lt;/span&gt;&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Specificity : &lt;span style=&quot; font-style:italic;&quot;&gt;TrueNeg / (TrueNeg + FalsePos)&lt;/span&gt;&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Accuracy : &lt;span style=&quot; font-style:italic;&quot;&gt;(TruePos +TrueNeg) / (TruePos + TrueNeg + FalsePos + FalseNeg)&lt;/span&gt;&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;PPV : &lt;span style=&quot; font-style:italic;&quot;&gt;TruePos / (TruePos + FalsePos)&lt;/span&gt;&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;RMSE : &lt;span style=&quot; font-style:italic;&quot;&gt;Root Mean Square Error&lt;/span&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is also possible to choose the threshold applied to the output values. Generally, it is selected in the middle of the minimum and maximum value.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;3. Coevolution run&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once the dataset is loaded and the parameters selected, the coevolution can be started with the &lt;span style=&quot; font-style:italic;&quot;&gt;Run&lt;/span&gt; command (or &lt;span style=&quot; font-style:italic;&quot;&gt;RunScript &lt;/span&gt;if a script is loaded). The run will continue until the termination conditions (max generations, max fitness) are reached, or until the &lt;span style=&quot; font-style:italic;&quot;&gt;Stop&lt;/span&gt; command is issued.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Note: It is always possible to save the current best system during the evolution.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;4. End of the coevolution&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;When the evolution is finished, a popup window will appear asking if the user wants to save the best fuzzy system. At this point, the best system is also kept in memory for further analysis.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;- &lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Fuzzy system analysis and edition&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;In order to analyze it, a fuzzy system must be loaded in memory. The two ways to achieve this are the following:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Run an evolution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Load a previously saved fuzzy system&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once a fuzzy system is loaded, the following functionalities are available:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Edition of the fuzzy system&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Validation of the fuzzy system&lt;/li&gt;&lt;/ul&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Evaluation of the fuzzy system&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Prediction with the fuzzy system&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Edition &lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;The fuzzy system can be manually edited by selecting the &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#000000;&quot;&gt;Edit...&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt; command. A new window appears from which it is possible to make the following modifications:&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Edit the number and the names of the input/output sets&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Edit the input variables' membership functions&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Edit the rules of the system&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Validation&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;When this feature is selected, a new window appears showing how the system is able to perform on its database. If the database file cannot be found, a popup will ask the user to select one. The graph in the window shows the following curves:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The expected output in blue (output of the database)&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The measured output in red (output of the system)&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The predicted output in green (output of the system with threshold applied) &lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Evaluation&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This feature is identical as the validation, except that the user is always asked to select the database on which the fuzzy system must be applied.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Prediction&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This feature allows predicting the results for a database without outputs. The database the user specifies &lt;span style=&quot; color:#ff0000;&quot;&gt;must have no output columns&lt;/span&gt; as the program will propose to save the prediction. This will result in adding a row for the prediction of each output variable.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:5px; margin-bottom:0px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;-&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt; Additional features&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:0px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FUGE-LC provides also the following additional features: &lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Script execution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Command-line execution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Log files&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Script execution&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;It is possible to set the parameters and control the run the evolution with a script file. Once the dataset is loaded, instead of manually editing the parameter, a script file can be loaded. Then, the script file can be evaluated with the command &lt;span style=&quot; font-style:italic;&quot;&gt;ScriptRun&lt;/span&gt;.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The script files have the &lt;span style=&quot; font-style:italic;&quot;&gt;.fs&lt;/span&gt; extension and are coded in the &lt;span style=&quot; font-style:italic;&quot;&gt;Javascript&lt;/span&gt; language. They are composed of the following elements:&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The definition of all the parameters&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The definition of the &lt;span style=&quot; font-style:italic;&quot;&gt;doSetParams()&lt;/span&gt; function&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The definition of the &lt;span style=&quot; font-style:italic;&quot;&gt;doRun()&lt;/span&gt; function which controls the execution of multiple (or single) runs of coevolution&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;All these elements must be present and complete in the script in order to make it valid. A reference valid script file called &lt;span style=&quot; font-style:italic;&quot;&gt;ref.fs&lt;/span&gt; is present in the bin/script/ folder. Its syntax is quite simple and should be easily understood. Basically, after having defined all the parameters and implemented the &lt;span style=&quot; font-style:italic;&quot;&gt;doSetParams()&lt;/span&gt; function, the &lt;span style=&quot; font-style:italic;&quot;&gt;doRun()&lt;/span&gt; function defines how much runs of evolution will be performed and which parameters will be modified between the runs.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Command line execution&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;FUGE-LC can also be run directly from the command line, with or without GUI. The following options are available:&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;--help          Display the command line help&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;--verbose    The best system for each generation is printed in stdout&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;--predict      Make a prediction with the fuzzy system&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;--evaluate   Make an evaluation of the fuzzy system&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Note: &lt;span style=&quot; color:#ff0000;&quot;&gt;a running X server is required even if the GUI is deactivated.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Run an evolution with a script file&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:50px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;$ FUGE-LC -d &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;datasetFile&lt;/span&gt; -s &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;scriptFile&lt;/span&gt; -g &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;useGUI&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;datasetFile&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;must point to a valid dataset&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;scriptFile&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;must point to a valid script file&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;useGUI&lt;/span&gt; can take the following values : &lt;span style=&quot; font-style:italic;&quot;&gt;yes &lt;/span&gt;or &lt;span style=&quot; font-style:italic;&quot;&gt;no&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Evaluate a fuzzy system on a dataset&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:50px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;$ FUGE-LC -d &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;datasetFile&lt;/span&gt; -f &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;fuzzySystem&lt;/span&gt; --evaluate&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;datasetFile&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;must point to a valid dataset&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;fuzzySystem&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;must point to a valid fuzzy system file&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Make a prediction on a dataset without outputs&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:50px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;$ FUGE-LC -d &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;datasetFile&lt;/span&gt; -f &lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;fuzzySystem&lt;/span&gt; --predict&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;datasetFile&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;must point to a valid dataset&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:40px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-style:italic; color:#00aa00;&quot;&gt;fuzzySystem&lt;/span&gt;&lt;span style=&quot; font-style:italic;&quot;&gt; &lt;/span&gt;must point to a valid fuzzy system file&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:5px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Log files&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;Each coevolution run creates a log file located in bin/logs/. These files are named in a unique way which contains the date, some evolution parameters and the fitness of the best system found. &lt;/span&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;These files are never deleted by the application. &lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;They contain the following information:&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A summary of the best system found, including its description (rules &amp;amp; membership functions)&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The parameters of the coevolution&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The statistics (fitness) of each generation&lt;/li&gt;&lt;/ul&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Log files&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:5px; margin-bottom:12px; margin-left:30px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;During the evolution, two temporary files are created in the &lt;/span&gt;&lt;span style=&quot; font-style:italic; color:#000000;&quot;&gt;temp/&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt; directory. These files can be retrieved if the application crashes. The two files are the following:&lt;/span&gt;&lt;/p&gt;
+&lt;ul style=&quot;-qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;currentBest_PID.ffs  : the current best fuzzy system&lt;/li&gt;
+&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;runing_PID.csv.ffs    : the current log file&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="bottomMargin">
+        <number>7</number>
+       </property>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>OK</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="fuzzyResources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>HelpDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>484</x>
+     <y>403</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>268</x>
+     <y>217</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

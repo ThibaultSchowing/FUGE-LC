@@ -1,0 +1,1349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditParamsDialog</class>
+ <widget class="QDialog" name="EditParamsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>979</width>
+    <height>698</height>
+   </rect>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Edit parameters</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="fuzzyResources.qrc">
+    <normaloff>:/icons/icons/fuzzy.png</normaloff>:/icons/icons/fuzzy.png</iconset>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>965</width>
+        <height>655</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="4" column="5">
+        <widget class="QLineEdit" name="lineOutSets">
+         <property name="toolTip">
+          <string>Number of sets for the output variables</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4">
+        <widget class="QLabel" name="label_33">
+         <property name="toolTip">
+          <string>Number of sets for the output variables</string>
+         </property>
+         <property name="text">
+          <string>Number of output sets</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_41">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(85, 170, 0);</string>
+         </property>
+         <property name="text">
+          <string>Experiment parameters</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="13" colspan="2">
+        <widget class="QLabel" name="label_28">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(85, 170, 0);</string>
+         </property>
+         <property name="text">
+          <string>Classification Fitness Criterion</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="toolTip">
+          <string>Name of the current experiment</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Exp. name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" colspan="2">
+        <widget class="QLineEdit" name="lineExp">
+         <property name="toolTip">
+          <string>Name of the current experiment</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QLabel" name="label_40">
+         <property name="toolTip">
+          <string>Name of the current experiment</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Save path</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5">
+        <widget class="QLineEdit" name="linePath">
+         <property name="toolTip">
+          <string>Name of the current experiment</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_30">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(85, 170, 0);</string>
+         </property>
+         <property name="text">
+          <string>Fuzzy system parameters</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="16">
+        <widget class="QLineEdit" name="lineAccu">
+         <property name="toolTip">
+          <string>Accuracy weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="toolTip">
+          <string>Maximum number of rules for a fuzzy system</string>
+         </property>
+         <property name="text">
+          <string>Number of rules</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2" colspan="2">
+        <widget class="QLineEdit" name="lineRules">
+         <property name="toolTip">
+          <string>Maximum number of variables present in a rule</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="4">
+        <widget class="QLabel" name="label_4">
+         <property name="toolTip">
+          <string>Here is specified how much output variables are present in the database</string>
+         </property>
+         <property name="text">
+          <string>Number of output variables</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="5">
+        <widget class="QLineEdit" name="lineOutput">
+         <property name="toolTip">
+          <string>Here is specified how much output variables are present in the database</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_32">
+         <property name="toolTip">
+          <string>Number of sets for the input variables</string>
+         </property>
+         <property name="text">
+          <string>Number of input sets</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2" colspan="2">
+        <widget class="QLineEdit" name="lineInSets">
+         <property name="toolTip">
+          <string>Number of sets for the input variables</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_29">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(85, 170, 0);</string>
+         </property>
+         <property name="text">
+          <string>Coevolution parameters</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="toolTip">
+          <string>Number of elite individuals in pop 1</string>
+         </property>
+         <property name="text">
+          <string>Elite Size Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="16">
+        <widget class="QLineEdit" name="lineRmse">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="toolTip">
+          <string>Maximum number of variables present in a rule</string>
+         </property>
+         <property name="text">
+          <string>Max number of vars/rule</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="2" colspan="2">
+        <widget class="QLineEdit" name="lineVarsPerRule">
+         <property name="toolTip">
+          <string>Maximum number of variables present in a rule</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="16">
+        <widget class="QLineEdit" name="lineMse">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="16">
+        <widget class="QLineEdit" name="lineMinDistance">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0" colspan="3">
+        <widget class="QLabel" name="label_27">
+         <property name="font">
+          <font>
+           <underline>true</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Membership functions (Pop 1)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="4">
+        <widget class="QLabel" name="label_31">
+         <property name="font">
+          <font>
+           <underline>true</underline>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Rules (Pop 2)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="toolTip">
+          <string>Maximum number of evolution generations to perform for Pop 1</string>
+         </property>
+         <property name="text">
+          <string>Nb of generations Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="2">
+        <widget class="QLineEdit" name="lineGenPop1">
+         <property name="toolTip">
+          <string>Maximum number of evolution generations to perform for Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="4">
+        <widget class="QLabel" name="label_6">
+         <property name="toolTip">
+          <string>Maximum number of evolution generations to perform for Pop 2</string>
+         </property>
+         <property name="text">
+          <string>Nb of generations Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="5">
+        <widget class="QLineEdit" name="lineGenPop2">
+         <property name="toolTip">
+          <string>Maximum number of evolution generations to perform for Pop 2</string>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="toolTip">
+          <string>Fitness threshold to reach before stopping the experiment (Pop 1)</string>
+         </property>
+         <property name="text">
+          <string>Max fitness threshold Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="2">
+        <widget class="QLineEdit" name="lineFitPop1">
+         <property name="toolTip">
+          <string>Fitness threshold to reach before stopping the experiment (Pop 1)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="4">
+        <widget class="QLabel" name="label_8">
+         <property name="toolTip">
+          <string>Fitness threshold to reach before stopping the experiment (Pop 2)</string>
+         </property>
+         <property name="text">
+          <string>Max fitness threshold Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="2">
+        <widget class="QLineEdit" name="linePop1">
+         <property name="toolTip">
+          <string>Size of population 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="5">
+        <widget class="QLineEdit" name="lineFitPop2">
+         <property name="toolTip">
+          <string>Fitness threshold to reach before stopping the experiment (Pop 2)</string>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="0">
+        <widget class="QLabel" name="label_22">
+         <property name="toolTip">
+          <string>Size of population 1</string>
+         </property>
+         <property name="text">
+          <string>Population 1 size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="4">
+        <widget class="QLabel" name="label_23">
+         <property name="toolTip">
+          <string>Size of population 2</string>
+         </property>
+         <property name="text">
+          <string>Population 2 size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="5">
+        <widget class="QLineEdit" name="linePop2">
+         <property name="toolTip">
+          <string>Size of population 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="2">
+        <widget class="QLineEdit" name="lineElitePop1">
+         <property name="toolTip">
+          <string>Number of elite individuals in pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="4">
+        <widget class="QLabel" name="label_10">
+         <property name="toolTip">
+          <string>Number of elite individuals in pop 2</string>
+         </property>
+         <property name="text">
+          <string>Elite Size Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="5">
+        <widget class="QLineEdit" name="lineElitePop2">
+         <property name="toolTip">
+          <string>Number of elite individuals in pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="toolTip">
+          <string>Crossover probability for individuals of Pop 1</string>
+         </property>
+         <property name="text">
+          <string>Crossover prob. Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="2">
+        <widget class="QLineEdit" name="lineCxPop1">
+         <property name="toolTip">
+          <string>Crossover probability for individuals of Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="4">
+        <widget class="QLabel" name="label_12">
+         <property name="toolTip">
+          <string>Crossover probability for individuals of Pop 2</string>
+         </property>
+         <property name="text">
+          <string>Crossover prob. Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="5">
+        <widget class="QLineEdit" name="lineCxPop2">
+         <property name="toolTip">
+          <string>Crossover probability for individuals of Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="toolTip">
+          <string>Probability that an individual of Pop 1 is subject to mutation</string>
+         </property>
+         <property name="text">
+          <string>Indiv. mutation prob. Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="2">
+        <widget class="QLineEdit" name="lineMutIndPop1">
+         <property name="toolTip">
+          <string>Probability that an individual of Pop 1 is subject to mutation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="4">
+        <widget class="QLabel" name="label_14">
+         <property name="toolTip">
+          <string>Probability that an individual of Pop 2 is subject to mutation</string>
+         </property>
+         <property name="text">
+          <string>Indiv. mutation prob. Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="5">
+        <widget class="QLineEdit" name="lineMutIndPop2">
+         <property name="toolTip">
+          <string>Probability that an individual of Pop 2 is subject to mutation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="toolTip">
+          <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
+         </property>
+         <property name="text">
+          <string>Bit mutation prob. Pop 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="2">
+        <widget class="QLineEdit" name="lineMutBitPop1">
+         <property name="toolTip">
+          <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="4">
+        <widget class="QLabel" name="label_16">
+         <property name="toolTip">
+          <string>Probability that a bit is mutated in the genome of an individual of Pop 2 chosen for mutation</string>
+         </property>
+         <property name="text">
+          <string>Bit mutation prob. Pop 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="5">
+        <widget class="QLineEdit" name="lineMutBitPop2">
+         <property name="toolTip">
+          <string>Probability that a bit is mutated in the genome of an individual of Pop 2 chosen for mutation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_38">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>Membership functions genome :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_34">
+         <property name="toolTip">
+          <string>Number of bits used to code the position parameters for the input sets</string>
+         </property>
+         <property name="text">
+          <string>Input sets pos. code size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="2">
+        <widget class="QLineEdit" name="lineInSetsPos">
+         <property name="toolTip">
+          <string>Number of bits used to code the position parameters for the input sets</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="4">
+        <widget class="QLabel" name="label_35">
+         <property name="toolTip">
+          <string>Number of bits used to code the position parameters for the output sets</string>
+         </property>
+         <property name="text">
+          <string>Output sets pos. code size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="5">
+        <widget class="QLineEdit" name="lineOutSetsPos">
+         <property name="toolTip">
+          <string>Number of bits used to code the position parameters for the output sets</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_39">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>25</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>Rules genome :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_21">
+         <property name="toolTip">
+          <string>Number of bits used to code an input variable in the genome</string>
+         </property>
+         <property name="text">
+          <string>Input vars bit code size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="2">
+        <widget class="QLineEdit" name="lineInVarsCode">
+         <property name="toolTip">
+          <string>Number of bits used to code an input variable in the genome</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="4">
+        <widget class="QLabel" name="label_24">
+         <property name="toolTip">
+          <string>Number of bits used to code an output variable in the genome</string>
+         </property>
+         <property name="text">
+          <string>Output vars bit code size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="5">
+        <widget class="QLineEdit" name="lineOutVarsCode">
+         <property name="toolTip">
+          <string>Number of bits used to code an output variable in the genome</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="4">
+        <widget class="QLabel" name="label_26">
+         <property name="toolTip">
+          <string>Number of bits used to code an output set in the genome</string>
+         </property>
+         <property name="text">
+          <string>Output sets bit code size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="2">
+        <widget class="QLineEdit" name="lineInSetsCode">
+         <property name="toolTip">
+          <string>Number of bits used to code an input set in the genome</string>
+         </property>
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="5">
+        <widget class="QLineEdit" name="lineOutSetsCode">
+         <property name="toolTip">
+          <string>Number of bits used to code an output set in the genome</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_25">
+         <property name="toolTip">
+          <string>Number of bits used to code an input set in the genome</string>
+         </property>
+         <property name="text">
+          <string>Input sets bit code size</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="12" colspan="5">
+        <widget class="QLabel" name="lblFormulaMXE">
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Fitness formula</string>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(0, 0, 255);</string>
+         </property>
+         <property name="text">
+          <string>MXE = Sum(|P - A|^POWER)/n</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="12" colspan="5">
+        <widget class="QLabel" name="labelFitFct">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>Fitness formula</string>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(0, 0, 255);</string>
+         </property>
+         <property name="text">
+          <string>Fitness = x*Sensi + y*Speci + u*PPV + v*(1-RMSE)</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="15">
+        <widget class="QLabel" name="label_37">
+         <property name="toolTip">
+          <string>Accuracy weight in fitness evaluations evaluation</string>
+         </property>
+         <property name="text">
+          <string>Accuracy weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="15">
+        <widget class="QLabel" name="label_20">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>RMSE weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="15">
+        <widget class="QLabel" name="lblMSE">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>MSE weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="15">
+        <widget class="QLabel" name="lblMinDistance">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>MDM weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="14">
+        <widget class="QLineEdit" name="lineSpeci">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Specificity weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="13">
+        <widget class="QLabel" name="label_18">
+         <property name="toolTip">
+          <string>Specificity weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>Specificity weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="16">
+        <widget class="QLineEdit" name="linePpv">
+         <property name="toolTip">
+          <string>PPV weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="15">
+        <widget class="QLabel" name="label_19">
+         <property name="toolTip">
+          <string>PPV weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>PPV weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="14">
+        <widget class="QLineEdit" name="lineSensi">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Sensitivity weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="13">
+        <widget class="QLabel" name="label_17">
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Sensitivity weight in fitness evaluation</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="whatsThis">
+          <string/>
+         </property>
+         <property name="text">
+          <string>Sensitivity weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="14">
+        <widget class="QLineEdit" name="lineRrse">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="13">
+        <widget class="QLabel" name="lblRrse">
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="toolTip">
+          <string>Sensitivity weight in fitness evaluation</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="whatsThis">
+          <string/>
+         </property>
+         <property name="text">
+          <string>RRSE weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="14">
+        <widget class="QLineEdit" name="lineRae">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="13">
+        <widget class="QLabel" name="lblRae">
+         <property name="toolTip">
+          <string>Specificity weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>RAE weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="14">
+        <widget class="QLineEdit" name="lineCorr">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="13">
+        <widget class="QLabel" name="lblCorr">
+         <property name="toolTip">
+          <string>Accuracy weight in fitness evaluations evaluation</string>
+         </property>
+         <property name="text">
+          <string>Correlation weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="14">
+        <widget class="QLineEdit" name="lineDistance">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="13">
+        <widget class="QLabel" name="lblDistance">
+         <property name="toolTip">
+          <string>Specificity weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>ADM weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="14">
+        <widget class="QLineEdit" name="lineDontCare">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="11">
+        <widget class="Line" name="line">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="13">
+        <widget class="QLabel" name="lblDontCare">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>Size system weight</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="13">
+        <widget class="QLabel" name="label_36">
+         <property name="text">
+          <string>Thresholds for outputs</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="13">
+        <widget class="QLabel" name="lblRegression">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string>color: rgb(85, 170, 0);</string>
+         </property>
+         <property name="text">
+          <string>Regression Fitness Criterion</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QPushButton" name="btPath">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>25</horstretch>
+           <verstretch>20</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="15">
+        <widget class="QLabel" name="lblOverLearn">
+         <property name="toolTip">
+          <string>RMSE weight in fitness evaluation</string>
+         </property>
+         <property name="text">
+          <string>Over Learn</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="16">
+        <widget class="QLineEdit" name="lineOverLearn">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="16">
+        <widget class="QLineEdit" name="lineThresh">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>20</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Accuracy weight in fitness evaluation</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="15">
+        <widget class="QComboBox" name="cbThresh"/>
+       </item>
+       <item row="13" column="14">
+        <widget class="QCheckBox" name="chbThreshActive">
+         <property name="text">
+          <string>Activated</string>
+         </property>
+        </widget>
+       </item>
+       <item row="21" column="0">
+        <widget class="QLabel" name="label_Cooperators">
+         <property name="text">
+          <string>Cooperators</string>
+         </property>
+        </widget>
+       </item>
+       <item row="21" column="2">
+        <widget class="QSpinBox" name="spinBoxCooperators">
+         <property name="value">
+          <number>2</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>lineExp</tabstop>
+  <tabstop>linePath</tabstop>
+  <tabstop>btPath</tabstop>
+  <tabstop>lineRules</tabstop>
+  <tabstop>lineOutput</tabstop>
+  <tabstop>lineInSets</tabstop>
+  <tabstop>lineOutSets</tabstop>
+  <tabstop>lineVarsPerRule</tabstop>
+  <tabstop>lineInSetsPos</tabstop>
+  <tabstop>lineOutSetsPos</tabstop>
+  <tabstop>lineInVarsCode</tabstop>
+  <tabstop>lineOutVarsCode</tabstop>
+  <tabstop>lineInSetsCode</tabstop>
+  <tabstop>lineOutSetsCode</tabstop>
+  <tabstop>lineSensi</tabstop>
+  <tabstop>linePpv</tabstop>
+  <tabstop>lineSpeci</tabstop>
+  <tabstop>lineAccu</tabstop>
+  <tabstop>lineRrse</tabstop>
+  <tabstop>lineRmse</tabstop>
+  <tabstop>lineRae</tabstop>
+  <tabstop>lineMse</tabstop>
+  <tabstop>lineCorr</tabstop>
+  <tabstop>lineDistance</tabstop>
+  <tabstop>lineMinDistance</tabstop>
+  <tabstop>lineDontCare</tabstop>
+  <tabstop>lineOverLearn</tabstop>
+  <tabstop>chbThreshActive</tabstop>
+  <tabstop>cbThresh</tabstop>
+  <tabstop>lineThresh</tabstop>
+  <tabstop>lineGenPop1</tabstop>
+  <tabstop>lineGenPop2</tabstop>
+  <tabstop>lineFitPop1</tabstop>
+  <tabstop>lineFitPop2</tabstop>
+  <tabstop>linePop1</tabstop>
+  <tabstop>linePop2</tabstop>
+  <tabstop>lineElitePop1</tabstop>
+  <tabstop>lineElitePop2</tabstop>
+  <tabstop>lineCxPop1</tabstop>
+  <tabstop>lineCxPop2</tabstop>
+  <tabstop>lineMutIndPop1</tabstop>
+  <tabstop>lineMutIndPop2</tabstop>
+  <tabstop>lineMutBitPop1</tabstop>
+  <tabstop>lineMutBitPop2</tabstop>
+  <tabstop>spinBoxCooperators</tabstop>
+  <tabstop>buttonBox</tabstop>
+  <tabstop>scrollArea</tabstop>
+ </tabstops>
+ <resources>
+  <include location="fuzzyResources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>EditParamsDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>EditParamsDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

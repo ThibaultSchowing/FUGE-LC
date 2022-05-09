@@ -1,0 +1,12 @@
+moc_*
+*.o
+*.a
+*~
+*.user
+Doxyfile
+Makefile
+*gdbmacros/
+doxygen/*
+build/*
+qrc*
+LICENSE
