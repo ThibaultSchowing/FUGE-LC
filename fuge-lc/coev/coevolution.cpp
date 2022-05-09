@@ -81,8 +81,8 @@ bool CoEvolution::evaluatePopulation(Population* population, quint32 generation)
 
     vector<PopEntity *>::iterator itLeftPop, itRepresentative;
 
-    PopEntity *bestCurrGenRepresentative;
-    PopEntity *bestCurrGenLeftPopEntity;
+    PopEntity *bestCurrGenRepresentative = 0;
+    PopEntity *bestCurrGenLeftPopEntity = 0;
     qreal currentIndBestFit = 0.0;
     qreal overallBestFit = 0.0;
     for(itLeftPop=leftPopEntities.begin(); itLeftPop!=leftPopEntities.end(); itLeftPop++)
@@ -109,7 +109,7 @@ bool CoEvolution::evaluatePopulation(Population* population, quint32 generation)
                 break;
         }
         if(currentIndBestFit)
-        getStatisticEngine()->addFitness(fitness);
+            getStatisticEngine()->addFitness(fitness);
         if(ComputeThread::stop)
             break;
     }
@@ -117,10 +117,13 @@ bool CoEvolution::evaluatePopulation(Population* population, quint32 generation)
     // FIXME: HOT fix because the best fuzzy system is the last generation best fuzzy system
     // which is wrong, but until we continue to use ELITISM it will work.
     // This should not be needed, instead the whole fuzzy system object should be saved on computeThread !
-    if(left->getName() == "MEMBERSHIPS")
-        calcFitness(bestCurrGenLeftPopEntity, bestCurrGenRepresentative);
-    else
-        calcFitness(bestCurrGenRepresentative, bestCurrGenLeftPopEntity);
+    if( bestCurrGenLeftPopEntity )
+    {
+        if(left->getName() == "MEMBERSHIPS")
+            calcFitness(bestCurrGenLeftPopEntity, bestCurrGenRepresentative);
+        else
+            calcFitness(bestCurrGenRepresentative, bestCurrGenLeftPopEntity);
+    }
 
     // Delete representatives
     for(int i = 0; i < RightRepresentative.size(); i++)
@@ -141,12 +144,15 @@ bool CoEvolution::evaluatePopulation(Population* population, quint32 generation)
     statsEngine.reset();
 
     // Stop in case max fitness reached.
-    if (left->getName() == "MEMBERSHIPS"){
-        if(ComputeThread::bestFSystem->getFitness() >= ComputeThread::sysParams->getMaxFitPop1())
-            emit fitnessThreshReached();
-    }else{
-        if(ComputeThread::bestFSystem->getFitness() >= ComputeThread::sysParams->getMaxFitPop2())
-            emit fitnessThreshReached();
+    if( ComputeThread::bestFSystem != NULL && ComputeThread::sysParams != NULL )
+    {
+        if (left->getName() == "MEMBERSHIPS"){
+            if(ComputeThread::bestFSystem->getFitness() >= ComputeThread::sysParams->getMaxFitPop1())
+                emit fitnessThreshReached();
+        }else{
+            if(ComputeThread::bestFSystem->getFitness() >= ComputeThread::sysParams->getMaxFitPop2())
+                emit fitnessThreshReached();
+        }
     }
 
     return !ComputeThread::stop;
@@ -163,11 +169,18 @@ bool CoEvolution::evaluatePopulation(Population* population, quint32 generation)
   */
 void CoEvolution::calcFitness(PopEntity *inX, PopEntity *inY)
 {
-    QBitArray *genotypeDataX = inX->getGenotype()->getData();
-    QBitArray *genotypeDataY = inY->getGenotype()->getData();
+    Q_ASSERT( inX != NULL && inY != NULL );
+    Genotype* genX = inX->getGenotype();
+    Genotype* genY = inY->getGenotype();
+    if( genX == NULL || genY == NULL )
+        return;
+    QBitArray *genotypeDataX = genX->getData();
+    QBitArray *genotypeDataY = genY->getData();
     QVector<quint16> ruleBitString(ComputeThread::ruleGenSize);
 
-    FuzzyMembershipsGenome* membGen = new FuzzyMembershipsGenome(fSystem->getNbInVars(),fSystem->getNbOutVars(), fSystem->getNbInSets(),fSystem->getNbOutSets(), fSystem->getInSetsPosCodeSize(), fSystem->getOutSetsPosCodeSize());
+    FuzzyMembershipsGenome* membGen = new FuzzyMembershipsGenome(fSystem->getNbInVars(),fSystem->getNbOutVars(),
+                                                fSystem->getNbInSets(),fSystem->getNbOutSets(),
+                                                fSystem->getInSetsPosCodeSize(), fSystem->getOutSetsPosCodeSize());
     QVector<FuzzyRuleGenome*> ruleGenTab(ComputeThread::nbRules);
 
     for (int i = 0; i < ComputeThread::nbRules; i++) {

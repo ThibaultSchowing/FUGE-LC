@@ -11,7 +11,7 @@ class PopEntity
 {
 public:
     PopEntity();
-    ~PopEntity();
+    virtual ~PopEntity();
 public:
     PopEntity(quint32 lenght);
     PopEntity(Genotype *genotype);

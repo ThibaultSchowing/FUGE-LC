@@ -98,12 +98,13 @@ FuzzySystem::~FuzzySystem()
     }
     delete[] rulesArray;
 
-    if (!outMinMax == NULL)
+    if (outMinMax != NULL) {
         //Delete min and max of each out
         for (int i = 0; i < nbOutVars ; i++) {
             delete outMinMax[i];
         }
         delete[] outMinMax;
+    }
 
     if (dataLoaded && varUniverseArray != NULL) {
         // Delete the universe bounds array
