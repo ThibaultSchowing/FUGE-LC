@@ -1,4 +1,5 @@
 # FUGE-LC
+
 This application implements the FuzzyCoCo algorithm. It constructs systems that predict the outcome of a human decision-making process while providing an understandable explanation of a possible reasoning leading to it. The constructed fuzzy systems are composed of rules and linguistic variables. For more information about the method, please refer to Prof. Carlos Andrés Peña Reyes' thesis entitled "Coevolutionary Fuzzy Modeling".
 
 ## Authors
@@ -8,31 +9,25 @@ This application implements the FuzzyCoCo algorithm. It constructs systems that 
 - Code upgrade by [Rochus Keller](http://rochus-keller.ch/) <me@rochus.keller.ch> (2022)
 
 
-# Binaries
+## Releases
 
-Win32 and MacOS applications are in the *binaries/* folder. 
+Check the new [v1.1.3 Release](https://github.com/ThibaultSchowing/FUGE-LC/releases)
 
-# Notes
+## Notes
 
-The source code was recently updated from an old deprecated version to a more recent and functionnal one. It is intended to be modified and improved in the next years.
+The source code was recently updated from an old deprecated version to a recent and functionnal one. It is intended to be modified and improved in the next years.
 
-# Known bugs
+## Known bugs
 
 - Random crash when running under Qt 5, which doesn't occur under Qt 4
 - Experiment files not correctly saved under MacOS
 
 
-# Last major updates
+## Last major updates
 
 - Project restructuration
 - QtScript module replaced by the Duktape JS engine
 - Modification of integrated Qwt source code so that it also compiles with Qt 5 (known bugs)
-
-
-
-
-
-
 
 
 
@@ -44,80 +39,21 @@ This application implements the FuzzyCoCo algorithm. It constructs systems that 
 
 # 2 INSTALLATION
 
-**NOTE: THE ARCHIVE IS NOT AVAILABLE AND THE SOURCES HAS NOT BEEN SUCCESSFULLY COMPILED**. As for now, this virtual machine is the only way of executing FUGE. 
+## 2.1
 
-The application can be installed via two different ways:
-
-- From binaries
-- From source compilation
-
-These two approaches are described below.
-
-2.1 LINUX BINARIES
-
-This is the simplest way of installing FUGE-LC. The steps are:
-- Extract the .bz2 archive (i.e. fuge1.1-x86_64.tar.gz)
-- Change directory to the newly created directory (i.e. fuge1.1-x86_64)
-- Run the install script : ./install
-- The application is located in the bin/ directory
+Executables are available in the [v1.1.3 Release](https://github.com/ThibaultSchowing/FUGE-LC/releases).
 
 ## 2.2 SOURCE CODE COMPILATION
-
-**Last updated by [Rochus Keller](http://rochus-keller.ch/). Procedure might have changed!**
-
-
 ### 2.2.1 Requirements
 
-It is also possible to compile the whole application from the sources. The required steps are explained below.
+- A C++98 compatible compiler
+- Qt 4.8 (core, gui and xml modules)
 
-In order to successfully compile FUGE-LC, the following tools are needed:
+### 2.2.2 FUGE-LC compilation
 
-- A recent C++ compiler
-- Qt SDK version 4.5.x **-> updated !**
-- qwt 5.2.x -> **updated !**
+FUGE-LC is a Qt project so the commands are:
 
-
-The following libraries are also required if they are not already present on the system:
-
-- libSM-devel
-- libgtk2-devel
-- gob2
-- freetype-devel
-- libxml2-devel
-
-On RedHat distribution, the following librairy must be manually compiled and installed:
-
-- libfontconfig-2.4.2
-
-This library can be found here: http://fontconfig.org/release/fontconfig-2.4.2.tar.gz
-
-All these libraries must be correctly installed and present in the path, or else, they need to be explicitly specified in the .pro file of qwt and FUGE-LC.
-
-
-### \[Deprecated\] 2.2.2 Beagle compilation
-On UNIX type systems, beagle can be compiled by issuing the following commands:
-
-- ./configure
-- make
-- sudo make install
-
-### 2.2.3 qwt compilation
-
-qwt is a Qt project so it can be compiled with the following instructions:
-
-- qmake
-- make
-- sudo make install
-
-
-### 2.2.4 FUGE-LC compilation
-
-FUGE-LC is also a Qt project so the commands are the same as for qwt:
-
-- qmake
-- make
-- sudo make install
-
+- \<path to Qt bin\>/qmake FUGE-LC.pro; make
 
 # 3. FUNCTIONALITIES
 
