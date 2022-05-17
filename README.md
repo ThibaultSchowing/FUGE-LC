@@ -6,6 +6,7 @@ This application implements the FuzzyCoCo algorithm. It constructs systems that 
 
 - FuzzyCoCo algorithm based on *Fuzzy CoCo: a cooperative-coevolutionary approach to fuzzy modeling* from [Carlos Andrés Peña-Reyes](https://orcid.org/0000-0002-2113-6498)
 - FUGE-LC by Jean-Philippe Meylan (2009-2010)
+- Genetic algorithm update by Yvan Da Silva (2012)
 - Code upgrade by [Rochus Keller](http://rochus-keller.ch/) <me@rochus.keller.ch> (2022)
 
 
