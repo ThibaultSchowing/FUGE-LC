@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <qrect.h>
+#include <QList>
 #include "qwt_math.h"
 #include "qwt_clipper.h"
 
