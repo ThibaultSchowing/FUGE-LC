@@ -53,6 +53,12 @@ private:
     // Verbose mode flag
     bool verbose;
 
+    // Learning method parameters
+    bool coevolutionary;
+    bool learning;
+    int learningMethod;
+    int initVarsMethod;
+
     //MODIF - Bujard - 18.03.2010
     // if regression parameters are activate
     bool regression;
@@ -116,6 +122,10 @@ private:
     float mutFlipIndPop2;
     float mutFlipBitPop2;
 
+    double learningFactor;
+    float learningEpochs;
+
+
 signals:
     void startRun();
     void scriptEnd();
@@ -141,7 +151,7 @@ public:
     inline void setNbVarPerRule(int value) {nbVarPerRule = value;}
     inline void setNbInVars(int value) {nbInVars = value;}
     inline void setNbOutVars(int value) {nbOutVars = value;
-                                        threshold.resize(nbOutVars);}
+                                         threshold.resize(nbOutVars);}
     inline void setNbInSets(int value) {nbInSets = value;}
     inline void setNbOutSets(int value) {nbOutSets = value;}
     inline void setInVarsCodeSize(int value) {inVarsCodeSize = value;}
@@ -182,6 +192,12 @@ public:
     inline void setMutFlipIndPop2(float value) {mutFlipIndPop2 = value;}
     inline void setMutFlipBitPop2(float value) {mutFlipBitPop2 = value;}
     inline void setNbCooperators(int value) {nbCooperators = value;}
+    inline void setCoevolutionary(bool value) {coevolutionary = value;}
+    inline void setLearningMethod(int value) {learningMethod = value;}
+    inline void setInitVarsMethod(int value) {initVarsMethod = value;}
+    inline void setLearning(bool value) {learning = value;}
+    inline void setLearningFactor(double value) {learningFactor = value;}
+    inline void setLearningEpochs(int value) {learningEpochs = value;}
 
     inline QString getExperimentName() {return experimentName;}
     inline QString getDatasetName() {return datasetName;}
@@ -215,7 +231,7 @@ public:
     inline float getRrseW     () {return rrseW;    }
     inline float getRaeW      () {return raeW;     }
     // FIN - MODIF - Bujard - 18.03.2010
-        /* MODIF - Bujard - 2.12.2010 */
+    /* MODIF - Bujard - 2.12.2010 */
     inline float getMseW               () { return mseW; }
     inline float getDistanceThresholdW () { return distanceThresholdW; }
     inline float getDistanceMinThresholdW () { return distanceMinThresholdW; }
@@ -239,6 +255,12 @@ public:
     inline float getMutFlipIndPop2() {return mutFlipIndPop2;}
     inline float getMutFlipBitPop2() {return mutFlipBitPop2;}
     inline int getNbCooperators() {return nbCooperators;}
+    inline bool isCoevolutionary() {return coevolutionary;}
+    inline int getLearningMethod() {return learningMethod;}
+    inline int getInitVarsMethod() {return initVarsMethod;}
+    inline bool isLearning() {return learning;}
+    inline double getLearningFactor() {return learningFactor;}
+    inline int getLearningEpochs() {return learningEpochs;}
 };
 
 #endif // SYSTEMPARAMETERS_H

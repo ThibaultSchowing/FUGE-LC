@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
-  * @date   07.2009
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
+  * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -28,8 +30,24 @@
 #ifndef EDITPARAMSDIALOG_H
 #define EDITPARAMSDIALOG_H
 
+#include <iostream>
+#include <cmath>
+
 #include <QDialog>
 #include <QVBoxLayout>
+#include <QHelpEvent>
+#include <QToolTip>
+#include <QLineEdit>
+#include <QFile>
+#include <QFileDialog>
+#include <QDebug>
+#include <QTextStream>
+
+
+#include "systemparameters.h"
+#include "errordialog.h"
+
+#define DEFAULTCONFIGNAME "defaultUserConfig.conf"
 
 namespace Ui {
     class EditParamsDialog;
@@ -55,6 +73,10 @@ private:
     bool defaultValues;
     QVBoxLayout *vbox;
 
+    //TODO: Implement a real config manager (Should not be in the UI)
+    void saveConfig(QString filename);
+    void loadConfig(QString filename);
+    void setEnabledCoevParams(bool value);
 private slots:
     void accept();
     void displayFitFct();
@@ -63,7 +85,13 @@ private slots:
     void onBtPathPressed();
     void onLinePathEdited(QString path);
     void onChbActivateThresh();
-    void on_buttonBox_accepted();
+    void on_buttonBoxClose_accepted();
+    void on_pushButton_SaveAsUserDefault_clicked();
+    void on_pushButton_SaveAs_clicked();
+    void on_pushButton_LoadFile_clicked();
+    void on_pushButton_LoadUserDefault_clicked();
+    void on_comboBox_LearningMethod_activated(int index);
+    void on_comboBox_MembershipInitialization_activated(int index);
 };
 
 #endif // EDITPARAMSDIALOG_H

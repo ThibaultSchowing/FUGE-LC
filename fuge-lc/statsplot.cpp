@@ -44,13 +44,13 @@ StatsPlot::StatsPlot(QWidget *parent) :
     if (!tempDir.exists(sysParams.getSavePath()+"temp")) {
         tempDir.mkdir(sysParams.getSavePath()+"temp");
     }
-    logFileName = QString(sysParams.getSavePath()+"temp/running_") +
-            QString::number(QCoreApplication::applicationPid()) + QString(".csv");
+    logFileName = QString(sysParams.getSavePath()+"temp/running_") + QString::number(getpid()) + QString(".csv");
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "Generations");
     myPlot->setAxisTitle(QwtPlot::yLeft, "Fitness");
-    xVals = new QVector<double>();
+    xValsPop1 = new QVector<double>();
+    xValsPop2 = new QVector<double>();
     yValsPop1 = new QVector<double>();
     yValsPop2 = new QVector<double>();
     yValsAvgPop1 = new QVector<double>();
@@ -71,9 +71,17 @@ StatsPlot::StatsPlot(QWidget *parent) :
 StatsPlot::~StatsPlot()
 {
     delete m_ui;
-    delete xVals;
+    delete fitAvgPop1Curve;
+    delete fitAvgPop2Curve;
+    delete fitMaxPop1Curve;
+    delete fitMaxPop2Curve;
+
+    delete xValsPop1;
+    delete xValsPop2;
     delete yValsPop1;
     delete yValsPop2;
+    delete yValsAvgPop1;
+    delete yValsAvgPop2;
 }
 
 void StatsPlot::changeEvent(QEvent *e)
@@ -106,10 +114,14 @@ void StatsPlot::receiveData(QString name)
 {
     CoevStats& stats = CoevStats::getInstance();
     SystemParameters& sysParams = SystemParameters::getInstance();
-    if(!xVals->contains(stats.getGenNumber()))
-        xVals->append(stats.getGenNumber());
+    if(!xValsPop1->contains(stats.getGenNumberPop1()))
+        xValsPop1->append(stats.getGenNumberPop1());
+
+    if(!xValsPop2->contains(stats.getGenNumberPop2()))
+        xValsPop2->append(stats.getGenNumberPop2());
+
     // These things need to be done only once
-    if (xVals->last() < 2) {
+    if (xValsPop1->last() < 2) {
         m_ui->label_pops->setText("<font color = red>"+ QString::number(stats.getSizePop1()) +"<font>"+"\\"+"<font color = blue>"+ QString::number(stats.getSizePop2()) +"<font>");
         m_ui->label_exp->setText(sysParams.getExperimentName());
         m_ui->label_rules->setText(QString::number(sysParams.getNbRules()));
@@ -152,7 +164,7 @@ void StatsPlot::receiveData(QString name)
 
     // Store the best fitnesses
 
-    bestSystemDesc = *stats.getBestSysDesc();
+    bestSystemDesc = stats.getBestSysDesc();
 
     if(name == "RULES"){
         if (stats.getFitMaxPop2() >= bestFitPop2) {
@@ -168,7 +180,7 @@ void StatsPlot::receiveData(QString name)
         m_ui->label_avg2->setText(QString::number(yValsAvgPop2->last()));
         m_ui->label_min2->setText(QString::number(stats.getFitMinPop2()));
         m_ui->label_std2->setText(QString::number(stats.getFitStdPop2()));
-        m_ui->label_gen2->setText(QString::number(xVals->last()) + " / " + QString::number(sysParams.getMaxGenPop2()));
+        m_ui->label_gen2->setText(QString::number(stats.getGenNumberPop2()) + " / " + QString::number(sysParams.getMaxGenPop2()));
     }
     else{
         if (stats.getFitMaxPop1() >= bestFitPop1) {
@@ -183,20 +195,20 @@ void StatsPlot::receiveData(QString name)
         m_ui->label_max1->setText(QString::number(yValsPop1->last()));
         m_ui->label_min1->setText(QString::number(stats.getFitMinPop1()));
         m_ui->label_avg1->setText(QString::number(yValsAvgPop1->last()));
-        m_ui->label_gen->setText(QString::number(xVals->last()) + " / " + QString::number(sysParams.getMaxGenPop1()));
+        m_ui->label_gen->setText(QString::number(stats.getGenNumberPop1()) + " / " + QString::number(sysParams.getMaxGenPop1()));
         m_ui->label_std1->setText(QString::number(stats.getFitStdPop1()));
     }
 
 
     if(name == "RULES"){
-        fitMaxPop2Curve->setData(*xVals, *yValsPop2);
+        fitMaxPop2Curve->setData(*xValsPop2, *yValsPop2);
         fitMaxPop2Curve->setPen(QPen (Qt::blue,2));
-        fitAvgPop2Curve->setData(*xVals, *yValsAvgPop2);
+        fitAvgPop2Curve->setData(*xValsPop2, *yValsAvgPop2);
         fitAvgPop2Curve->setPen(QPen (Qt::blue,1,Qt::DashLine));
     } else {
-        fitMaxPop1Curve->setData(*xVals, *yValsPop1);
+        fitMaxPop1Curve->setData(*xValsPop1, *yValsPop1);
         fitMaxPop1Curve->setPen(QPen (Qt::red,2));
-        fitAvgPop1Curve->setData(*xVals, *yValsAvgPop1);
+        fitAvgPop1Curve->setData(*xValsPop1, *yValsAvgPop1);
         fitAvgPop1Curve->setPen(QPen (Qt::red,1,Qt::DashLine));
     }
 
@@ -230,11 +242,17 @@ void StatsPlot::receiveData(QString name)
   */
 void StatsPlot::onClearStats()
 {
-    xVals->clear();
+    CoevStats& stats = CoevStats::getInstance();
+    stats.setGenNumberPop1(0);
+    stats.setGenNumberPop2(0);
+
+    xValsPop1->clear();
+    xValsPop2->clear();
     yValsPop1->clear();
     yValsPop2->clear();
     yValsAvgPop1->clear();
     yValsAvgPop2->clear();
+
     if (isShowed)
         myPlot->replot();
 }

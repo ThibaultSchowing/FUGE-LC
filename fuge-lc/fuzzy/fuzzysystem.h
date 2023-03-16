@@ -31,6 +31,7 @@
 #define FUZZYSYSTEM_H
 #include <cmath>
 #include <algorithm>
+#include <unistd.h>
 
 #include <QList>
 #include <QDomDocument>
@@ -56,6 +57,12 @@
 #include "fuzzyrulegenome.h"
 #include "fuzzymembershipsgenome.h"
 
+#include "fuzzyLearning/learningengine.h"
+#include "fuzzyLearning/Method/winnertakesall.h"
+#include "fuzzyLearning/Method/credits.h"
+
+#include "Utility/randomgenerator.h"
+
 typedef enum {truePos, trueNeg, falsePos, falseNeg} evalResult_t;
 
 class FuzzySystem : public QObject
@@ -66,11 +73,11 @@ public:
     FuzzySystem();
     virtual ~FuzzySystem();
     void setParameters(int nbRules, int nbVarPerRule, int nbOutVars, int nbInSets, int nbOutSets, int inVarsCodeSize,
-                         int outVarsCodeSize, int inSetsCodeSize, int outSetsCodeSize, int inSetsPosCodeSize, int outSetsPosCodeSize);
+                       int outVarsCodeSize, int inSetsCodeSize, int outSetsCodeSize, int inSetsPosCodeSize, int outSetsPosCodeSize);
 
     void loadData(QList<QStringList>* systemData);
     void loadRulesGenome(FuzzyRuleGenome** ruleGenArray, int* defaultRuleSet);
-    void loadMembershipsGenome(FuzzyMembershipsGenome* membGen);
+    void loadMembershipsGenome(FuzzyMembershipsGenome* membGen, int indexInitMethod);
     float evaluateFitness();
     QVector<float> doEvaluateFitness();
     void reset();
@@ -127,9 +134,14 @@ public:
     void updateDefaultRule(int outVarNum,  int defaultSet);
     void printVerboseOutput();
 
+    FuzzyVariable** getInVars();
+    FuzzyVariable** getOutVars();
+    FuzzyRule** getRules();
+
     QMutex mutex;
 
 private:
+    LearningEngine *learningEngine;
     QList<QStringList>* systemData;
     QString systemDescription;
     FuzzyVariable** inVarArray;

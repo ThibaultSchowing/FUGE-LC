@@ -42,6 +42,7 @@
 #include <qwt_legend.h>
 
 #include <iostream>
+#include <unistd.h>
 
 #include "ui_statsplot.h"
 #include "systemparameters.h"
@@ -72,7 +73,8 @@ protected:
 private:
     Ui::StatsPlot *m_ui;
     QwtPlot *myPlot;
-    QVector<double>* xVals;
+    QVector<double>* xValsPop1;
+    QVector<double>* xValsPop2;
     QVector<double>* yValsPop1;
     QVector<double>* yValsPop2;
     QVector<double>* yValsAvgPop1;

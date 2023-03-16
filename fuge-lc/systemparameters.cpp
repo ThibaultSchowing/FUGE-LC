@@ -81,7 +81,10 @@ SystemParameters::SystemParameters()
     cxProbPop2 = -1.0;
     mutFlipIndPop2 = -1.0;
     mutFlipBitPop2 = -1.0;
-    nbCooperators = 2.0;
+    coevolutionary = true;
+    learning = false;
+    learningMethod = 0;
+    initVarsMethod = 0;
 }
 
 SystemParameters::~SystemParameters()

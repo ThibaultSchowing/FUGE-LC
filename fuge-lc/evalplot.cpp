@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
-  * @date   07.2009
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
+  * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -273,7 +275,7 @@ void EvalPlot::setDescription(QString desc)
                              + "\nMDM  (" + QString::number(sysParams.getDistanceMinThresholdW())  +") = " + QString::number(mdm)
                              + "\nSize  (" + QString::number(sysParams.getDontCareW())  +") = " + QString::number(size)
                              + "\nOver Learn  (" + QString::number(sysParams.getOverLearnW())  +") = " + QString::number(overLearn)
-                            );
+                             );
 }
 
 /**
@@ -349,14 +351,27 @@ void EvalPlot::onSelectOut()
   */
 void EvalPlot::onSort()
 {
+
     if (m_ui->chbSort->isChecked()) {
         this->mesuredValuesOriginal = this->mesuredValues;
         this->expectedValuesOriginal = this->expectedValues;
         this->predictedValuesOriginal = this->predictedValues;
 
-        qSort(this->mesuredValues);
-        qSort(this->expectedValues);
-        qSort(this->predictedValues);
+        sortedValues.clear();
+        for(int i=0; i< mesuredValues.size(); i++){
+            sortedValues.append(plotValues(mesuredValues.at(i), expectedValues.at(i), predictedValues.at(i)));
+        }
+        qSort(sortedValues);
+
+        for(int i=0; i< mesuredValues.size(); i++){
+            mesuredValues[i] = sortedValues.at(i).mesured;
+            expectedValues[i] = sortedValues.at(i).expected;
+            predictedValues[i] = sortedValues.at(i).predicted;
+            //sortedValues.append(new plotValues(mesuredValues.at(i), expectedValues.at(i), predictedValues.at(i));
+        }
+        //        qSort(this->mesuredValues);
+        //        qSort(this->expectedValues);
+        //        qSort(this->predictedValues);
 
         this->setMesuredValues(this->mesuredValues);
         this->setExpectedValues(this->expectedValues);
@@ -390,7 +405,7 @@ void EvalPlot::resetValues()
   */
 void EvalPlot::setFitness(float fit)
 {
-   fitness =  fit;
+    fitness =  fit;
 }
 /**
   * Set the displayed sensitivity.
@@ -399,7 +414,7 @@ void EvalPlot::setFitness(float fit)
   */
 void EvalPlot::setSensitivity(float sensi)
 {
-   sensitivity =  sensi;
+    sensitivity =  sensi;
 }
 
 /**

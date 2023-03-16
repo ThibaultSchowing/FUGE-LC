@@ -50,7 +50,8 @@ CoevStats::CoevStats() : QObject()
     overLearn = 0.0;
     sizePop1 = 0;
     sizePop2 = 0;
-    genNumber = 0;
+    genNumberPop1 = 0;
+    genNumberPop2 = 0;
 }
 
 CoevStats::~CoevStats()

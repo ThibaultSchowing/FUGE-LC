@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
-  * @date   07.2009
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
+  * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,7 +36,7 @@ QList<QStringList>* FugeMain::listFile = 0;
 
 FugeMain::FugeMain(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::FugeMain),
-      fSystemRules(0), fSystemVars(0)
+      fSystemRules(0), fSystemVars(0), editParams(0)
 {
     ui->setupUi(this);
     ui->btRunScript->setEnabled(false);
@@ -97,7 +99,7 @@ FugeMain::FugeMain(QWidget *parent)
     dataMenu = menuBar()->addMenu(tr("&Dataset"));
     paramsMenu = menuBar()->addMenu(tr("&Parameters"));
     scriptMenu = menuBar()->addMenu(tr("&Script"));
-    helpMenu = menuBar()->addMenu(tr("&Help"));    
+    helpMenu = menuBar()->addMenu(tr("&Help"));
     fileMenu->addAction(actRun);
     fileMenu->addAction(actStop);
     dataMenu->addAction(actOpenData);
@@ -125,12 +127,12 @@ FugeMain::FugeMain(QWidget *parent)
 
 FugeMain::~FugeMain()
 {
-    computeThread->deleteLater();
+    delete computeThread;
     delete listFile;
     delete statsPlot;
     delete aboutDial;
     delete ui;
-    sMan->deleteLater();
+    delete sMan;
 }
 
 /**
@@ -145,7 +147,7 @@ FugeMain::~FugeMain()
   * @param verbose Verbose mode flag
   */
 void FugeMain::runFromCmdLine(QString dataSet, QString scriptFile, QString fuzzyFile,
-                        bool eval, bool predict, bool verbose)
+                              bool eval, bool predict, bool verbose)
 {
     doRunFromCmd = true;
 
@@ -161,7 +163,7 @@ void FugeMain::runFromCmdLine(QString dataSet, QString scriptFile, QString fuzzy
         line = csvFile.readLine();
         list = line.split(';');
         listFile->append(list);
-     }
+    }
     ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + dataSet + "<font>");
     dataLoaded = true;
     // Set the dataset name in the parameters
@@ -292,53 +294,6 @@ void FugeMain::createActions()
 }
 
 /**
-  * Set the default parameters
-  */
-void FugeMain::setDefaultSysParams()
-{
-    // TODO: build a conf file were params are saved and restored.
-    // Fuzzy paramteters
-    SystemParameters& sysParams = SystemParameters::getInstance();
-    sysParams.setFixedVars(true);
-    sysParams.setNbRules(5);
-    sysParams.setNbVarPerRule(4);
-    sysParams.setNbOutVars(3);
-    sysParams.setNbInSets(2);
-    sysParams.setNbOutSets(2);
-    sysParams.setInVarsCodeSize(1);
-    sysParams.setOutVarsCodeSize(2);
-    sysParams.setInSetsCodeSize(2);
-    sysParams.setOutSetsCodeSize(1);
-    sysParams.setInSetsPosCodeSize(4);
-    sysParams.setOutSetPosCodeSize(1);
-    sysParams.setSensiW(1.0);
-    sysParams.setSpeciW(0.8);
-    sysParams.setAccuracyW(0.0);
-    sysParams.setPpvW(0.0);
-    sysParams.setRmseW(0.0);
-    sysParams.setRrseW(0.0);
-    sysParams.setRaeW(0.0);
-    sysParams.setMseW(0.0);
-    sysParams.setDistanceThresholdW(0.0);
-    sysParams.setDistanceMinThresholdW(0.0);
-    sysParams.setDontCareW(0.0);
-    sysParams.setOverLearnW(0.0);
-    // Coevolution parameters
-    sysParams.setMaxGenPop1(10);
-    sysParams.setEliteSizePop1(5);
-    sysParams.setPopSizePop1(10);
-    sysParams.setCxProbPop1(0.5);
-    sysParams.setMutFlipIndPop1(0.5);
-    sysParams.setMutFlipBitPop1(0.025);
-    sysParams.setMaxGenPop2(10);
-    sysParams.setEliteSizePop2(5);
-    sysParams.setPopSizePop2(10);
-    sysParams.setCxProbPop2(0.5);
-    sysParams.setMutFlipIndPop2(0.5);
-    sysParams.setMutFlipBitPop2(0.025);
-}
-
-/**
  * @brief FugeMain::getNewFuzzySystem Returns a new fuzzy system fully loaded.
  * @param listFile
  * @return a new loaded SystemFuzzy
@@ -347,9 +302,9 @@ FuzzySystem* FugeMain::getNewFuzzySystem(QList<QStringList>* listFile){
     FuzzySystem *fSystem = new FuzzySystem();
     ComputeThread::sysParams = &SystemParameters::getInstance();
     fSystem->setParameters(ComputeThread::sysParams->getNbRules(), ComputeThread::sysParams->getNbVarPerRule(), ComputeThread::sysParams->getNbOutVars(),
-                      ComputeThread::sysParams->getNbInSets(), ComputeThread::sysParams->getNbOutSets(), ComputeThread::sysParams->getInVarsCodeSize(),
-                      ComputeThread::sysParams->getOutVarsCodeSize(), ComputeThread::sysParams->getInSetsCodeSize(), ComputeThread::sysParams->getOutSetsCodeSize(),
-                      ComputeThread::sysParams->getInSetsPosCodeSize(), ComputeThread::sysParams->getOutSetPosCodeSize());
+                           ComputeThread::sysParams->getNbInSets(), ComputeThread::sysParams->getNbOutSets(), ComputeThread::sysParams->getInVarsCodeSize(),
+                           ComputeThread::sysParams->getOutVarsCodeSize(), ComputeThread::sysParams->getInSetsCodeSize(), ComputeThread::sysParams->getOutSetsCodeSize(),
+                           ComputeThread::sysParams->getInSetsPosCodeSize(), ComputeThread::sysParams->getOutSetPosCodeSize());
     fSystem->loadData(listFile);
     return fSystem;
 }
@@ -360,17 +315,15 @@ FuzzySystem* FugeMain::getNewFuzzySystem(QList<QStringList>* listFile){
  */
 void FugeMain::onActRun()
 {
-    try
-    {
     if(fSystemRules != 0)
         delete fSystemRules;
     if(fSystemVars != 0)
         delete fSystemVars;
+    emit clearStats();
 
     ui->btStop->setEnabled(true);
     ui->btRun->setEnabled(false);
     if ((dataLoaded && scriptLoaded) || (dataLoaded && paramsLoaded)) {
-
         fSystemVars = getNewFuzzySystem(listFile);
         fSystemRules = getNewFuzzySystem(listFile);
         // At least attribute it a pointer.
@@ -386,7 +339,7 @@ void FugeMain::onActRun()
 
         connect(this, SIGNAL(saveFuzzySystem(QString)), computeThread, SLOT(onSaveSystem(QString)));
         computeThread->setFuzzySystem(fSystemVars, fSystemRules);
-        emit clearStats();
+
         computeThread->start();
         isRunning = true;
 
@@ -401,6 +354,8 @@ void FugeMain::onActRun()
         ui->btOpenFuzzy->setEnabled(false);
         ui->btCloseData->setEnabled(false);
         ui->btOpenFuzzy->setEnabled(false);
+        ui->btEditParams->setEnabled(false);
+
     }
     else if (!dataLoaded) {
         ErrorDialog errDiag;
@@ -424,11 +379,6 @@ void FugeMain::onActRun()
     this->actEvalFuzzy->setEnabled(false);
     ui->btEditFuzzy->setEnabled(false);
     this->actEditFuzzy->setEnabled(false);
-    }catch(...)
-    {
-        qCritical() << "Exception in FugeMain::onActRun";
-        scriptSema.release();
-    }
 }
 
 /**
@@ -464,7 +414,7 @@ void FugeMain::onActOpenData()
             line = csvFile.readLine();
             list = line.split(';');
             listFile->append(list);
-         }
+        }
         dataLoaded = true;
         file.close();
         if (paramsLoaded) {
@@ -476,8 +426,8 @@ void FugeMain::onActOpenData()
             actRunScript->setEnabled(true);
         }
         ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + fileName + "<font>");
-        ui->label_dataVars->setText("- " + QString::number(listFile->at(0).size()-1) + " variables");
-        ui->label_dataSamples->setText("- " + QString::number(listFile->size()-1) + " samples");
+        ui->label_dataVars->setText(QString::number(listFile->at(0).size()-1) + " variables");
+        ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
         actCloseData->setEnabled(true);
         ui->btCloseData->setEnabled(true);
     }
@@ -553,7 +503,7 @@ void FugeMain::onActOpenFuzzy()
 
     QFile tempFile(sysParams.getSavePath() + "temp.ffs");
     if (tempFile.exists())
-         tempFile.remove();
+        tempFile.remove();
 
     //connect(this, SIGNAL(evalFuzzySystem()), ComputeThread::bestFSystem, SLOT(doEvaluateFitness()));
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open fuzzy system"), sysParams.getSavePath()+"fuzzySystems", "*.ffs");
@@ -598,7 +548,7 @@ void FugeMain::onActCloseFuzzy()
     }
     QFile tempFile(sysParams.getSavePath()+"temp.ffs");
     if (tempFile.exists())
-         tempFile.remove();
+        tempFile.remove();
     // Clear previous loaded data
     if (dataLoaded)
         this->onActCloseData();
@@ -657,8 +607,7 @@ void FugeMain::onActEditFuzzy()
 
     FuzzyEditor fEditor(this, ComputeThread::bestFSystem);
     if (currentOpennedSystem == "")
-        currentOpennedSystem = QString(sysParams.getSavePath()+"temp/currentBest_") +
-                QString::number(QCoreApplication::applicationPid()) + QString(".ffs");
+        currentOpennedSystem = QString(sysParams.getSavePath()+"temp/currentBest_") + QString::number(getpid()) + QString(".ffs");
 
     fEditor.setSystemFile(currentOpennedSystem);
 
@@ -806,7 +755,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
             line = csvFile.readLine();
             list = line.split(';');
             listFile->append(list);
-         }       
+        }
     }
     else {
         ErrorDialog errDiag;
@@ -895,17 +844,17 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
 void FugeMain::onActEditParams()
 {
     scriptLoaded = false;
-    EditParamsDialog editParams(this, &paramsLoaded, scriptLoaded);
-    editParams.exec();
-
-    if (paramsLoaded) {
-        if (dataLoaded) {
-            ui->btRun->setEnabled(true);
-            actRun->setEnabled(true);
-            onActCloseScript();
-        }
+    if(!editParams)
+        editParams = new EditParamsDialog(this, &paramsLoaded, scriptLoaded);
+    editParams->show();
+    if (dataLoaded) {
+        paramsLoaded = true;
+        ui->btRun->setEnabled(true);
+        actRun->setEnabled(true);
+        onActCloseScript();
         ui->label_paramInfo->setText("<font color = green> Parameters loaded from menu<font>");
     }
+
 }
 
 /**
@@ -922,15 +871,15 @@ void FugeMain::onActOpenScript()
         this->actCloseScript->setEnabled(true);
         ui->label_scriptInfo->setText("<font color = green> Script loaded : " + fileName +"<font>");
         ui->label_paramInfo->setText("<font color = green> Parameters loaded from script <font>");
-
-        sMan->setScriptFileName(fileName);
-        sMan->readScript();
-        if (dataLoaded && sMan->isScriptReady()) {
+        if (dataLoaded) {
             ui->btRunScript->setEnabled(true);
             actRunScript->setEnabled(true);
             ui->btRun->setEnabled(false);
             actRun->setEnabled(false);
         }
+
+        sMan->setScriptFileName(fileName);
+        sMan->readScript();
     }
 }
 
@@ -957,6 +906,7 @@ void FugeMain::onActRunScript()
         sMan->start();
         actStop->setEnabled(true);
         ui->btStop->setEnabled(true);
+        ui->btEditParams->setEnabled(false);
         actSaveFuzzy->setEnabled(true);
         ui->btSaveFuzzy->setEnabled(true);
     }
@@ -984,7 +934,7 @@ void FugeMain::onComputeFinished()
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     computeThread->wait();
-    computeThread->deleteLater();
+    delete computeThread;
     computeThread = 0;
 
     isRunning = false;
@@ -999,6 +949,7 @@ void FugeMain::onComputeFinished()
     ui->btOpenFuzzy->setEnabled(true);
     ui->btNewFuzzy->setEnabled(true);
     ui->btOpenData->setEnabled(true);
+    ui->btEditParams->setEnabled(true);
 
     emit closeStats();
 
@@ -1035,8 +986,7 @@ void FugeMain::onComputeFinished()
         if (!tempDir.exists(sysParams.getSavePath()+"temp")) {
             tempDir.mkdir(sysParams.getSavePath()+"temp");
         }
-        fileN = QString(sysParams.getSavePath()+"temp/currentBest_") +
-                QString::number(QCoreApplication::applicationPid()) + QString(".ffs");
+        fileN = QString(sysParams.getSavePath()+"temp/currentBest_") + QString::number(getpid()) + QString(".ffs");
         QFile file(fileN);
         SystemParameters& sysParams = SystemParameters::getInstance();
         CoevStats& stats = CoevStats::getInstance();
@@ -1049,9 +999,9 @@ void FugeMain::onComputeFinished()
 
         int randomNumber = qrand();
         newNameStream << sysParams.getSavePath() +"fuzzySystems/" << sysParams.getExperimentName() << "_" << time.currentTime().toString() << "." << randomNumber << "Gen" << sysParams.getMaxGenPop1()
-        << "_" << "Pop" << stats.getSizePop1() << "_" << "Rules" << QString::number(sysParams.getNbRules()) << "_" << "Elt" << QString::number(sysParams.getEliteSizePop1())
-        << "_" << "CX" << QString::number(sysParams.getCxProbPop1()) << "_" << "MutI" << sysParams.getMutFlipIndPop1() << "_" << "MutB" << sysParams.getMutFlipBitPop1()
-        << "_" << "FixedV" << sysParams.getFixedVars() << "_" << "Fit" << stats.getFitMaxPop1() << ".ffs";
+                      << "_" << "Pop" << stats.getSizePop1() << "_" << "Rules" << QString::number(sysParams.getNbRules()) << "_" << "Elt" << QString::number(sysParams.getEliteSizePop1())
+                      << "_" << "CX" << QString::number(sysParams.getCxProbPop1()) << "_" << "MutI" << sysParams.getMutFlipIndPop1() << "_" << "MutB" << sysParams.getMutFlipBitPop1()
+                      << "_" << "FixedV" << sysParams.getFixedVars() << "_" << "Fit" << stats.getFitMaxPop1() << ".ffs";
         newNameStream.flush();
         file.copy(newName);
     }
@@ -1113,10 +1063,8 @@ void FugeMain::closeEvent(QCloseEvent*)
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     // Delete the temporary fuzzy system file
-    QString fileN = QString(sysParams.getSavePath()+"temp/currentBest_") +
-            QString::number(QCoreApplication::applicationPid()) + QString(".ffs");
-    QString logFile = QString(sysParams.getSavePath()+"temp/running_") +
-            QString::number(QCoreApplication::applicationPid()) + QString(".csv");
+    QString fileN = QString(sysParams.getSavePath()+"temp/currentBest_") + QString::number(getpid()) + QString(".ffs");
+    QString logFile = QString(sysParams.getSavePath()+"temp/running_") + QString::number(getpid()) + QString(".csv");
     QFile file(fileN);
     QFile lFile(logFile);
     file.remove();

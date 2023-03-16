@@ -34,6 +34,7 @@
 
 #include <QString>
 #include <QList>
+#include <QDebug>
 
 #include "fuzzyset.h"
 #include "fuzzymemberships.h"
@@ -58,6 +59,7 @@ public:
     FuzzySet* getSet(int setNum);
     FuzzySet* getSetByName(QString setName);
     int getSetIndexByName(QString setName);
+    double getInputValue();
     void setInputValue(double value);
     void setMissingVal(bool isMissing);
     void setOutputSetValue(int setNum, double outputValue);
@@ -65,6 +67,12 @@ public:
     double defuzz(int precision);
     FuzzyMemberships* getMemberships();
     void setDefaultRule(int setNum, double value);
+    void setActivation(double value);
+    double getActivation();
+    void setError(double value);
+    double getError();
+    void setDataSetRealOutput(float value);
+    float getDataSetRealOutput();
 
 private:
     QString name;
@@ -73,6 +81,9 @@ private:
     bool missingVal;
     FuzzyMemberships *memberships;
     double inputValue;
+    double activation;
+    double error;
+    float dataSetRealOutput;
 };
 
 #endif // FUZZYVARIABLE_H

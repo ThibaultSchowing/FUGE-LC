@@ -1,15 +1,17 @@
 /**
-  * @file   coevevalop.hpp
+  * @file   coevolution.h
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
   * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,7 +22,8 @@
   * License along with this library; if not, write to the Free Software
   * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
   *
-  * @class CoevEvalOp
+  * @class CoEvolution
+  *
   * @brief This class implements the evaluation operator for the coevolution. Two methods are
   * mandatory for Beagle : makeSets and evaluateSets. Basically, this class receives the
   * two populations and is responsible to evaluate the fitness of all individuals.
@@ -58,7 +61,7 @@ class CoEvolution : public QThread, public EvolutionEngine {
 
     Q_OBJECT
 public:
-    CoEvolution(FuzzySystem *fSystem, QMutex *leftLock, QMutex *rightLock, Population* left, Population* right, quint32 generationCount, qreal crossoverProbability, qreal mutationProbability, qreal mutationPerBitProbability, quint32 eliteSize, quint32 cooperatorsCount, QObject *parent = 0);
+    CoEvolution(FuzzySystem *fSystem, QMutex *leftLock, QMutex *rightLock, Population* leftPop, Population* rightPop, quint32 generationCount, qreal crossoverProbability, qreal mutationProbability, qreal mutationPerBitProbability, quint32 eliteSize, quint32 cooperatorsCount, QObject *parent = 0);
 
     ~CoEvolution();
 

@@ -213,6 +213,14 @@ int FuzzyVariable::getSetIndexByName(QString setName)
 }
 
 /**
+ * @brief FuzzyVariable::getInputValue
+ * @return The input value
+ */
+double FuzzyVariable::getInputValue(){
+    return inputValue;
+}
+
+/**
   * Set an input value for this variable. This must be done before
   * performing an evaluation.
   *
@@ -312,4 +320,36 @@ double FuzzyVariable::defuzz(int)
 void FuzzyVariable::setDefaultRule(int setNum, double value)
 {
     this->getSet(setNum)->setEval(value);
+}
+
+/**
+ * @brief FuzzyVariable::setActivation
+ * @param value The activation level.
+ */
+void FuzzyVariable::setActivation(double value){
+    this->activation = value;
+}
+
+/**
+ * @brief FuzzyVariable::getActivation
+ * @return The activation level
+ */
+double FuzzyVariable::getActivation(){
+    return this->activation;
+}
+
+void FuzzyVariable::setError(double value){
+    error = value;
+}
+
+double FuzzyVariable::getError(){
+    return error;
+}
+
+void FuzzyVariable::setDataSetRealOutput(float value){
+    this->dataSetRealOutput = value;
+}
+
+float FuzzyVariable::getDataSetRealOutput(){
+    return dataSetRealOutput;
 }

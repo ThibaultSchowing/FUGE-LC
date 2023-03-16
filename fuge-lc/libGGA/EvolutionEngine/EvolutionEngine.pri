@@ -8,4 +8,3 @@ INCLUDEPATH += $$PWD/EvolutionEngine
 SOURCES += $$PWD/evolutionengine.cpp
 
 HEADERS += $$PWD/evolutionengine.h
-
