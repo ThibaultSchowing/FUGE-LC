@@ -35,7 +35,7 @@
  *
  */
 Population::~Population(){
-    for(int i = 0; i < entityList.size(); i++)
+    for(quint32 i = 0; i < entityList.size(); i++)
         delete entityList.at(i);
     entityList.clear();
 }
@@ -50,7 +50,7 @@ Population::~Population(){
  */
 Population::Population(QString name, quint32 size, quint32 individualsLength) : name(name)
 {
-    for(int i = 0; i < entityList.size(); i++)
+    for(quint32 i = 0; i < entityList.size(); i++)
         delete entityList.at(i);
     entityList.clear();
     for(quint32 i = 0; i < size; i++)
@@ -70,7 +70,7 @@ Population::Population(QString name, quint32 size, quint32 individualsLength) : 
  */
 Population::Population(Population *population, QString name)
 {
-    for(int i = 0; i < entityList.size(); i++)
+    for(quint32 i = 0; i < entityList.size(); i++)
         delete entityList.at(i);
     entityList.clear();
     for(quint32 i = 0; i < population->getSize(); i++)
@@ -92,7 +92,7 @@ void Population::setRepresentativesCopy(vector<PopEntity *> representatives, int
     QMutexLocker locker(&mutex);
 
     // Delete old entities.
-    for(int i = 0; i < this->representatives.size(); i++)
+    for(quint32 i = 0; i < this->representatives.size(); i++)
         delete this->representatives[i];
     this->representatives.clear();
 
@@ -145,7 +145,7 @@ QString Population::getName(){
 void Population::replace(vector<PopEntity *> newPopulation)
 {
     QMutexLocker locker(&mutex);
-    for(int i = 0; i < entityList.size(); i++)
+    for(quint32 i = 0; i < entityList.size(); i++)
         delete entityList.at(i);
     entityList.clear();
 
