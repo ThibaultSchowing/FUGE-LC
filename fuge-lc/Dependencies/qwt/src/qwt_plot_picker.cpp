@@ -221,18 +221,23 @@ QwtText QwtPlotPicker::trackerText(const QPoint &pos) const
 */
 QwtText QwtPlotPicker::trackerText(const QwtDoublePoint &pos) const
 {
-    QString text;
+    QString text("%1");
+    //QString text;
 
     switch(rubberBand())
     {
         case HLineRubberBand:
-            text.sprintf("%.4f", pos.y());
+            text.arg(pos.y(), 0, 'f', 4);
+            //text.sprintf("%.4f", pos.y());
             break;
         case VLineRubberBand:
-            text.sprintf("%.4f", pos.x());
+            text.arg(pos.x(), 0, 'f', 4);
+            //text.sprintf("%.4f", pos.x());
             break;
         default:
-            text.sprintf("%.4f, %.4f", pos.x(), pos.y());
+            text = "%1, %2";
+            text.arg(pos.x(), 0, 'f', 4).arg(pos.y(), 0, 'f', 4);
+            //text.sprintf("%.4f, %.4f", pos.x(), pos.y());
     }
     return QwtText(text);
 }

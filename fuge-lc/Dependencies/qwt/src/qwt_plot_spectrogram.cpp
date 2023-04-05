@@ -316,7 +316,9 @@ bool QwtPlotSpectrogram::testConrecAttribute(
 void QwtPlotSpectrogram::setContourLevels(const QwtValueList &levels)
 {
     d_data->contourLevels = levels;
-#if QT_VERSION >= 0x040000
+#if QT_VERSION >= 0x050000
+    std::sort(d_data->contourLevels.begin(), d_data->contourLevels.end());
+#elif  QT_VERSION >= 0x040000
     qSort(d_data->contourLevels);
 #else
     qHeapSort(d_data->contourLevels);

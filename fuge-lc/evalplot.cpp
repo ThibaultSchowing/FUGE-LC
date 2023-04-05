@@ -32,6 +32,7 @@
 
 #include <QFileDialog>
 #include <QTextStream>
+#include <algorithm>
 
 #include "evalplot.h"
 #include "ui_evalplot.h"
@@ -361,7 +362,7 @@ void EvalPlot::onSort()
         for(int i=0; i< mesuredValues.size(); i++){
             sortedValues.append(plotValues(mesuredValues.at(i), expectedValues.at(i), predictedValues.at(i)));
         }
-        qSort(sortedValues);
+        std::sort(sortedValues.begin(), sortedValues.end());
 
         for(int i=0; i< mesuredValues.size(); i++){
             mesuredValues[i] = sortedValues.at(i).mesured;
