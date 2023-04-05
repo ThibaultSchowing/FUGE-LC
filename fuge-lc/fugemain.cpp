@@ -47,7 +47,7 @@ FugeMain::FugeMain(QWidget *parent)
 
     // Initialise the random generator
     QTime time;
-    qsrand(QDateTime::currentDateTime().toTime_t());
+    srand(QDateTime::currentDateTime().toTime_t());
 
     fuzzyLoaded = false;
     dataLoaded = false;
@@ -997,7 +997,7 @@ void FugeMain::onComputeFinished()
             logsDir.mkdir(sysParams.getSavePath()+"fuzzySystems");
         }
 
-        int randomNumber = qrand();
+        int randomNumber = rand();
         newNameStream << sysParams.getSavePath() +"fuzzySystems/" << sysParams.getExperimentName() << "_" << time.currentTime().toString() << "." << randomNumber << "Gen" << sysParams.getMaxGenPop1()
                       << "_" << "Pop" << stats.getSizePop1() << "_" << "Rules" << QString::number(sysParams.getNbRules()) << "_" << "Elt" << QString::number(sysParams.getEliteSizePop1())
                       << "_" << "CX" << QString::number(sysParams.getCxProbPop1()) << "_" << "MutI" << sysParams.getMutFlipIndPop1() << "_" << "MutB" << sysParams.getMutFlipBitPop1()

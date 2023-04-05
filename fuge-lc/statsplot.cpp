@@ -330,7 +330,7 @@ void StatsPlot::onCloseStats()
     QTextStream newNameStream(&newName);
     QTime time;
 
-    int randomNumber = qrand();
+    int randomNumber = rand();
 
     // Ensure that a logs directory exists. If not we create one.
     QDir logsDir;
