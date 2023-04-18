@@ -52,15 +52,19 @@ EvalPlot::EvalPlot(QWidget *parent) :
     connect(m_ui->btOk, SIGNAL(clicked()), this, SLOT(onCloseEval()));
     connect(m_ui->cbOut, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectOut()));
     connect(m_ui->chbSort, SIGNAL(stateChanged(int)), this, SLOT(onSort()));
+    /*
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "Samples");
     myPlot->setAxisTitle(QwtPlot::yLeft, "Output");
+*/
     xVals = new QVector<double>();
     yValsMesured = new QVector<double>();
     yValsExpected = new QVector<double>();
     yValsPredicted = new QVector<double>();
     yValsThresh = new QVector<double>();
+
+    /*
     valsMesured = new QwtPlotCurve("Measured output");
     valsExpected = new QwtPlotCurve("Expected output");
     valsPredicted = new QwtPlotCurve("Predicted output");
@@ -94,6 +98,7 @@ EvalPlot::EvalPlot(QWidget *parent) :
     myPlot->insertLegend(legend, QwtPlot::TopLegend);
     m_ui->btSave->hide();
     m_ui->horizontalLayout->addWidget(myPlot);
+    */
 }
 
 EvalPlot::~EvalPlot()
@@ -187,9 +192,10 @@ void EvalPlot::affectMesuredValues(QVector<float> mesValues, int outVar)
     for (int i = 0; i < mesValues.size(); i++) {
         xVals->replace(i, i);
     }
+    /*
     valsMesured->setData(*xVals, *yValsMesured);
     threshCurve->setData(*xVals, *yValsThresh);
-    myPlot->replot();
+    myPlot->replot(); */
 }
 
 /**
@@ -218,8 +224,10 @@ void EvalPlot::affectExpectedValues(QVector<float> expValues)
     for (int i = 0; i < expValues.size(); i++) {
         xVals->replace(i, i);
     }
+    /*
     valsExpected->setData(*xVals, *yValsExpected);
     myPlot->replot();
+    */
 }
 
 /**
@@ -248,8 +256,11 @@ void EvalPlot::affectPredictedValues(QVector<float> predValues)
     for (int i = 0; i < predValues.size(); i++) {
         xVals->replace(i, i);
     }
+
+    /*
     valsPredicted->setData(*xVals, *yValsPredicted);
     myPlot->replot();
+    */
 }
 
 /**
@@ -319,7 +330,7 @@ void EvalPlot::saveEval(QString fileName)
 void EvalPlot::onSaveEval()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), ".csv", "*.csv");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         this->saveEval(fileName);
     }
 }
@@ -343,8 +354,9 @@ void EvalPlot::onSelectOut()
     affectPredictedValues(predictedValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1));
     if (!isPredictive)
         affectExpectedValues(expectedValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1));
-
+    /*
     myPlot->replot();
+    */
 }
 
 /**
@@ -384,7 +396,9 @@ void EvalPlot::onSort()
         this->setPredictedValues(this->predictedValuesOriginal);
     }
 
+    /*
     myPlot->replot();
+    */
 }
 
 /**

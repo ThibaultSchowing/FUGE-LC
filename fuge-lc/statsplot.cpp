@@ -45,6 +45,8 @@ StatsPlot::StatsPlot(QWidget *parent) :
         tempDir.mkdir(sysParams.getSavePath()+"temp");
     }
     logFileName = QString(sysParams.getSavePath()+"temp/running_") + QString::number(getpid()) + QString(".csv");
+
+    /*
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "Generations");
@@ -66,15 +68,18 @@ StatsPlot::StatsPlot(QWidget *parent) :
     myPlot->insertLegend(legend, QwtPlot::TopLegend);
 
     m_ui->horizontalLayout->addWidget(myPlot);
+    */
 }
 
 StatsPlot::~StatsPlot()
 {
     delete m_ui;
+
+    /*
     delete fitAvgPop1Curve;
     delete fitAvgPop2Curve;
     delete fitMaxPop1Curve;
-    delete fitMaxPop2Curve;
+    delete fitMaxPop2Curve; */
 
     delete xValsPop1;
     delete xValsPop2;
@@ -199,7 +204,7 @@ void StatsPlot::receiveData(QString name)
         m_ui->label_std1->setText(QString::number(stats.getFitStdPop1()));
     }
 
-
+    /*
     if(name == "RULES"){
         fitMaxPop2Curve->setData(*xValsPop2, *yValsPop2);
         fitMaxPop2Curve->setPen(QPen (Qt::blue,2));
@@ -210,7 +215,7 @@ void StatsPlot::receiveData(QString name)
         fitMaxPop1Curve->setPen(QPen (Qt::red,2));
         fitAvgPop1Curve->setData(*xValsPop1, *yValsAvgPop1);
         fitAvgPop1Curve->setPen(QPen (Qt::red,1,Qt::DashLine));
-    }
+    } */
 
     m_ui->lblSensi->setText(QString::number(stats.getSensi()));
     m_ui->lblSpeci->setText(QString::number(stats.getSpeci()));
@@ -233,8 +238,11 @@ void StatsPlot::receiveData(QString name)
     //         << "; " << stats.getSensi() << "; " << stats.getSpeci() << "; " << stats.getAccu() << "; " << stats.getPpv() << ";" << stats.getRmse() << "\n";
 
     //    out.flush();
+
+    /*
     if(isShowed)
         myPlot->replot();
+    */
 }
 
 /**
@@ -253,8 +261,10 @@ void StatsPlot::onClearStats()
     yValsAvgPop1->clear();
     yValsAvgPop2->clear();
 
+    /*
     if (isShowed)
         myPlot->replot();
+    */
 }
 
 /**

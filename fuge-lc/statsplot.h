@@ -36,10 +36,11 @@
 #include <QCloseEvent>
 #include <QTime>
 
+/*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_array.h>
-#include <qwt_legend.h>
+#include <qwt_legend.h>*/
 
 #include <iostream>
 #include <unistd.h>
@@ -72,18 +73,19 @@ protected:
 
 private:
     Ui::StatsPlot *m_ui;
-    QwtPlot *myPlot;
     QVector<double>* xValsPop1;
     QVector<double>* xValsPop2;
     QVector<double>* yValsPop1;
     QVector<double>* yValsPop2;
     QVector<double>* yValsAvgPop1;
     QVector<double>* yValsAvgPop2;
+    /*
+    QwtPlot *myPlot;
     QwtPlotCurve* fitMaxPop1Curve;
     QwtPlotCurve* fitMaxPop2Curve;
     QwtPlotCurve* fitAvgPop1Curve;
     QwtPlotCurve* fitAvgPop2Curve;
-    QwtLegend* legend;
+    QwtLegend* legend;*/
     QFile* fitLogFile;
     QString logFileName;
     QString bestSystemDesc;

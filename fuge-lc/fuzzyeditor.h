@@ -35,10 +35,12 @@
 #include <QLineEdit>
 #include <QGridLayout>
 
+/*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_array.h>
 #include <qwt_legend.h>
+*/
 
 #include "fuzzysystem.h"
 #include "fuzzyrule.h"
@@ -76,9 +78,11 @@ protected:
 
 private:
     Ui::FuzzyEditor *m_ui;
+    /*
     QwtPlot *myPlot;
     QVector<QwtPlotCurve*> curves;
     QwtPlotCurve* membCurve;
+    */
     FuzzySystem* fSystem;
     QString currentOpennedSystem;
     QList<QStringList>* listFile;

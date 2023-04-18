@@ -33,11 +33,12 @@
 
 #include <QDialog>
 
+/*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_symbol.h>
 #include <qwt_array.h>
-#include <qwt_legend.h>
+#include <qwt_legend.h> */
 
 namespace Ui {
     class EvalPlot;
@@ -99,8 +100,6 @@ private:
     Ui::EvalPlot *m_ui;
     QList<QStringList>* systemData;
     bool isPredictive;
-    QwtPlot* myPlot;
-    QwtLegend* legend;
     QVector<plotValues> sortedValues;
     QVector<float> mesuredValues;
     QVector<float> expectedValues;
@@ -113,10 +112,13 @@ private:
     QVector<double>* yValsExpected;
     QVector<double>* yValsPredicted;
     QVector<double>* yValsThresh;
+    /*
+    QwtPlot* myPlot;
+    QwtLegend* legend;
     QwtPlotCurve* valsMesured;
     QwtPlotCurve* valsExpected;
     QwtPlotCurve* valsPredicted;
-    QwtPlotCurve* threshCurve;
+    QwtPlotCurve* threshCurve; */
     QString desc;
     int nbOutVars;
     float fitness;

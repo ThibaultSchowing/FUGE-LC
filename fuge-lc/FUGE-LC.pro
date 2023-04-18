@@ -19,7 +19,6 @@ include(libGGA/libGGA.pri)
 include(fuzzy/Fuzzy.pri)
 include(fuzzyLearning/FuzzyLearning.pri)
 include(coev/Coev.pri)
-include(Dependencies/qwt/qwt.pri)
 include(Dependencies/duktape/duktape.pri)
 
 SOURCES += main.cpp \
