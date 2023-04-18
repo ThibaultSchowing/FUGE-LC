@@ -46,17 +46,17 @@ StatsPlot::StatsPlot(QWidget *parent) :
     }
     logFileName = QString(sysParams.getSavePath()+"temp/running_") + QString::number(getpid()) + QString(".csv");
 
-    /*
-    myPlot = new QwtPlot((QWidget*) this);
-    legend = new QwtLegend();
-    myPlot->setAxisTitle(QwtPlot::xBottom, "Generations");
-    myPlot->setAxisTitle(QwtPlot::yLeft, "Fitness");
     xValsPop1 = new QVector<double>();
     xValsPop2 = new QVector<double>();
     yValsPop1 = new QVector<double>();
     yValsPop2 = new QVector<double>();
     yValsAvgPop1 = new QVector<double>();
     yValsAvgPop2 = new QVector<double>();
+    /*
+    myPlot = new QwtPlot((QWidget*) this);
+    legend = new QwtLegend();
+    myPlot->setAxisTitle(QwtPlot::xBottom, "Generations");
+    myPlot->setAxisTitle(QwtPlot::yLeft, "Fitness");
     fitMaxPop1Curve = new QwtPlotCurve("Pop1 : Membership functions (max)");
     fitMaxPop2Curve = new QwtPlotCurve("Pop2 : Rules (max)");
     fitAvgPop1Curve = new QwtPlotCurve("Pop1 : Membership functions (avg)");
