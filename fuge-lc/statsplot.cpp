@@ -247,24 +247,27 @@ void StatsPlot::receiveData(QString name)
     if(name == "RULES"){
         fitMaxPop2Curve->setPen(QPen (Qt::blue,2));
         fitAvgPop2Curve->setPen(QPen (Qt::blue,1,Qt::DashLine));
-        fitAvgPop2Curve->clear();
-        fitMaxPop2Curve->clear();
-        for(auto i = 0; i < xValsPop2->length(); ++i) {
+        for(auto i = pop2Index; i < xValsPop2->length(); ++i) {
             fitAvgPop2Curve->append(xValsPop2->at(i), yValsAvgPop2->at(i));
+            minY = qMin(minY, yValsAvgPop2->at(i));
             fitMaxPop2Curve->append(xValsPop2->at(i), yValsPop2->at(i));
+            maxY = qMax(maxY, yValsPop2->at(i));
         }
+        pop2Index = xValsPop2->length() - 1;
     } else {
         fitMaxPop1Curve->setPen(QPen (Qt::red,2));
         fitAvgPop1Curve->setPen(QPen (Qt::red,1,Qt::DashLine));
-        fitAvgPop1Curve->clear();
-        fitMaxPop1Curve->clear();
-        for(auto i = 0; i < xValsPop1->length(); ++i) {
+        for(auto i = pop1Index; i < xValsPop1->length(); ++i) {
             fitAvgPop1Curve->append(xValsPop1->at(i), yValsAvgPop1->at(i));
+            minY = qMin(minY, yValsAvgPop1->at(i));
             fitMaxPop1Curve->append(xValsPop1->at(i), yValsPop1->at(i));
+            maxY = qMax(maxY, yValsPop1->at(i));
         }
+        pop1Index = xValsPop1->length() - 1;
     }
     qint64 max_x = qMax(xValsPop1->length(), xValsPop2->length());
     axisX->setRange(0, max_x + 10 - max_x % 10);
+    axisY->setRange(minY - 0.05, maxY + 0.05);
 
     /* QWT-OLD-CODE
     if(name == "RULES"){
@@ -322,6 +325,10 @@ void StatsPlot::onClearStats()
     yValsAvgPop1->clear();
     yValsAvgPop2->clear();
 
+    pop1Index = 0;
+    pop2Index = 0;
+    maxY = 0;
+    minY = 1;
 
     if (isShowed)
         myPlot->update();

@@ -96,6 +96,10 @@ private:
     QLineSeries* fitMaxPop2Curve;
     QLineSeries* fitAvgPop1Curve;
     QLineSeries* fitAvgPop2Curve;
+    int pop1Index = 0;
+    int pop2Index = 0;
+    double maxY = 0;
+    double minY = 1;
     /*
     QwtPlot *myPlot;
     QwtPlotCurve* fitMaxPop1Curve;
