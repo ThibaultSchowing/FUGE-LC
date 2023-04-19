@@ -39,6 +39,8 @@
 #include <QLineSeries>
 #include <QChart>
 #include <QChartView>
+#include <QValueAxis>
+
 /*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -85,6 +87,8 @@ private:
 
 
     QtCharts::QChart* myPlot;
+    QtCharts::QValueAxis* axisX;
+    QtCharts::QValueAxis* axisY;
     QtCharts::QChartView* myPlotView;
     QtCharts::QLineSeries* fitMaxPop1Curve;
     QtCharts::QLineSeries* fitMaxPop2Curve;

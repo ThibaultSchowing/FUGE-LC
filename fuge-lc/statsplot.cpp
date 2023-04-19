@@ -54,9 +54,8 @@ StatsPlot::StatsPlot(QWidget *parent) :
     yValsAvgPop2 = new QVector<double>();
 
     myPlot = new QtCharts::QChart();
-    //myPlot->axisX()->titleText().append("Generations");
-    //myPlot->axisY()->titleText().append("Fitness");
     myPlotView = new QtCharts::QChartView(myPlot);
+    myPlotView->setRenderHint(QPainter::Antialiasing);
 
     fitMaxPop1Curve = new QtCharts::QLineSeries();
     fitMaxPop2Curve = new QtCharts::QLineSeries();
@@ -74,6 +73,22 @@ StatsPlot::StatsPlot(QWidget *parent) :
     myPlot->addSeries(fitAvgPop2Curve);
 
     myPlot->createDefaultAxes();
+    foreach (QtCharts::QAbstractAxis* axis, myPlot->axes()) {
+        if (axis->orientation() == Qt::Horizontal) {
+            axisX = qobject_cast<QtCharts::QValueAxis*>(axis);
+        }
+        if (axis->orientation() == Qt::Vertical) {
+            axisY = qobject_cast<QtCharts::QValueAxis*>(axis);
+        }
+    }
+    assert(axisX != nullptr);
+    assert(axisY != nullptr);
+    axisX->setTitleText("Generation");
+    axisX->setTitleVisible();
+    axisX->setLabelFormat("%d");
+    axisY->setTitleText("Fitness");
+    axisY->setTitleVisible();
+    myPlotView->setMinimumHeight(350);
 
     m_ui->horizontalLayout->addWidget(myPlotView);
 
@@ -232,6 +247,8 @@ void StatsPlot::receiveData(QString name)
     if(name == "RULES"){
         fitMaxPop2Curve->setPen(QPen (Qt::blue,2));
         fitAvgPop2Curve->setPen(QPen (Qt::blue,1,Qt::DashLine));
+        fitAvgPop2Curve->clear();
+        fitMaxPop2Curve->clear();
         for(auto i = 0; i < xValsPop2->length(); ++i) {
             fitAvgPop2Curve->append(xValsPop2->at(i), yValsAvgPop2->at(i));
             fitMaxPop2Curve->append(xValsPop2->at(i), yValsPop2->at(i));
@@ -239,11 +256,15 @@ void StatsPlot::receiveData(QString name)
     } else {
         fitMaxPop1Curve->setPen(QPen (Qt::red,2));
         fitAvgPop1Curve->setPen(QPen (Qt::red,1,Qt::DashLine));
+        fitAvgPop1Curve->clear();
+        fitMaxPop1Curve->clear();
         for(auto i = 0; i < xValsPop1->length(); ++i) {
             fitAvgPop1Curve->append(xValsPop1->at(i), yValsAvgPop1->at(i));
             fitMaxPop1Curve->append(xValsPop1->at(i), yValsPop1->at(i));
         }
     }
+    qint64 max_x = qMin(xValsPop1->length(), xValsPop2->length());
+    axisX->setRange(0, max_x + 10 - max_x % 10);
 
     /* QWT-OLD-CODE
     if(name == "RULES"){

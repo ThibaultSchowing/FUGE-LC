@@ -105,9 +105,9 @@ EvalPlot::EvalPlot(QWidget *parent) :
             axisY = qobject_cast<QtCharts::QValueAxis*>(axis);
         }
     }
-    myPlot->resize(0, 4000);
     assert(axisX != nullptr);
     assert(axisY != nullptr);
+    axisX->setLabelFormat("%d");
     axisX->setTitleText("Samples");
     axisX->setTitleVisible();
     axisY->setTitleText("Output");
