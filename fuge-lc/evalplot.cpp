@@ -53,8 +53,8 @@ EvalPlot::EvalPlot(QWidget *parent) :
     connect(m_ui->cbOut, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectOut()));
     connect(m_ui->chbSort, SIGNAL(stateChanged(int)), this, SLOT(onSort()));
 
-    myPlot = new QtCharts::QChart();
-    myPlotView = new QtCharts::QChartView(myPlot);
+    myPlot = new QChart();
+    myPlotView = new QChartView(myPlot);
     myPlotView->setRenderHint(QPainter::Antialiasing);
 
 
@@ -71,14 +71,14 @@ EvalPlot::EvalPlot(QWidget *parent) :
     yValsThresh = new QVector<double>();
 
 
-    valsMesured = new QtCharts::QLineSeries();
-    valsExpected = new QtCharts::QLineSeries();
-    valsPredicted = new QtCharts::QLineSeries();
-    threshCurve = new QtCharts::QLineSeries();
+    valsMesured = new QLineSeries();
+    valsExpected = new QLineSeries();
+    valsPredicted = new QLineSeries();
+    threshCurve = new QLineSeries();
 
     valsMesured->setPen(QPen(Qt::red, 0.5));
     valsMesured->setName("Measured output");
-    //valsMesured->setMarkerShape(QtCharts::QScatterSeries::MarkerShapeRectangle); // TODO, change to star in 6.5
+    //valsMesured->setMarkerShape(QScatterSeries::MarkerShapeRectangle); // TODO, change to star in 6.5
     //valsMesured->setMarkerSize(1);
 
     valsExpected->setPen(QPen(Qt::blue, 2));
@@ -97,12 +97,12 @@ EvalPlot::EvalPlot(QWidget *parent) :
         myPlot->addSeries(threshCurve);
     }
     myPlot->createDefaultAxes();
-    foreach (QtCharts::QAbstractAxis* axis, myPlot->axes()) {
+    foreach (QAbstractAxis* axis, myPlot->axes()) {
         if (axis->orientation() == Qt::Horizontal) {
-            axisX = qobject_cast<QtCharts::QValueAxis*>(axis);
+            axisX = qobject_cast<QValueAxis*>(axis);
         }
         if (axis->orientation() == Qt::Vertical) {
-            axisY = qobject_cast<QtCharts::QValueAxis*>(axis);
+            axisY = qobject_cast<QValueAxis*>(axis);
         }
     }
     assert(axisX != nullptr);

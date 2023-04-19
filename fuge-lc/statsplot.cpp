@@ -53,14 +53,14 @@ StatsPlot::StatsPlot(QWidget *parent) :
     yValsAvgPop1 = new QVector<double>();
     yValsAvgPop2 = new QVector<double>();
 
-    myPlot = new QtCharts::QChart();
-    myPlotView = new QtCharts::QChartView(myPlot);
+    myPlot = new QChart();
+    myPlotView = new QChartView(myPlot);
     myPlotView->setRenderHint(QPainter::Antialiasing);
 
-    fitMaxPop1Curve = new QtCharts::QLineSeries();
-    fitMaxPop2Curve = new QtCharts::QLineSeries();
-    fitAvgPop1Curve = new QtCharts::QLineSeries();
-    fitAvgPop2Curve = new QtCharts::QLineSeries();
+    fitMaxPop1Curve = new QLineSeries();
+    fitMaxPop2Curve = new QLineSeries();
+    fitAvgPop1Curve = new QLineSeries();
+    fitAvgPop2Curve = new QLineSeries();
 
     fitMaxPop1Curve->setName("Pop1 : Membership functions (max)");
     fitMaxPop2Curve->setName("Pop2 : Rules (max)");
@@ -73,12 +73,12 @@ StatsPlot::StatsPlot(QWidget *parent) :
     myPlot->addSeries(fitAvgPop2Curve);
 
     myPlot->createDefaultAxes();
-    foreach (QtCharts::QAbstractAxis* axis, myPlot->axes()) {
+    foreach (QAbstractAxis* axis, myPlot->axes()) {
         if (axis->orientation() == Qt::Horizontal) {
-            axisX = qobject_cast<QtCharts::QValueAxis*>(axis);
+            axisX = qobject_cast<QValueAxis*>(axis);
         }
         if (axis->orientation() == Qt::Vertical) {
-            axisY = qobject_cast<QtCharts::QValueAxis*>(axis);
+            axisY = qobject_cast<QValueAxis*>(axis);
         }
     }
     assert(axisX != nullptr);
@@ -263,7 +263,7 @@ void StatsPlot::receiveData(QString name)
             fitMaxPop1Curve->append(xValsPop1->at(i), yValsPop1->at(i));
         }
     }
-    qint64 max_x = qMin(xValsPop1->length(), xValsPop2->length());
+    qint64 max_x = qMax(xValsPop1->length(), xValsPop2->length());
     axisX->setRange(0, max_x + 10 - max_x % 10);
 
     /* QWT-OLD-CODE

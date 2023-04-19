@@ -50,6 +50,8 @@ namespace Ui {
     class EvalPlot;
 }
 
+using namespace QtCharts;
+
 class EvalPlot : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(EvalPlot)
@@ -119,15 +121,15 @@ private:
     QVector<double>* yValsPredicted;
     QVector<double>* yValsThresh;
 
-    QtCharts::QChart* myPlot;
-    QtCharts::QValueAxis* axisX;
-    QtCharts::QValueAxis* axisY;
-    QtCharts::QChartView* myPlotView;
-    //QtCharts::QScatterSeries* valsMesured;
-    QtCharts::QLineSeries* valsMesured;
-    QtCharts::QLineSeries* valsExpected;
-    QtCharts::QLineSeries* valsPredicted;
-    QtCharts::QLineSeries* threshCurve;
+    QChart* myPlot;
+    QValueAxis* axisX;
+    QValueAxis* axisY;
+    QChartView* myPlotView;
+    //QScatterSeries* valsMesured;
+    QLineSeries* valsMesured;
+    QLineSeries* valsExpected;
+    QLineSeries* valsPredicted;
+    QLineSeries* threshCurve;
     /* QWT-OLD-CODE
     QwtPlot* myPlot;
     QwtLegend* legend;

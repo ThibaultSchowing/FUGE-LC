@@ -58,6 +58,8 @@ namespace Ui {
     class StatsPlot;
 }
 
+using namespace QtCharts;
+
 class StatsPlot : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(StatsPlot)
@@ -86,14 +88,14 @@ private:
     QVector<double>* yValsAvgPop2;
 
 
-    QtCharts::QChart* myPlot;
-    QtCharts::QValueAxis* axisX;
-    QtCharts::QValueAxis* axisY;
-    QtCharts::QChartView* myPlotView;
-    QtCharts::QLineSeries* fitMaxPop1Curve;
-    QtCharts::QLineSeries* fitMaxPop2Curve;
-    QtCharts::QLineSeries* fitAvgPop1Curve;
-    QtCharts::QLineSeries* fitAvgPop2Curve;
+    QChart* myPlot;
+    QValueAxis* axisX;
+    QValueAxis* axisY;
+    QChartView* myPlotView;
+    QLineSeries* fitMaxPop1Curve;
+    QLineSeries* fitMaxPop2Curve;
+    QLineSeries* fitAvgPop1Curve;
+    QLineSeries* fitAvgPop2Curve;
     /*
     QwtPlot *myPlot;
     QwtPlotCurve* fitMaxPop1Curve;
