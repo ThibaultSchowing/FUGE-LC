@@ -54,9 +54,9 @@ EvalPlot::EvalPlot(QWidget *parent) :
     connect(m_ui->chbSort, SIGNAL(stateChanged(int)), this, SLOT(onSort()));
 
     myPlot = new QtCharts::QChart();
-    //myPlot->axisX()->titleText().append("Samples");
-    //myPlot->axisY()->titleText().append("Output");
     myPlotView = new QtCharts::QChartView(myPlot);
+    myPlotView->setRenderHint(QPainter::Antialiasing);
+
 
     /* QWT-OLD-CODE
     myPlot = new QwtPlot((QWidget*) this);
@@ -76,13 +76,15 @@ EvalPlot::EvalPlot(QWidget *parent) :
     valsPredicted = new QtCharts::QLineSeries();
     threshCurve = new QtCharts::QLineSeries();
 
-    valsMesured->setPen(QPen(Qt::red, 2));
+    valsMesured->setPen(QPen(Qt::red, 0.5));
     valsMesured->setName("Measured output");
+    //valsMesured->setMarkerShape(QtCharts::QScatterSeries::MarkerShapeRectangle); // TODO, change to star in 6.5
+    //valsMesured->setMarkerSize(1);
 
-    valsExpected->setPen(QPen(Qt::blue, 3));
+    valsExpected->setPen(QPen(Qt::blue, 2));
     valsExpected->setName("Expected output");
 
-    valsPredicted->setPen(QPen(Qt::green, 1));
+    valsPredicted->setPen(QPen(Qt::green, 0.5));
     valsPredicted->setName("Predicted output");
 
     threshCurve->setPen(QPen(Qt::black, 1));
@@ -95,7 +97,23 @@ EvalPlot::EvalPlot(QWidget *parent) :
         myPlot->addSeries(threshCurve);
     }
     myPlot->createDefaultAxes();
+    foreach (QtCharts::QAbstractAxis* axis, myPlot->axes()) {
+        if (axis->orientation() == Qt::Horizontal) {
+            axisX = qobject_cast<QtCharts::QValueAxis*>(axis);
+        }
+        if (axis->orientation() == Qt::Vertical) {
+            axisY = qobject_cast<QtCharts::QValueAxis*>(axis);
+        }
+    }
+    myPlot->resize(0, 4000);
+    assert(axisX != nullptr);
+    assert(axisY != nullptr);
+    axisX->setTitleText("Samples");
+    axisX->setTitleVisible();
+    axisY->setTitleText("Output");
+    axisY->setTitleVisible();
     m_ui->btSave->hide();
+    myPlotView->setMinimumHeight(350);
     m_ui->horizontalLayout->addWidget(myPlotView);
 
     /* QWT-OLD-CODE
@@ -205,7 +223,7 @@ void EvalPlot::setMesuredValues(QVector<float> mesValues)
     mesuredValues = mesValues;
     /// ICI passer la var out en param
     affectMesuredValues(mesuredValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1), m_ui->cbOut->currentIndex());
-    myPlot->axisX()->setRange(0, xVals->length());
+    axisX->setRange(0, xVals->length() + 50 - xVals->length() % 50);
 }
 
 /**
@@ -233,7 +251,7 @@ void EvalPlot::affectMesuredValues(QVector<float> mesValues, int outVar)
 
     for(auto i = 0; i < xVals->length(); ++i) {
         valsMesured->append(xVals->at(i), yValsMesured->at(i));
-        valsMesured->append(xVals->at(i), yValsThresh->at(i));
+        threshCurve->append(xVals->at(i), yValsThresh->at(i));
     }
 
     myPlot->update();

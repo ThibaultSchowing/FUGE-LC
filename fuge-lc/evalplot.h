@@ -35,7 +35,9 @@
 
 #include <QLineSeries>
 #include <QChart>
+#include <QValueAxis>
 #include <QChartView>
+//#include <QScatterSeries>
 
 /*
 #include <qwt_plot.h>
@@ -118,7 +120,10 @@ private:
     QVector<double>* yValsThresh;
 
     QtCharts::QChart* myPlot;
+    QtCharts::QValueAxis* axisX;
+    QtCharts::QValueAxis* axisY;
     QtCharts::QChartView* myPlotView;
+    //QtCharts::QScatterSeries* valsMesured;
     QtCharts::QLineSeries* valsMesured;
     QtCharts::QLineSeries* valsExpected;
     QtCharts::QLineSeries* valsPredicted;
