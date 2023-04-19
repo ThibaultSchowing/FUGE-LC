@@ -116,13 +116,6 @@ private:
     QVector<double>* yValsExpected;
     QVector<double>* yValsPredicted;
     QVector<double>* yValsThresh;
-    /*
-    QwtPlot* myPlot;
-    QwtLegend* legend;
-    QwtPlotCurve* valsMesured;
-    QwtPlotCurve* valsExpected;
-    QwtPlotCurve* valsPredicted;
-    QwtPlotCurve* threshCurve; */
 
     QtCharts::QChart* myPlot;
     QtCharts::QChartView* myPlotView;
@@ -130,6 +123,14 @@ private:
     QtCharts::QLineSeries* valsExpected;
     QtCharts::QLineSeries* valsPredicted;
     QtCharts::QLineSeries* threshCurve;
+    /* QWT-OLD-CODE
+    QwtPlot* myPlot;
+    QwtLegend* legend;
+    QwtPlotCurve* valsMesured;
+    QwtPlotCurve* valsExpected;
+    QwtPlotCurve* valsPredicted;
+    QwtPlotCurve* threshCurve; */
+
     QString desc;
     int nbOutVars;
     float fitness;
