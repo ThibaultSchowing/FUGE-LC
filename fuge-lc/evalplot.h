@@ -33,6 +33,10 @@
 
 #include <QDialog>
 
+#include <QLineSeries>
+#include <QChart>
+#include <QChartView>
+
 /*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -119,6 +123,13 @@ private:
     QwtPlotCurve* valsExpected;
     QwtPlotCurve* valsPredicted;
     QwtPlotCurve* threshCurve; */
+
+    QtCharts::QChart* myPlot;
+    QtCharts::QChartView* myPlotView;
+    QtCharts::QLineSeries* valsMesured;
+    QtCharts::QLineSeries* valsExpected;
+    QtCharts::QLineSeries* valsPredicted;
+    QtCharts::QLineSeries* threshCurve;
     QString desc;
     int nbOutVars;
     float fitness;

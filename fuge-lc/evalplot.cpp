@@ -52,6 +52,12 @@ EvalPlot::EvalPlot(QWidget *parent) :
     connect(m_ui->btOk, SIGNAL(clicked()), this, SLOT(onCloseEval()));
     connect(m_ui->cbOut, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectOut()));
     connect(m_ui->chbSort, SIGNAL(stateChanged(int)), this, SLOT(onSort()));
+
+    myPlot = new QtCharts::QChart();
+    //myPlot->axisX()->titleText().append("Samples");
+    //myPlot->axisY()->titleText().append("Output");
+    myPlotView = new QtCharts::QChartView(myPlot);
+
     /*
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
@@ -63,6 +69,24 @@ EvalPlot::EvalPlot(QWidget *parent) :
     yValsExpected = new QVector<double>();
     yValsPredicted = new QVector<double>();
     yValsThresh = new QVector<double>();
+
+
+    valsMesured = new QtCharts::QLineSeries();
+    valsExpected = new QtCharts::QLineSeries();
+    valsPredicted = new QtCharts::QLineSeries();
+    threshCurve = new QtCharts::QLineSeries();
+
+    valsMesured->setPen(QPen(Qt::red, 2));
+    valsMesured->setName("Measured output");
+
+    valsExpected->setPen(QPen(Qt::blue, 3));
+    valsExpected->setName("Expected output");
+
+    valsPredicted->setPen(QPen(Qt::green, 1));
+    valsPredicted->setName("Predicted output");
+
+    threshCurve->setPen(QPen(Qt::black, 1));
+    threshCurve->setName("Threshold");
 
     /*
     valsMesured = new QwtPlotCurve("Measured output");
@@ -99,6 +123,16 @@ EvalPlot::EvalPlot(QWidget *parent) :
     m_ui->btSave->hide();
     m_ui->horizontalLayout->addWidget(myPlot);
     */
+
+    myPlot->addSeries(valsMesured);
+    myPlot->addSeries(valsExpected);
+    myPlot->addSeries(valsPredicted);
+    if (sysParams.getThreshActivated()) {
+        myPlot->addSeries(threshCurve);
+    }
+    myPlot->createDefaultAxes();
+    m_ui->btSave->hide();
+    m_ui->horizontalLayout->addWidget(myPlotView);
 }
 
 EvalPlot::~EvalPlot()
@@ -192,6 +226,16 @@ void EvalPlot::affectMesuredValues(QVector<float> mesValues, int outVar)
     for (int i = 0; i < mesValues.size(); i++) {
         xVals->replace(i, i);
     }
+
+    valsMesured->clear();
+    threshCurve->clear();
+
+    for(auto i = 0; i < xVals->length(); ++i) {
+        valsMesured->append(xVals->at(i), yValsMesured->at(i));
+        valsMesured->append(xVals->at(i), yValsThresh->at(i));
+    }
+
+    myPlot->update();
     /*
     valsMesured->setData(*xVals, *yValsMesured);
     threshCurve->setData(*xVals, *yValsThresh);
@@ -224,6 +268,14 @@ void EvalPlot::affectExpectedValues(QVector<float> expValues)
     for (int i = 0; i < expValues.size(); i++) {
         xVals->replace(i, i);
     }
+
+    valsExpected->clear();
+
+    for(auto i = 0; i < xVals->length(); ++i) {
+        valsExpected->append(xVals->at(i), yValsExpected->at(i));
+    }
+
+    myPlot->update();
     /*
     valsExpected->setData(*xVals, *yValsExpected);
     myPlot->replot();
@@ -257,6 +309,13 @@ void EvalPlot::affectPredictedValues(QVector<float> predValues)
         xVals->replace(i, i);
     }
 
+    valsPredicted->clear();
+
+    for(auto i = 0; i < xVals->length(); ++i) {
+        valsPredicted->append(xVals->at(i), yValsPredicted->at(i));
+    }
+
+    myPlot->update();
     /*
     valsPredicted->setData(*xVals, *yValsPredicted);
     myPlot->replot();
@@ -354,6 +413,8 @@ void EvalPlot::onSelectOut()
     affectPredictedValues(predictedValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1));
     if (!isPredictive)
         affectExpectedValues(expectedValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1));
+
+    myPlot->update();
     /*
     myPlot->replot();
     */
@@ -396,6 +457,7 @@ void EvalPlot::onSort()
         this->setPredictedValues(this->predictedValuesOriginal);
     }
 
+    myPlot->update();
     /*
     myPlot->replot();
     */
