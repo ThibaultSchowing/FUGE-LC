@@ -52,7 +52,32 @@ StatsPlot::StatsPlot(QWidget *parent) :
     yValsPop2 = new QVector<double>();
     yValsAvgPop1 = new QVector<double>();
     yValsAvgPop2 = new QVector<double>();
-    /*
+
+    myPlot = new QtCharts::QChart();
+    //myPlot->axisX()->titleText().append("Generations");
+    //myPlot->axisY()->titleText().append("Fitness");
+    myPlotView = new QtCharts::QChartView(myPlot);
+
+    fitMaxPop1Curve = new QtCharts::QLineSeries();
+    fitMaxPop2Curve = new QtCharts::QLineSeries();
+    fitAvgPop1Curve = new QtCharts::QLineSeries();
+    fitAvgPop2Curve = new QtCharts::QLineSeries();
+
+    fitMaxPop1Curve->setName("Pop1 : Membership functions (max)");
+    fitMaxPop2Curve->setName("Pop2 : Rules (max)");
+    fitAvgPop1Curve->setName("Pop1 : Membership functions (avg)");
+    fitAvgPop2Curve->setName("Pop2 : Rules (avg)");
+
+    myPlot->addSeries(fitMaxPop1Curve);
+    myPlot->addSeries(fitMaxPop2Curve);
+    myPlot->addSeries(fitAvgPop1Curve);
+    myPlot->addSeries(fitAvgPop2Curve);
+
+    myPlot->createDefaultAxes();
+
+    m_ui->horizontalLayout->addWidget(myPlotView);
+
+    /* QWT-OLD-CODE
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "Generations");
@@ -75,11 +100,10 @@ StatsPlot::~StatsPlot()
 {
     delete m_ui;
 
-    /*
     delete fitAvgPop1Curve;
     delete fitAvgPop2Curve;
     delete fitMaxPop1Curve;
-    delete fitMaxPop2Curve; */
+    delete fitMaxPop2Curve;
 
     delete xValsPop1;
     delete xValsPop2;
@@ -204,7 +228,24 @@ void StatsPlot::receiveData(QString name)
         m_ui->label_std1->setText(QString::number(stats.getFitStdPop1()));
     }
 
-    /*
+
+    if(name == "RULES"){
+        fitMaxPop2Curve->setPen(QPen (Qt::blue,2));
+        fitAvgPop2Curve->setPen(QPen (Qt::blue,1,Qt::DashLine));
+        for(auto i = 0; i < xValsPop2->length(); ++i) {
+            fitAvgPop2Curve->append(xValsPop2->at(i), yValsAvgPop2->at(i));
+            fitMaxPop2Curve->append(xValsPop2->at(i), yValsPop2->at(i));
+        }
+    } else {
+        fitMaxPop1Curve->setPen(QPen (Qt::red,2));
+        fitAvgPop1Curve->setPen(QPen (Qt::red,1,Qt::DashLine));
+        for(auto i = 0; i < xValsPop1->length(); ++i) {
+            fitAvgPop1Curve->append(xValsPop1->at(i), yValsAvgPop1->at(i));
+            fitMaxPop1Curve->append(xValsPop1->at(i), yValsPop1->at(i));
+        }
+    }
+
+    /* QWT-OLD-CODE
     if(name == "RULES"){
         fitMaxPop2Curve->setData(*xValsPop2, *yValsPop2);
         fitMaxPop2Curve->setPen(QPen (Qt::blue,2));
@@ -239,10 +280,9 @@ void StatsPlot::receiveData(QString name)
 
     //    out.flush();
 
-    /*
+
     if(isShowed)
-        myPlot->replot();
-    */
+        myPlot->update();
 }
 
 /**
@@ -261,10 +301,10 @@ void StatsPlot::onClearStats()
     yValsAvgPop1->clear();
     yValsAvgPop2->clear();
 
-    /*
+
     if (isShowed)
-        myPlot->replot();
-    */
+        myPlot->update();
+
 }
 
 /**

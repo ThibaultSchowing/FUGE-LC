@@ -36,6 +36,9 @@
 #include <QCloseEvent>
 #include <QTime>
 
+#include <QLineSeries>
+#include <QChart>
+#include <QChartView>
 /*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
@@ -79,6 +82,14 @@ private:
     QVector<double>* yValsPop2;
     QVector<double>* yValsAvgPop1;
     QVector<double>* yValsAvgPop2;
+
+
+    QtCharts::QChart* myPlot;
+    QtCharts::QChartView* myPlotView;
+    QtCharts::QLineSeries* fitMaxPop1Curve;
+    QtCharts::QLineSeries* fitMaxPop2Curve;
+    QtCharts::QLineSeries* fitAvgPop1Curve;
+    QtCharts::QLineSeries* fitAvgPop2Curve;
     /*
     QwtPlot *myPlot;
     QwtPlotCurve* fitMaxPop1Curve;
@@ -86,6 +97,7 @@ private:
     QwtPlotCurve* fitAvgPop1Curve;
     QwtPlotCurve* fitAvgPop2Curve;
     QwtLegend* legend;*/
+
     QFile* fitLogFile;
     QString logFileName;
     QString bestSystemDesc;
