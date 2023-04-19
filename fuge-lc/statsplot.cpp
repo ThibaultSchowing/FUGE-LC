@@ -26,7 +26,7 @@
   * The parameters are read from the scriptfile and the doRun() function is evaluated.
   */
 #include "statsplot.h"
-
+#include <QtMath>
 
 StatsPlot::StatsPlot(QWidget *parent) :
     QDialog(parent),
@@ -249,9 +249,7 @@ void StatsPlot::receiveData(QString name)
         fitAvgPop2Curve->setPen(QPen (Qt::blue,1,Qt::DashLine));
         for(auto i = pop2Index; i < xValsPop2->length(); ++i) {
             fitAvgPop2Curve->append(xValsPop2->at(i), yValsAvgPop2->at(i));
-            minY = qMin(minY, yValsAvgPop2->at(i));
             fitMaxPop2Curve->append(xValsPop2->at(i), yValsPop2->at(i));
-            maxY = qMax(maxY, yValsPop2->at(i));
         }
         pop2Index = xValsPop2->length() - 1;
     } else {
@@ -259,15 +257,20 @@ void StatsPlot::receiveData(QString name)
         fitAvgPop1Curve->setPen(QPen (Qt::red,1,Qt::DashLine));
         for(auto i = pop1Index; i < xValsPop1->length(); ++i) {
             fitAvgPop1Curve->append(xValsPop1->at(i), yValsAvgPop1->at(i));
-            minY = qMin(minY, yValsAvgPop1->at(i));
             fitMaxPop1Curve->append(xValsPop1->at(i), yValsPop1->at(i));
-            maxY = qMax(maxY, yValsPop1->at(i));
         }
         pop1Index = xValsPop1->length() - 1;
     }
-    qint64 max_x = qMax(xValsPop1->length(), xValsPop2->length());
-    axisX->setRange(0, max_x + 10 - max_x % 10);
-    axisY->setRange(minY - 0.05, maxY + 0.05);
+    qint64 max_x = qMax(xValsPop1->length(), xValsPop2->length()) - 1;
+    if(max_x > curMax) {
+        curMax += 10;
+    }
+    axisX->setRange(0, curMax);
+    qreal minY = qMin(stats.getFitMinPop1(), stats.getFitMinPop2());
+    minY = qFloor(minY * 10.0) / 10.0;
+    qreal maxY = qMax(stats.getFitMaxPop1(), stats.getFitMaxPop2());
+    maxY = qRound((maxY + 0.1) * 10.0) / 10.0;
+    axisY->setRange(minY, maxY);
 
     /* QWT-OLD-CODE
     if(name == "RULES"){
@@ -324,11 +327,14 @@ void StatsPlot::onClearStats()
     yValsPop2->clear();
     yValsAvgPop1->clear();
     yValsAvgPop2->clear();
+    fitMaxPop1Curve->clear();
+    fitMaxPop2Curve->clear();
+    fitAvgPop1Curve->clear();
+    fitAvgPop2Curve->clear();
 
     pop1Index = 0;
     pop2Index = 0;
-    maxY = 0;
-    minY = 1;
+    curMax = 0;
 
     if (isShowed)
         myPlot->update();
