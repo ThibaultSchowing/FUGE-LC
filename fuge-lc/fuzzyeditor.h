@@ -41,6 +41,10 @@
 #include <qwt_array.h>
 #include <qwt_legend.h>
 */
+#include <QLineSeries>
+#include <QChart>
+#include <QChartView>
+#include <QValueAxis>
 
 #include "fuzzysystem.h"
 #include "fuzzyrule.h"
@@ -48,6 +52,9 @@
 namespace Ui {
     class FuzzyEditor;
 }
+
+using namespace QtCharts;
+
 
 class FuzzyEditor : public QDialog {
     Q_OBJECT
@@ -78,6 +85,13 @@ protected:
 
 private:
     Ui::FuzzyEditor *m_ui;
+
+    QChart* myPlot;
+    QValueAxis* axisX;
+    QValueAxis* axisY;
+    QChartView* myPlotView;
+    QVector<QLineSeries*> curves;
+    QLineSeries* membCurve;
     /*
     QwtPlot *myPlot;
     QVector<QwtPlotCurve*> curves;
