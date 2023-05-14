@@ -44,6 +44,10 @@ FugeMain::FugeMain(QWidget *parent)
     ui->btValidate->setEnabled(false);
     ui->btEvaluate->setEnabled(false);
     ui->btPredict->setEnabled(false);
+    ui->groupBox_Script->setVisible(false);
+    ui->btShowExperience->setCheckable(true);
+    ui->btShowFuzzyEdition->setCheckable(true);
+    ui->btScript->setCheckable(true);
 
     // Initialise the random generator
     QTime time;
@@ -55,6 +59,11 @@ FugeMain::FugeMain(QWidget *parent)
     scriptLoaded = false;
     paramsLoaded = false;
     isRunning = false;
+    isScriptEnabled = false;
+    isFuzzyEnabled = true;
+    isExperimentEnabled = false;
+    onShowFuzzyClicked();
+    onShowExperimentClicked();
 
     ComputeThread::bestFSystem = 0;
     fSystemRules = 0;
@@ -92,6 +101,10 @@ FugeMain::FugeMain(QWidget *parent)
     connect(ui->btEditParams, SIGNAL(clicked()), this, SLOT(onActEditParams()));
     connect(ui->btOpenScript, SIGNAL(clicked()), this, SLOT(onActOpenScript()));
     connect(ui->btCloseScript, SIGNAL(clicked()), this, SLOT(onActCloseScript()));
+    connect(ui->btScript, SIGNAL(clicked()), this, SLOT(onShowScriptClicked()));
+    connect(ui->btShowExperience, SIGNAL(clicked()), this, SLOT(onShowExperimentClicked()));
+    connect(ui->btShowFuzzyEdition, SIGNAL(clicked()), this, SLOT(onShowFuzzyClicked()));
+
 
     this->createActions();
     // TODO: There's a ui, form file for this, it shouldn't be implemented in code
@@ -711,6 +724,7 @@ void FugeMain::onActPredictFuzzy(bool fromCmd)
     }
 }
 
+
 /**
   * Slot called when the user asks for a validation.
   */
@@ -1073,4 +1087,24 @@ void FugeMain::closeEvent(QCloseEvent*)
 
     statsPlot->close();
     this->close();
+}
+
+void FugeMain::onShowScriptClicked() {
+    isScriptEnabled = !isScriptEnabled;
+    ui->groupBox_Script->setVisible(isScriptEnabled);
+    ui->btScript->setChecked(isScriptEnabled);
+}
+
+void FugeMain::onShowExperimentClicked() {
+    isExperimentEnabled = !isExperimentEnabled;
+    ui->btShowExperience->setChecked(isExperimentEnabled);
+    ui->groupBox_Parameters->setVisible(isExperimentEnabled);
+    ui->groupBox_Experience->setVisible(isExperimentEnabled);
+}
+
+void FugeMain::onShowFuzzyClicked() {
+    isFuzzyEnabled = !isFuzzyEnabled;
+    ui->btShowFuzzyEdition->setChecked(isFuzzyEnabled);
+    ui->groupBox_FuzzySystem->setVisible(isFuzzyEnabled);
+
 }
