@@ -148,7 +148,7 @@ bool CoEvolution::evaluatePopulation(Population* population, quint32 generation)
             calcFitness(bestCurrGenRepresentative, bestCurrGenLeftPopEntity);
 
         // Delete representatives
-        for(int i = 0; i < RightRepresentative.size(); i++)
+        for(quint32 i = 0; i < RightRepresentative.size(); i++)
             delete RightRepresentative[i];
 
         // Print the output in verbose mode if needed

@@ -686,7 +686,7 @@ void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
 {
     QDir saveCurrent = QDir::current();
     QString name = saveCurrent.absolutePath() +  DEFAULTCONFIGNAME;
-    if(name!=NULL){
+    if(!name.isEmpty()){
         saveConfig(name);
     }
 }
@@ -698,7 +698,7 @@ void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
 void EditParamsDialog::on_pushButton_SaveAs_clicked()
 {
     QString name = QFileDialog::getSaveFileName(this,tr("Save config file"),QString(tr("myfile.conf")),tr("Config files.conf (*.conf)"));
-    if(name!=NULL){
+    if(!name.isEmpty()){
         saveConfig(name);
     }
 }
@@ -710,7 +710,7 @@ void EditParamsDialog::on_pushButton_SaveAs_clicked()
 void EditParamsDialog::on_pushButton_LoadFile_clicked()
 {
     QString name = QFileDialog::getOpenFileName(this,tr("Load config file"),QString(),tr("Config files.conf (*.conf)"));
-    if(name!=NULL){
+    if(!name.isEmpty()){
         loadConfig(name);
     }
 }
@@ -794,7 +794,7 @@ void EditParamsDialog::loadConfig(QString filename){
 
         QString line;
         QStringList content;
-        while((line = in.readLine()) != NULL)
+        while(!(line = in.readLine()).isEmpty())
         {
             // Remove all spaces
             line = line.trimmed();

@@ -47,7 +47,8 @@ FugeMain::FugeMain(QWidget *parent)
 
     // Initialise the random generator
     QTime time;
-    qsrand(QDateTime::currentDateTime().toTime_t());
+    //srand(QDateTime::currentDateTime().toTime_t());
+    srand(QDateTime::currentDateTime().toSecsSinceEpoch());
 
     fuzzyLoaded = false;
     dataLoaded = false;
@@ -395,7 +396,7 @@ void FugeMain::onActQuit()
 void FugeMain::onActOpenData()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), "../../../../datasets", "*.csv");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         // Clear previous loaded data
         if (dataLoaded)
             listFile->clear();
@@ -507,7 +508,7 @@ void FugeMain::onActOpenFuzzy()
 
     //connect(this, SIGNAL(evalFuzzySystem()), ComputeThread::bestFSystem, SLOT(doEvaluateFitness()));
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open fuzzy system"), sysParams.getSavePath()+"fuzzySystems", "*.ffs");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         if (ComputeThread::bestFSystem != 0) {
             delete ComputeThread::bestFSystem;
             ComputeThread::bestFSystem = NULL;
@@ -577,7 +578,7 @@ void FugeMain::onActSaveFuzzy()
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), sysParams.getSavePath()+"fuzzySystems" , "*.ffs");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         // If the evolution is running, we ask the evaluation operator to save the best system
         if (isRunning) {
             emit saveFuzzySystem(fileName);
@@ -629,7 +630,7 @@ void FugeMain::onActPredictFuzzy(bool fromCmd)
         fileName = sysParams.getDatasetName();
     }
 
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         // Clear previous loaded data
         if (dataLoaded)
             listFile->clear();
@@ -863,7 +864,7 @@ void FugeMain::onActEditParams()
 void FugeMain::onActOpenScript()
 {
     QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), "scripts", "*.fs");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         scriptLoaded = true;
         paramsLoaded = true;
         actCloseScript->setEnabled(true);
@@ -997,7 +998,7 @@ void FugeMain::onComputeFinished()
             logsDir.mkdir(sysParams.getSavePath()+"fuzzySystems");
         }
 
-        int randomNumber = qrand();
+        int randomNumber = rand();
         newNameStream << sysParams.getSavePath() +"fuzzySystems/" << sysParams.getExperimentName() << "_" << time.currentTime().toString() << "." << randomNumber << "Gen" << sysParams.getMaxGenPop1()
                       << "_" << "Pop" << stats.getSizePop1() << "_" << "Rules" << QString::number(sysParams.getNbRules()) << "_" << "Elt" << QString::number(sysParams.getEliteSizePop1())
                       << "_" << "CX" << QString::number(sysParams.getCxProbPop1()) << "_" << "MutI" << sysParams.getMutFlipIndPop1() << "_" << "MutB" << sysParams.getMutFlipBitPop1()

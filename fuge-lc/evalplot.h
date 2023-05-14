@@ -33,15 +33,27 @@
 
 #include <QDialog>
 
+#include <QLineSeries>
+#include <QChart>
+#include <QValueAxis>
+#include <QChartView>
+//#include <QScatterSeries>
+
+/*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_symbol.h>
 #include <qwt_array.h>
-#include <qwt_legend.h>
+#include <qwt_legend.h> */
 
 namespace Ui {
     class EvalPlot;
 }
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    using namespace QtCharts;
+#endif
+
 
 class EvalPlot : public QDialog {
     Q_OBJECT
@@ -99,8 +111,6 @@ private:
     Ui::EvalPlot *m_ui;
     QList<QStringList>* systemData;
     bool isPredictive;
-    QwtPlot* myPlot;
-    QwtLegend* legend;
     QVector<plotValues> sortedValues;
     QVector<float> mesuredValues;
     QVector<float> expectedValues;
@@ -113,10 +123,24 @@ private:
     QVector<double>* yValsExpected;
     QVector<double>* yValsPredicted;
     QVector<double>* yValsThresh;
+
+    QChart* myPlot;
+    QValueAxis* axisX;
+    QValueAxis* axisY;
+    QChartView* myPlotView;
+    //QScatterSeries* valsMesured;
+    QLineSeries* valsMesured;
+    QLineSeries* valsExpected;
+    QLineSeries* valsPredicted;
+    QLineSeries* threshCurve;
+    /* QWT-OLD-CODE
+    QwtPlot* myPlot;
+    QwtLegend* legend;
     QwtPlotCurve* valsMesured;
     QwtPlotCurve* valsExpected;
     QwtPlotCurve* valsPredicted;
-    QwtPlotCurve* threshCurve;
+    QwtPlotCurve* threshCurve; */
+
     QString desc;
     int nbOutVars;
     float fitness;

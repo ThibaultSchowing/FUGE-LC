@@ -88,6 +88,47 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
     desc.truncate(posText);
     m_ui->lblRules->setText(desc);
 
+    myPlot = new QChart();
+    myPlotView = new QChartView(myPlot);
+    myPlotView->setRenderHint(QPainter::Antialiasing);
+
+    membCurve = new QLineSeries();
+    membCurve->setName("Membership functions");
+    myPlot->addSeries(membCurve);
+
+    myPlot->createDefaultAxes();
+    foreach (QAbstractAxis* axis, myPlot->axes()) {
+        if (axis->orientation() == Qt::Horizontal) {
+            axisX = qobject_cast<QValueAxis*>(axis);
+        }
+        if (axis->orientation() == Qt::Vertical) {
+            axisY = qobject_cast<QValueAxis*>(axis);
+        }
+    }
+    assert(axisX != nullptr);
+    assert(axisY != nullptr);
+    axisX->setTitleText("Generation");
+    axisX->setTitleVisible();
+    axisX->setLabelFormat("%d");
+    axisY->setTitleText("Fitness");
+    axisY->setTitleVisible();
+    myPlotView->setMinimumHeight(350);
+
+    m_ui->graphLayout->addWidget(myPlotView);
+
+    curves.resize(fSystem->getNbInSets());
+
+    for (int i = 0; i < fSystem->getNbInVars(); i++) {
+        m_ui->comboBox->addItem(fSystem->getInVar(i)->getName());
+    }
+
+    for (int i = 0; i < fSystem->getNbInSets(); i++) {
+        QLineSeries* curve = new QLineSeries();
+        m_ui->cbSets->addItem(fSystem->getInVar(m_ui->comboBox->currentIndex())->getSet(i)->getName());
+        curves.replace(i, curve);
+    }
+
+    /*
     myPlot = new QwtPlot((QWidget*) this);
     //legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "");
@@ -110,6 +151,7 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
         m_ui->cbSets->addItem(fSystem->getInVar(m_ui->comboBox->currentIndex())->getSet(i)->getName());
         curves.replace(i, curve);
     }
+    */
 
     for (int i = 0; i < fSystem->getNbOutVars(); i++) {
         m_ui->comboBox->addItem(fSystem->getOutVar(i)->getName());
@@ -155,9 +197,12 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
 FuzzyEditor::~FuzzyEditor()
 {
     delete m_ui;
+
+    /*
     for (int i = 0; i < curves.size(); i++) {
         delete curves.at(i);
     }
+    */
 }
 
 /**
@@ -170,7 +215,7 @@ void FuzzyEditor::displayVars()
     }
     for (int i = fSystem->getNbInVars(); i < fSystem->getNbInVars() + fSystem->getNbOutVars(); i++) {
         m_ui->listVars->addItem(fSystem->getOutVar(i-fSystem->getNbInVars())->getName());
-        m_ui->listVars->item(i)->setTextColor(Qt::red);
+        m_ui->listVars->item(i)->setForeground(Qt::red);
     }
 }
 
@@ -527,6 +572,23 @@ void FuzzyEditor::onSelectVar()
     int varNum = m_ui->comboBox->currentIndex();
 
     // Update the sets combo box according to the actual set number
+
+    if (fSystem->getVar(varNum)->getSetsCount() < m_ui->cbSets->count()) {
+        for (int i = m_ui->cbSets->count()-1; i >= fSystem->getVar(varNum)->getSetsCount(); i--) {
+            m_ui->cbSets->removeItem(i);
+            myPlot->removeSeries(curves.at(i));
+        }
+    }
+    else if (fSystem->getVar(varNum)->getSetsCount() > m_ui->cbSets->count()){
+        for (int i = m_ui->cbSets->count(); i < fSystem->getVar(varNum)->getSetsCount(); i++) {
+             m_ui->cbSets->addItem(fSystem->getVar(m_ui->comboBox->currentIndex())->getSet(i)->getName());
+             /// ICI créer les courbes
+             QLineSeries* curve = new QLineSeries();
+             curves.append(curve);
+        }
+    }
+
+    /*
     if (fSystem->getVar(varNum)->getSetsCount() < m_ui->cbSets->count()) {
         for (int i = m_ui->cbSets->count()-1; i >= fSystem->getVar(varNum)->getSetsCount(); i--) {
             m_ui->cbSets->removeItem(i);
@@ -541,6 +603,7 @@ void FuzzyEditor::onSelectVar()
              curves.append(curve);
         }
     }
+    */
 
     // Update the plot
     for (int i = 0; i < fSystem->getVar(varNum)->getSetsCount(); i++) {
@@ -568,10 +631,22 @@ void FuzzyEditor::onSelectVar()
         }
 
         curves.at(i)->setPen(QPen (colorTab[i%(sizeof(colorTab)/sizeof(QColor))],3));
+        curves.at(i)->clear();
+        for(auto j = 0; j < xVals.length(); ++j) {
+            curves.at(i)->append(xVals.at(j), yVals.at(j));
+        }
+        myPlot->addSeries(curves.at(i));
+
+        /* OLD_QWT_CODE
+        curves.at(i)->setPen(QPen (colorTab[i%(sizeof(colorTab)/sizeof(QColor))],3));
         curves.at(i)->setData(xVals, yVals);
         curves.at(i)->attach(myPlot);
+        */
     }
+    myPlot->update();
+    /* OLD_QWT_CODE
     myPlot->replot();
+    */
 
     // Update the sets combo boxes
     for (int i = 0; i < fSystem->getVar(varNum)->getSetsCount(); i++) {
@@ -626,7 +701,10 @@ void FuzzyEditor::onSliderChanged(int val)
         m_ui->lnPos->setText(QString::number(((float) val / FLOATTOINT)));
     }
     onSelectVar();
+
+    /*
     myPlot->replot();
+    */
 }
 
 /**
@@ -738,7 +816,7 @@ void FuzzyEditor::onSaveFuzzy()
 {
     CoevStats& coevStats = CoevStats::getInstance();
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), ".ffs", "*.ffs");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         fSystem->saveToFile(fileName, coevStats.getFitMaxPop1());
     }
 }
@@ -1047,9 +1125,34 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
   */
 void FuzzyEditor::updateCurves()
 {
+
     // Check whether we need to delete curves or add new ones
     int delta = fSystem->getNbInSets() - curves.size();
     // Add new curves
+
+    if (delta > 0) {
+        for (int i = 1; delta > 0; delta--, i++) {
+            QLineSeries* curve = new QLineSeries();
+            curves.append(curve);
+            // Update the sets combo box
+            m_ui->cbSets->addItem(fSystem->getInVar(m_ui->comboBox->currentIndex())->getSet(i)->getName());
+        }
+    }
+    // Delete curves
+    else {
+        for (; delta < 0; delta++) {
+            delete curves.at(curves.size()-1);
+            curves.remove(curves.size()-1);
+            // Update the sets combo box
+            m_ui->cbSets->removeItem(m_ui->cbSets->count()-1);
+        }
+    }
+
+    /* QWT-OLD-CODE
+    // Check whether we need to delete curves or add new ones
+    int delta = fSystem->getNbInSets() - curves.size();
+    // Add new curves
+
     if (delta > 0) {  
         for (int i = 1; delta > 0; delta--, i++) {
             QwtPlotCurve* curve = new QwtPlotCurve();
@@ -1067,6 +1170,6 @@ void FuzzyEditor::updateCurves()
             m_ui->cbSets->removeItem(m_ui->cbSets->count()-1);
         }
     }
-
+    */
     onSelectVar();
 }

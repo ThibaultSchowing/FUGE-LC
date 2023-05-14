@@ -32,6 +32,7 @@
 
 #include <QFileDialog>
 #include <QTextStream>
+#include <algorithm>
 
 #include "evalplot.h"
 #include "ui_evalplot.h"
@@ -51,15 +52,71 @@ EvalPlot::EvalPlot(QWidget *parent) :
     connect(m_ui->btOk, SIGNAL(clicked()), this, SLOT(onCloseEval()));
     connect(m_ui->cbOut, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectOut()));
     connect(m_ui->chbSort, SIGNAL(stateChanged(int)), this, SLOT(onSort()));
+
+    myPlot = new QChart();
+    myPlotView = new QChartView(myPlot);
+    myPlotView->setRenderHint(QPainter::Antialiasing);
+
+
+    /* QWT-OLD-CODE
     myPlot = new QwtPlot((QWidget*) this);
     legend = new QwtLegend();
     myPlot->setAxisTitle(QwtPlot::xBottom, "Samples");
     myPlot->setAxisTitle(QwtPlot::yLeft, "Output");
+    */
     xVals = new QVector<double>();
     yValsMesured = new QVector<double>();
     yValsExpected = new QVector<double>();
     yValsPredicted = new QVector<double>();
     yValsThresh = new QVector<double>();
+
+
+    valsMesured = new QLineSeries();
+    valsExpected = new QLineSeries();
+    valsPredicted = new QLineSeries();
+    threshCurve = new QLineSeries();
+
+    valsMesured->setPen(QPen(Qt::red, 0.5));
+    valsMesured->setName("Measured output");
+    //valsMesured->setMarkerShape(QScatterSeries::MarkerShapeRectangle); // TODO, change to star in 6.5
+    //valsMesured->setMarkerSize(1);
+
+    valsExpected->setPen(QPen(Qt::blue, 2));
+    valsExpected->setName("Expected output");
+
+    valsPredicted->setPen(QPen(Qt::green, 0.5));
+    valsPredicted->setName("Predicted output");
+
+    threshCurve->setPen(QPen(Qt::black, 1));
+    threshCurve->setName("Threshold");
+
+    myPlot->addSeries(valsMesured);
+    myPlot->addSeries(valsExpected);
+    myPlot->addSeries(valsPredicted);
+    if (sysParams.getThreshActivated()) {
+        myPlot->addSeries(threshCurve);
+    }
+    myPlot->createDefaultAxes();
+    foreach (QAbstractAxis* axis, myPlot->axes()) {
+        if (axis->orientation() == Qt::Horizontal) {
+            axisX = qobject_cast<QValueAxis*>(axis);
+        }
+        if (axis->orientation() == Qt::Vertical) {
+            axisY = qobject_cast<QValueAxis*>(axis);
+        }
+    }
+    assert(axisX != nullptr);
+    assert(axisY != nullptr);
+    axisX->setLabelFormat("%d");
+    axisX->setTitleText("Samples");
+    axisX->setTitleVisible();
+    axisY->setTitleText("Output");
+    axisY->setTitleVisible();
+    m_ui->btSave->hide();
+    myPlotView->setMinimumHeight(350);
+    m_ui->horizontalLayout->addWidget(myPlotView);
+
+    /* QWT-OLD-CODE
     valsMesured = new QwtPlotCurve("Measured output");
     valsExpected = new QwtPlotCurve("Expected output");
     valsPredicted = new QwtPlotCurve("Predicted output");
@@ -93,6 +150,7 @@ EvalPlot::EvalPlot(QWidget *parent) :
     myPlot->insertLegend(legend, QwtPlot::TopLegend);
     m_ui->btSave->hide();
     m_ui->horizontalLayout->addWidget(myPlot);
+    */
 }
 
 EvalPlot::~EvalPlot()
@@ -165,6 +223,7 @@ void EvalPlot::setMesuredValues(QVector<float> mesValues)
     mesuredValues = mesValues;
     /// ICI passer la var out en param
     affectMesuredValues(mesuredValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1), m_ui->cbOut->currentIndex());
+    axisX->setRange(0, xVals->length() + 50 - xVals->length() % 50);
 }
 
 /**
@@ -186,9 +245,20 @@ void EvalPlot::affectMesuredValues(QVector<float> mesValues, int outVar)
     for (int i = 0; i < mesValues.size(); i++) {
         xVals->replace(i, i);
     }
+
+    valsMesured->clear();
+    threshCurve->clear();
+
+    for(auto i = 0; i < xVals->length(); ++i) {
+        valsMesured->append(xVals->at(i), yValsMesured->at(i));
+        threshCurve->append(xVals->at(i), yValsThresh->at(i));
+    }
+
+    myPlot->update();
+    /* QWT-OLD-CODE
     valsMesured->setData(*xVals, *yValsMesured);
     threshCurve->setData(*xVals, *yValsThresh);
-    myPlot->replot();
+    myPlot->replot(); */
 }
 
 /**
@@ -217,8 +287,19 @@ void EvalPlot::affectExpectedValues(QVector<float> expValues)
     for (int i = 0; i < expValues.size(); i++) {
         xVals->replace(i, i);
     }
+
+    valsExpected->clear();
+
+    for(auto i = 0; i < xVals->length(); ++i) {
+        valsExpected->append(xVals->at(i), yValsExpected->at(i));
+    }
+
+    myPlot->update();
+
+    /* QWT-OLD-CODE
     valsExpected->setData(*xVals, *yValsExpected);
     myPlot->replot();
+    */
 }
 
 /**
@@ -247,8 +328,19 @@ void EvalPlot::affectPredictedValues(QVector<float> predValues)
     for (int i = 0; i < predValues.size(); i++) {
         xVals->replace(i, i);
     }
+
+    valsPredicted->clear();
+
+    for(auto i = 0; i < xVals->length(); ++i) {
+        valsPredicted->append(xVals->at(i), yValsPredicted->at(i));
+    }
+
+    myPlot->update();
+
+    /* QWT-OLD-CODE
     valsPredicted->setData(*xVals, *yValsPredicted);
     myPlot->replot();
+    */
 }
 
 /**
@@ -318,7 +410,7 @@ void EvalPlot::saveEval(QString fileName)
 void EvalPlot::onSaveEval()
 {
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), ".csv", "*.csv");
-    if (fileName != NULL) {
+    if (!fileName.isEmpty()) {
         this->saveEval(fileName);
     }
 }
@@ -343,7 +435,11 @@ void EvalPlot::onSelectOut()
     if (!isPredictive)
         affectExpectedValues(expectedValues.mid((systemData->size()-1)*m_ui->cbOut->currentIndex(), systemData->size()-1));
 
+
+    myPlot->update();
+    /* QWT-OLD-CODE
     myPlot->replot();
+    */
 }
 
 /**
@@ -361,7 +457,7 @@ void EvalPlot::onSort()
         for(int i=0; i< mesuredValues.size(); i++){
             sortedValues.append(plotValues(mesuredValues.at(i), expectedValues.at(i), predictedValues.at(i)));
         }
-        qSort(sortedValues);
+        std::sort(sortedValues.begin(), sortedValues.end());
 
         for(int i=0; i< mesuredValues.size(); i++){
             mesuredValues[i] = sortedValues.at(i).mesured;
@@ -383,7 +479,10 @@ void EvalPlot::onSort()
         this->setPredictedValues(this->predictedValuesOriginal);
     }
 
+    myPlot->update();
+    /* QWT-OLD-CODE
     myPlot->replot();
+    */
 }
 
 /**

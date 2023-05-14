@@ -36,7 +36,7 @@
 #include <QMutexLocker>
 #include <QMutex>
 #include <QTime>
-#include <QLinkedList>
+//#include <QLinkedList>
 #include <QThread>
 #include <memory>
 

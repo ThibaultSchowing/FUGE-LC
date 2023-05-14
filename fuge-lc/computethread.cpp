@@ -194,7 +194,7 @@ void ComputeThread::loadConfiguration(POPULATION_CONFIG_TYPE &config, QString fi
 
         QString line;
         QStringList content;
-        while((line = in.readLine()) != NULL)
+        while(!(line = in.readLine()).isEmpty())
         {
             line = line.trimmed();
             line.replace(" ", "");

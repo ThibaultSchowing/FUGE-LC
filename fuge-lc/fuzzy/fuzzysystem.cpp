@@ -28,6 +28,7 @@
   */
 
 #include "fuzzysystem.h"
+#include <algorithm>
 // TODO: Refractoring or even better start a new fuzzysystem project.
 // This class is 1800~ lines long.
 // FIXME : URGENT this class does not support negative outputs ! due to -1 being declared as "don't care" for rules / out vars.
@@ -514,7 +515,7 @@ void FuzzySystem::loadMembershipsGenome(FuzzyMembershipsGenome* membGen, int ind
             posVector.append(position);
         }
         // Sort the vector
-        qSort(posVector);
+        std::sort(posVector.begin(), posVector.end());
         // Add the sets to the variable
         for (int l = 0; l < posVector.size(); l++) {
             inVarArray[i]->getSet(l)->setPosition(posVector.at(l)+valMin);
@@ -540,7 +541,7 @@ void FuzzySystem::loadMembershipsGenome(FuzzyMembershipsGenome* membGen, int ind
             posVector.append(position);
         }
         // Sort the vector
-        qSort(posVector);
+        std::sort(posVector.begin(), posVector.end());
         // Add the sets to the variable
         for (int l = 0; l < posVector.size(); l++) {
             outVarArray[i]->getSet(l)->setPosition(posVector.at(l)+valMin);

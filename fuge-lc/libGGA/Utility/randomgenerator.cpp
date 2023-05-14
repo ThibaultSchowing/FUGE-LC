@@ -73,9 +73,9 @@ RandomGenerator *RandomGenerator::getGeneratorInstance(){
  */
 qint32 RandomGenerator::random(qint32 min, qint32 max){
     if(min > max){
-        return (qrand() / RANDMAX_PLUSONE) * (min-max+1);
+        return (rand() / RANDMAX_PLUSONE) * (min-max+1);
     }else{
-        return (qrand() / RANDMAX_PLUSONE) * (max+1-min);
+        return (rand() / RANDMAX_PLUSONE) * (max+1-min);
     }
 }
 
@@ -89,9 +89,9 @@ qint32 RandomGenerator::random(qint32 min, qint32 max){
  */
 qreal RandomGenerator::randomReal(qreal min, qreal max){
     if(min > max){
-        return ((qreal)qrand() / (qreal)RANDMAX_PLUSONE) * (min-max);
+        return ((qreal)rand() / (qreal)RANDMAX_PLUSONE) * (min-max);
     }else{
-        return ((qreal)qrand() / (qreal)RANDMAX_PLUSONE) * (max-min);
+        return ((qreal)rand() / (qreal)RANDMAX_PLUSONE) * (max-min);
     }
 }
 
@@ -104,9 +104,9 @@ qreal RandomGenerator::randomReal(qreal min, qreal max){
  */
 qint32 RandomGenerator::randomNoRandMax(qint32 min, qint32 max){
     if(min < max){
-        return qrand()%(max-min+1) + min;
+        return rand()%(max-min+1) + min;
     }else{
-        return qrand()%(min-max+1) + max;
+        return rand()%(min-max+1) + max;
     }
 }
 
@@ -116,5 +116,5 @@ qint32 RandomGenerator::randomNoRandMax(qint32 min, qint32 max){
  *
  */
 void RandomGenerator::resetSeed(){
-    qsrand(QTime::currentTime().msec());
+    srand(QTime::currentTime().msec());
 }
