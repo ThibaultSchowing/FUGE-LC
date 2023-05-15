@@ -369,7 +369,6 @@ void FugeMain::onActRun()
         ui->btCloseData->setEnabled(false);
         ui->btOpenFuzzy->setEnabled(false);
         ui->btEditParams->setEnabled(false);
-
     }
     else if (!dataLoaded) {
         ErrorDialog errDiag;
@@ -965,6 +964,11 @@ void FugeMain::onComputeFinished()
     ui->btNewFuzzy->setEnabled(true);
     ui->btOpenData->setEnabled(true);
     ui->btEditParams->setEnabled(true);
+
+    if (!isFuzzyEnabled) {
+        onShowFuzzyClicked();
+    }
+
 
     emit closeStats();
 
