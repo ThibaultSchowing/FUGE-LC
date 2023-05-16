@@ -972,6 +972,24 @@ void EditParamsDialog::toggle_level_two(bool b) {
     m_ui->label_Cooperators_lv2->setVisible(b);
     m_ui->spinBoxCooperators->setVisible(b);
 
+    // FITNESS
+    m_ui->lblCorr->setVisible(b);
+    m_ui->lblDistance->setVisible(b);
+    m_ui->lblDontCare->setVisible(b);
+    m_ui->lblMinDistance->setVisible(b);
+    m_ui->lblOverLearn->setVisible(b);
+    m_ui->lblRae->setVisible(b);
+    m_ui->lblRrse->setVisible(b);
+    m_ui->lblMSE->setVisible(b);
+
+    m_ui->lineCorr->setVisible(b);
+    m_ui->lineDistance->setVisible(b);
+    m_ui->lineDontCare->setVisible(b);
+    m_ui->lineMinDistance->setVisible(b);
+    m_ui->lineOverLearn->setVisible(b);
+    m_ui->lineRae->setVisible(b);
+    m_ui->lineRrse->setVisible(b);
+    m_ui->lineMse->setVisible(b);
 }
 
 void EditParamsDialog::toggle_level_three(bool b) {
