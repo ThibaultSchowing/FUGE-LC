@@ -92,6 +92,11 @@ private slots:
     void on_pushButton_LoadUserDefault_clicked();
     void on_comboBox_LearningMethod_activated(int index);
     void on_comboBox_MembershipInitialization_activated(int index);
+    void toggle_level_two(bool b);
+    void toggle_level_three(bool b);
+    void display_level_one();
+    void display_level_two();
+    void display_level_three();
 };
 
 #endif // EDITPARAMSDIALOG_H

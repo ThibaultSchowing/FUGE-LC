@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1151</width>
-    <height>500</height>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -361,7 +361,7 @@
            </property>
            <layout class="QGridLayout" name="gridLayout_6">
             <item row="8" column="2">
-             <widget class="QLabel" name="label_12">
+             <widget class="QLabel" name="label_12_lv2">
               <property name="toolTip">
                <string>Crossover probability for individuals of Pop 2</string>
               </property>
@@ -371,7 +371,7 @@
              </widget>
             </item>
             <item row="6" column="2">
-             <widget class="QLabel" name="label_10">
+             <widget class="QLabel" name="label_10_lv2">
               <property name="toolTip">
                <string>Number of elite individuals in pop 2</string>
               </property>
@@ -422,7 +422,7 @@
              </widget>
             </item>
             <item row="6" column="0">
-             <widget class="QLabel" name="label_9">
+             <widget class="QLabel" name="label_9_lv2">
               <property name="toolTip">
                <string>Number of elite individuals in pop 1</string>
               </property>
@@ -470,7 +470,7 @@
              </widget>
             </item>
             <item row="9" column="2">
-             <widget class="QLabel" name="label_14">
+             <widget class="QLabel" name="label_14_lv2">
               <property name="toolTip">
                <string>Probability that an individual of Pop 2 is subject to mutation</string>
               </property>
@@ -518,7 +518,7 @@
              </widget>
             </item>
             <item row="10" column="0">
-             <widget class="QLabel" name="label_15">
+             <widget class="QLabel" name="label_15_lv2">
               <property name="toolTip">
                <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
               </property>
@@ -528,7 +528,7 @@
              </widget>
             </item>
             <item row="9" column="0">
-             <widget class="QLabel" name="label_13">
+             <widget class="QLabel" name="label_13_lv2">
               <property name="toolTip">
                <string>Probability that an individual of Pop 1 is subject to mutation</string>
               </property>
@@ -808,7 +808,7 @@
              </widget>
             </item>
             <item row="11" column="1">
-             <widget class="QLabel" name="label_Cooperators">
+             <widget class="QLabel" name="label_Cooperators_lv2">
               <property name="text">
                <string>Cooperators</string>
               </property>
@@ -843,7 +843,7 @@
              </widget>
             </item>
             <item row="8" column="0">
-             <widget class="QLabel" name="label_11">
+             <widget class="QLabel" name="label_11_lv2">
               <property name="toolTip">
                <string>Crossover probability for individuals of Pop 1</string>
               </property>
@@ -947,7 +947,7 @@
              </widget>
             </item>
             <item row="10" column="2">
-             <widget class="QLabel" name="label_16">
+             <widget class="QLabel" name="label_16_lv2">
               <property name="toolTip">
                <string>Probability that a bit is mutated in the genome of an individual of Pop 2 chosen for mutation</string>
               </property>
@@ -957,7 +957,7 @@
              </widget>
             </item>
             <item row="7" column="0">
-             <widget class="QLabel" name="label_30">
+             <widget class="QLabel" name="label_30_lv2">
               <property name="font">
                <font>
                 <pointsize>10</pointsize>
@@ -2094,6 +2094,45 @@
          <widget class="QPushButton" name="pushButton_SaveAsUserDefault">
           <property name="text">
            <string>Save As User Default</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_Level">
+       <property name="styleSheet">
+        <string notr="true">QGroupBox
+{
+	
+	font-size: 13pt;
+    font-weight: bold;
+}
+</string>
+       </property>
+       <property name="title">
+        <string>Interface level</string>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QRadioButton" name="radioButton_basic">
+          <property name="text">
+           <string>Basic</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_advanced">
+          <property name="text">
+           <string>Advanced</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_expert">
+          <property name="text">
+           <string>Expert</string>
           </property>
          </widget>
         </item>

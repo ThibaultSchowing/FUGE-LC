@@ -62,6 +62,9 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     // Display the fitness function
     displayFitFct();
 
+    // Display basic level of parameters
+    display_level_one();
+
 
     // FIXME: Can be all done in the ui form.
     // Automatically check and set values inserted and connect every signal with the desired slot.
@@ -116,6 +119,9 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     connect(m_ui->lineAccu, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->linePpv, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->lineRmse, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
+    connect(m_ui->radioButton_basic, SIGNAL(pressed()), this, SLOT(display_level_one()));
+    connect(m_ui->radioButton_advanced, SIGNAL(pressed()), this, SLOT(display_level_two()));
+    connect(m_ui->radioButton_expert, SIGNAL(pressed()), this, SLOT(display_level_three()));
 }
 
 EditParamsDialog::~EditParamsDialog()
@@ -943,3 +949,58 @@ void EditParamsDialog::setEnabledCoevParams(bool value){
     SystemParameters& sysParams = SystemParameters::getInstance();
     sysParams.setCoevolutionary(value);
 }
+
+void EditParamsDialog::toggle_level_two(bool b) {
+    // POPULATION
+    m_ui->label_9_lv2->setVisible(b);
+    m_ui->label_10_lv2->setVisible(b);
+    m_ui->label_11_lv2->setVisible(b);
+    m_ui->label_12_lv2->setVisible(b);
+    m_ui->label_13_lv2->setVisible(b);
+    m_ui->label_14_lv2->setVisible(b);
+    m_ui->label_15_lv2->setVisible(b);
+    m_ui->label_16_lv2->setVisible(b);
+    m_ui->label_30_lv2->setVisible(b);
+    m_ui->lineElitePop1->setVisible(b);
+    m_ui->lineElitePop2->setVisible(b);
+    m_ui->lineCxPop1->setVisible(b);
+    m_ui->lineCxPop2->setVisible(b);
+    m_ui->lineMutBitPop1->setVisible(b);
+    m_ui->lineMutBitPop2->setVisible(b);
+    m_ui->lineMutIndPop1->setVisible(b);
+    m_ui->lineMutIndPop2->setVisible(b);
+    m_ui->label_Cooperators_lv2->setVisible(b);
+    m_ui->spinBoxCooperators->setVisible(b);
+
+}
+
+void EditParamsDialog::toggle_level_three(bool b) {
+    // BITS FOR RULES
+    m_ui->groupBox_FuzzyEvolution->setVisible(b);
+}
+
+void EditParamsDialog::display_level_one() {
+    toggle_level_two(false);
+    toggle_level_three(false);
+    m_ui->radioButton_basic->setChecked(true);
+    m_ui->radioButton_advanced->setChecked(false);
+    m_ui->radioButton_expert->setChecked(false);
+}
+
+void EditParamsDialog::display_level_two() {
+    toggle_level_two(true);
+    toggle_level_three(false);
+    m_ui->radioButton_basic->setChecked(false);
+    m_ui->radioButton_advanced->setChecked(true);
+    m_ui->radioButton_expert->setChecked(false);
+}
+
+void EditParamsDialog::display_level_three() {
+    toggle_level_two(true);
+    toggle_level_three(true);
+    m_ui->radioButton_basic->setChecked(false);
+    m_ui->radioButton_advanced->setChecked(false);
+    m_ui->radioButton_expert->setChecked(true);
+}
+
+
