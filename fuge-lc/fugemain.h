@@ -142,8 +142,6 @@ private:
     bool paramsLoaded;
     bool isRunning;
     bool isScriptEnabled;
-    bool isExperimentEnabled;
-    bool isFuzzyEnabled;
 
 public slots:
     void onComputeFinished();
@@ -170,8 +168,6 @@ private slots:
     void onActHelp();
     void closeEvent(QCloseEvent*);
     void onShowScriptClicked();
-    void onShowExperimentClicked();
-    void onShowFuzzyClicked();
 
 signals:
     void clearStats();

@@ -266,22 +266,7 @@
         </layout>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0">
-         <item>
-          <widget class="QPushButton" name="btShowExperience">
-           <property name="text">
-            <string>Experience</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btShowFuzzyEdition">
-           <property name="text">
-            <string>Fuzzy Editor</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch=""/>
        </item>
       </layout>
      </widget>
@@ -390,21 +375,273 @@
          </item>
         </layout>
        </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_FuzzySystem">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QGroupBox
+{
+	
+	font-size: 13pt;
+    font-weight: bold;
+}
+</string>
+         </property>
+         <property name="title">
+          <string>Fuzzy System</string>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QPushButton" name="btOpenFuzzy">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Open...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btNewFuzzy">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>New...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btSaveFuzzy">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Save...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btCloseFuzzy">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Close</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btEditFuzzy">
+              <property name="text">
+               <string>Edit...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Status :</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_fuzzyInfo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <italic>true</italic>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color: rgb(255, 0, 0);</string>
+              </property>
+              <property name="text">
+               <string>No fuzzy system loaded</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+              <property name="margin">
+               <number>0</number>
+              </property>
+              <property name="indent">
+               <number>6</number>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QPushButton" name="btValidate">
+              <property name="font">
+               <font>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Validate...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btEvaluate">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Evaluate...</string>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btPredict">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="text">
+               <string>Predict...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+     <widget class="QGroupBox" name="groupBox_Statistics">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>0</height>
-       </size>
+      <property name="styleSheet">
+       <string notr="true">QGroupBox
+{
+	
+	font-size: 13pt;
+    font-weight: bold;
+}
+</string>
       </property>
-     </spacer>
+      <property name="title">
+       <string>Statistics</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <item>
+          <widget class="QPushButton" name="btGraph">
+           <property name="text">
+            <string>Show Fitness Plot</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
      <widget class="QGroupBox" name="groupBox_Script">
@@ -574,15 +811,18 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="btRun">
+            <widget class="QPushButton" name="btScript">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::StrongFocus</enum>
+             </property>
              <property name="text">
-              <string>Run</string>
+              <string>Script</string>
              </property>
             </widget>
            </item>
@@ -600,300 +840,19 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btScript">
+            <widget class="QPushButton" name="btRun">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::StrongFocus</enum>
-             </property>
              <property name="text">
-              <string>Script</string>
+              <string>Run</string>
              </property>
             </widget>
            </item>
           </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_Statistics">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QGroupBox
-{
-	
-	font-size: 13pt;
-    font-weight: bold;
-}
-</string>
-         </property>
-         <property name="title">
-          <string>Statistics</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>10</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_14">
-            <item>
-             <widget class="QPushButton" name="btGraph">
-              <property name="text">
-               <string>Show Fitness Plot</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBox_FuzzySystem">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QGroupBox
-{
-	
-	font-size: 13pt;
-    font-weight: bold;
-}
-</string>
-      </property>
-      <property name="title">
-       <string>Fuzzy System</string>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>10</number>
-       </property>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <item>
-          <widget class="QPushButton" name="btOpenFuzzy">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Open...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btNewFuzzy">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>New...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btSaveFuzzy">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Save...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btCloseFuzzy">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>Close</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btEditFuzzy">
-           <property name="text">
-            <string>Edit...</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_12">
-         <item>
-          <widget class="QLabel" name="label_2">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Status :</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_fuzzyInfo">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <italic>true</italic>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 0, 0);</string>
-           </property>
-           <property name="text">
-            <string>No fuzzy system loaded</string>
-           </property>
-           <property name="wordWrap">
-            <bool>true</bool>
-           </property>
-           <property name="margin">
-            <number>0</number>
-           </property>
-           <property name="indent">
-            <number>6</number>
-           </property>
-           <property name="textInteractionFlags">
-            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_11">
-         <item>
-          <widget class="QPushButton" name="btValidate">
-           <property name="font">
-            <font>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Validate...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btEvaluate">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Evaluate...</string>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btPredict">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Predict...</string>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
