@@ -204,9 +204,6 @@ FuzzyEditor::~FuzzyEditor()
 
     delete myPlot;
     delete myPlotView;
-    delete myPlotView;
-
-    delete membCurve;
 
 }
 
