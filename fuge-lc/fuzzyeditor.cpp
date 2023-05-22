@@ -198,11 +198,16 @@ FuzzyEditor::~FuzzyEditor()
 {
     delete m_ui;
 
-    /*
     for (int i = 0; i < curves.size(); i++) {
         delete curves.at(i);
     }
-    */
+
+    delete myPlot;
+    delete myPlotView;
+    delete myPlotView;
+
+    delete membCurve;
+
 }
 
 /**
@@ -635,7 +640,9 @@ void FuzzyEditor::onSelectVar()
         for(auto j = 0; j < xVals.length(); ++j) {
             curves.at(i)->append(xVals.at(j), yVals.at(j));
         }
-        myPlot->addSeries(curves.at(i));
+        if (myPlot->series().indexOf(curves.at(i)) < 0 ) {
+            myPlot->addSeries(curves.at(i));
+        }
 
         /* OLD_QWT_CODE
         curves.at(i)->setPen(QPen (colorTab[i%(sizeof(colorTab)/sizeof(QColor))],3));

@@ -126,6 +126,14 @@ StatsPlot::~StatsPlot()
     delete yValsPop2;
     delete yValsAvgPop1;
     delete yValsAvgPop2;
+
+    delete myPlot;
+    delete myPlotView;
+
+    delete fitMaxPop1Curve;
+    delete fitMaxPop2Curve;
+    delete fitAvgPop1Curve;
+    delete fitAvgPop2Curve;
 }
 
 void StatsPlot::changeEvent(QEvent *e)
