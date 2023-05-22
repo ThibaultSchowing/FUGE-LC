@@ -77,6 +77,8 @@ private:
     void saveConfig(QString filename);
     void loadConfig(QString filename);
     void setEnabledCoevParams(bool value);
+    QString FormatParameterDisplay(const QString& str);
+
 private slots:
     void accept();
     void displayFitFct();

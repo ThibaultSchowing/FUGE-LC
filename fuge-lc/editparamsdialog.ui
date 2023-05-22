@@ -52,7 +52,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>750</width>
+       <width>675</width>
        <height>0</height>
       </size>
      </property>
@@ -66,8 +66,8 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>734</width>
+        <y>-374</y>
+        <width>659</width>
         <height>954</height>
        </rect>
       </property>
@@ -119,10 +119,64 @@
             <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="3">
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineRules">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Maximum number of variables present in a rule</string>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string/>
+              </property>
+              <property name="text">
+               <string>5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_32">
+              <property name="toolTip">
+               <string>Number of sets for the input variables</string>
+              </property>
+              <property name="text">
+               <string>Input sets</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="toolTip">
+               <string>Maximum number of rules for a fuzzy system</string>
+              </property>
+              <property name="text">
+               <string>Rules</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="4">
              <widget class="QLineEdit" name="lineOutput">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -147,47 +201,7 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_2">
-              <property name="toolTip">
-               <string>Maximum number of rules for a fuzzy system</string>
-              </property>
-              <property name="text">
-               <string>Number of rules</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_33">
-              <property name="toolTip">
-               <string>Number of sets for the output variables</string>
-              </property>
-              <property name="text">
-               <string>Number of output sets</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_4">
-              <property name="toolTip">
-               <string>Here is specified how much output variables are present in the database</string>
-              </property>
-              <property name="text">
-               <string>Number of output variables</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_32">
-              <property name="toolTip">
-               <string>Number of sets for the input variables</string>
-              </property>
-              <property name="text">
-               <string>Number of input sets</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="3">
+            <item row="2" column="4">
              <widget class="QLineEdit" name="lineOutSets">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -222,44 +236,6 @@
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QLineEdit" name="lineVarsPerRule">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Maximum number of variables present in a rule</string>
-              </property>
-              <property name="text">
-               <string>5</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_3">
-              <property name="toolTip">
-               <string>Maximum number of variables present in a rule</string>
-              </property>
-              <property name="text">
-               <string>Max number of vars/rule</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
              <widget class="QLineEdit" name="lineInSets">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -293,8 +269,8 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineRules">
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="lineVarsPerRule">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -316,14 +292,66 @@
               <property name="toolTip">
                <string>Maximum number of variables present in a rule</string>
               </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string/>
-              </property>
               <property name="text">
                <string>5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QLabel" name="label_33">
+              <property name="toolTip">
+               <string>Number of sets for the output variables</string>
+              </property>
+              <property name="text">
+               <string>Output sets</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="3">
+             <widget class="QLabel" name="label_4">
+              <property name="minimumSize">
+               <size>
+                <width>130</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Here is specified how much output variables are present in the database</string>
+              </property>
+              <property name="text">
+               <string>Output variables</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="minimumSize">
+               <size>
+                <width>175</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Maximum number of variables present in a rule</string>
+              </property>
+              <property name="text">
+               <string>Max number of vars/rule</string>
               </property>
              </widget>
             </item>
@@ -360,28 +388,8 @@
             <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_6">
-            <item row="8" column="2">
-             <widget class="QLabel" name="label_12_lv2">
-              <property name="toolTip">
-               <string>Crossover probability for individuals of Pop 2</string>
-              </property>
-              <property name="text">
-               <string>Crossover </string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="2">
-             <widget class="QLabel" name="label_10_lv2">
-              <property name="toolTip">
-               <string>Number of elite individuals in pop 2</string>
-              </property>
-              <property name="text">
-               <string>Elite Size</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="1">
-             <widget class="QLineEdit" name="lineMutBitPop1">
+            <item row="4" column="4">
+             <widget class="QLineEdit" name="lineFitPop2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -401,23 +409,54 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
+               <string>Fitness threshold to reach before stopping the experiment (Pop 2)</string>
               </property>
               <property name="text">
-               <string>0.025</string>
+               <string>1</string>
+              </property>
+              <property name="readOnly">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_28">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-                <italic>true</italic>
-               </font>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="minimumSize">
+               <size>
+                <width>175</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Maximum number of evolution generations to perform for Pop 1</string>
               </property>
               <property name="text">
-               <string>Population 1</string>
+               <string>Nb of generations</string>
+              </property>
+             </widget>
+            </item>
+            <item row="11" column="3">
+             <widget class="QSpinBox" name="spinBoxCooperators">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="value">
+               <number>2</number>
               </property>
              </widget>
             </item>
@@ -431,10 +470,20 @@
               </property>
              </widget>
             </item>
-            <item row="6" column="1">
-             <widget class="QLineEdit" name="lineElitePop1">
+            <item row="10" column="3">
+             <widget class="QLabel" name="label_16_lv2">
+              <property name="toolTip">
+               <string>Probability that a bit is mutated in the genome of an individual of Pop 2 chosen for mutation</string>
+              </property>
+              <property name="text">
+               <string>Bit mutation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="4">
+             <widget class="QLineEdit" name="lineGenPop2">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -452,34 +501,17 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Number of elite individuals in pop 1</string>
+               <string>Maximum number of evolution generations to perform for Pop 2</string>
               </property>
               <property name="text">
-               <string>5</string>
+               <string>100</string>
+              </property>
+              <property name="readOnly">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_7">
-              <property name="toolTip">
-               <string>Fitness threshold to reach before stopping the experiment (Pop 1)</string>
-              </property>
-              <property name="text">
-               <string>Max fitness threshold</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="2">
-             <widget class="QLabel" name="label_14_lv2">
-              <property name="toolTip">
-               <string>Probability that an individual of Pop 2 is subject to mutation</string>
-              </property>
-              <property name="text">
-               <string>Individual mutation</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="2">
+            <item row="3" column="3">
              <widget class="QLabel" name="label_23">
               <property name="toolTip">
                <string>Size of population 2</string>
@@ -489,51 +521,23 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="3">
-             <widget class="QLineEdit" name="linePop2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
+            <item row="8" column="0">
+             <widget class="QLabel" name="label_11_lv2">
               <property name="toolTip">
-               <string>Size of population 2</string>
+               <string>Crossover probability for individuals of Pop 1</string>
               </property>
               <property name="text">
-               <string>100</string>
+               <string>Crossover </string>
               </property>
              </widget>
             </item>
-            <item row="10" column="0">
-             <widget class="QLabel" name="label_15_lv2">
+            <item row="1" column="3">
+             <widget class="QLabel" name="label_6">
               <property name="toolTip">
-               <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
+               <string>Maximum number of evolution generations to perform for Pop 2</string>
               </property>
               <property name="text">
-               <string>Bit mutation</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="0">
-             <widget class="QLabel" name="label_13_lv2">
-              <property name="toolTip">
-               <string>Probability that an individual of Pop 1 is subject to mutation</string>
-              </property>
-              <property name="text">
-               <string>Individual mutation</string>
+               <string>Nb of generations</string>
               </property>
              </widget>
             </item>
@@ -565,7 +569,86 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="2">
+            <item row="6" column="3">
+             <widget class="QLabel" name="label_10_lv2">
+              <property name="toolTip">
+               <string>Number of elite individuals in pop 2</string>
+              </property>
+              <property name="text">
+               <string>Elite Size</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="label_30_lv2">
+              <property name="font">
+               <font>
+                <pointsize>10</pointsize>
+                <italic>true</italic>
+               </font>
+              </property>
+              <property name="text">
+               <string>Probabilities</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="4">
+             <widget class="QLineEdit" name="linePop2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Size of population 2</string>
+              </property>
+              <property name="text">
+               <string>100</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLineEdit" name="lineElitePop1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Number of elite individuals in pop 1</string>
+              </property>
+              <property name="text">
+               <string>5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
              <widget class="QLabel" name="label_29">
               <property name="font">
                <font>
@@ -578,8 +661,8 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QLineEdit" name="lineGenPop2">
+            <item row="6" column="4">
+             <widget class="QLineEdit" name="lineElitePop2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -599,104 +682,27 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Maximum number of evolution generations to perform for Pop 2</string>
+               <string>Number of elite individuals in pop 2</string>
               </property>
               <property name="text">
-               <string>100</string>
-              </property>
-              <property name="readOnly">
-               <bool>false</bool>
+               <string>5</string>
               </property>
              </widget>
             </item>
-            <item row="9" column="3">
-             <widget class="QLineEdit" name="lineMutIndPop2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="11" column="1">
+             <widget class="QLabel" name="label_Cooperators_lv2">
+              <property name="text">
+               <string>Cooperators</string>
               </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_22">
               <property name="toolTip">
-               <string>Probability that an individual of Pop 2 is subject to mutation</string>
+               <string>Size of population 1</string>
               </property>
               <property name="text">
-               <string>0.1</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_5">
-              <property name="toolTip">
-               <string>Maximum number of evolution generations to perform for Pop 1</string>
-              </property>
-              <property name="text">
-               <string>Nb of generations</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="2">
-             <widget class="QSpinBox" name="spinBoxCooperators">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="value">
-               <number>2</number>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="1">
-             <widget class="QLineEdit" name="lineMutIndPop1">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Probability that an individual of Pop 1 is subject to mutation</string>
-              </property>
-              <property name="text">
-               <string>0.1</string>
+               <string>Size</string>
               </property>
              </widget>
             </item>
@@ -728,10 +734,68 @@
               </property>
              </widget>
             </item>
+            <item row="8" column="3">
+             <widget class="QLabel" name="label_12_lv2">
+              <property name="toolTip">
+               <string>Crossover probability for individuals of Pop 2</string>
+              </property>
+              <property name="text">
+               <string>Crossover </string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="0">
+             <widget class="QLabel" name="label_13_lv2">
+              <property name="toolTip">
+               <string>Probability that an individual of Pop 1 is subject to mutation</string>
+              </property>
+              <property name="text">
+               <string>Individual mutation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <widget class="QLineEdit" name="lineMutIndPop1">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Probability that an individual of Pop 1 is subject to mutation</string>
+              </property>
+              <property name="text">
+               <string>0.1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="3">
+             <widget class="QLabel" name="label_14_lv2">
+              <property name="toolTip">
+               <string>Probability that an individual of Pop 2 is subject to mutation</string>
+              </property>
+              <property name="text">
+               <string>Individual mutation</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="1">
              <widget class="QLineEdit" name="lineGenPop1">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -756,7 +820,7 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="2">
+            <item row="4" column="3">
              <widget class="QLabel" name="label_8">
               <property name="toolTip">
                <string>Fitness threshold to reach before stopping the experiment (Pop 2)</string>
@@ -766,18 +830,8 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_22">
-              <property name="toolTip">
-               <string>Size of population 1</string>
-              </property>
-              <property name="text">
-               <string>Size</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="3">
-             <widget class="QLineEdit" name="lineFitPop2">
+            <item row="10" column="1">
+             <widget class="QLineEdit" name="lineMutBitPop1">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -797,62 +851,14 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Fitness threshold to reach before stopping the experiment (Pop 2)</string>
+               <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
               </property>
               <property name="text">
-               <string>1</string>
-              </property>
-              <property name="readOnly">
-               <bool>false</bool>
+               <string>0.025</string>
               </property>
              </widget>
             </item>
-            <item row="11" column="1">
-             <widget class="QLabel" name="label_Cooperators_lv2">
-              <property name="text">
-               <string>Cooperators</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="3">
-             <widget class="QLineEdit" name="lineElitePop2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Number of elite individuals in pop 2</string>
-              </property>
-              <property name="text">
-               <string>5</string>
-              </property>
-             </widget>
-            </item>
-            <item row="8" column="0">
-             <widget class="QLabel" name="label_11_lv2">
-              <property name="toolTip">
-               <string>Crossover probability for individuals of Pop 1</string>
-              </property>
-              <property name="text">
-               <string>Crossover </string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="3">
+            <item row="10" column="4">
              <widget class="QLineEdit" name="lineMutBitPop2">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -880,13 +886,92 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_6">
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_7">
               <property name="toolTip">
-               <string>Maximum number of evolution generations to perform for Pop 2</string>
+               <string>Fitness threshold to reach before stopping the experiment (Pop 1)</string>
               </property>
               <property name="text">
-               <string>Nb of generations</string>
+               <string>Max fitness threshold</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="0">
+             <widget class="QLabel" name="label_15_lv2">
+              <property name="toolTip">
+               <string>Probability that a bit is mutated in the genome of an individual of Pop 1 chosen for mutation</string>
+              </property>
+              <property name="text">
+               <string>Bit mutation</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="4">
+             <widget class="QLineEdit" name="lineMutIndPop2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Probability that an individual of Pop 2 is subject to mutation</string>
+              </property>
+              <property name="text">
+               <string>0.1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="4">
+             <widget class="QLineEdit" name="lineCxPop2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Crossover probability for individuals of Pop 2</string>
+              </property>
+              <property name="text">
+               <string>0.9</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_28">
+              <property name="font">
+               <font>
+                <pointsize>10</pointsize>
+                <italic>true</italic>
+               </font>
+              </property>
+              <property name="text">
+               <string>Population 1</string>
               </property>
              </widget>
             </item>
@@ -918,56 +1003,18 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="3">
-             <widget class="QLineEdit" name="lineCxPop2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-              <property name="minimumSize">
+              <property name="sizeHint" stdset="0">
                <size>
                 <width>40</width>
-                <height>0</height>
+                <height>20</height>
                </size>
               </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Crossover probability for individuals of Pop 2</string>
-              </property>
-              <property name="text">
-               <string>0.9</string>
-              </property>
-             </widget>
-            </item>
-            <item row="10" column="2">
-             <widget class="QLabel" name="label_16_lv2">
-              <property name="toolTip">
-               <string>Probability that a bit is mutated in the genome of an individual of Pop 2 chosen for mutation</string>
-              </property>
-              <property name="text">
-               <string>Bit mutation</string>
-              </property>
-             </widget>
-            </item>
-            <item row="7" column="0">
-             <widget class="QLabel" name="label_30_lv2">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-                <italic>true</italic>
-               </font>
-              </property>
-              <property name="text">
-               <string>Probabilities</string>
-              </property>
-             </widget>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -987,32 +1034,31 @@
             <string>Fuzzy Evolution</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_8">
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_21">
-              <property name="toolTip">
-               <string>Number of bits used to code an input variable in the genome</string>
-              </property>
-              <property name="text">
-               <string>Input vars bit code size</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_39">
+            <item row="4" column="3">
+             <widget class="QLineEdit" name="lineOutSetsCode">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
-                <verstretch>25</verstretch>
+                <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="font">
-               <font>
-                <pointsize>8</pointsize>
-                <italic>true</italic>
-               </font>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Number of bits used to code an output set in the genome</string>
               </property>
               <property name="text">
-               <string>Rules genome :</string>
+               <string>1</string>
               </property>
              </widget>
             </item>
@@ -1039,13 +1085,75 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_34">
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_25">
+              <property name="toolTip">
+               <string>Number of bits used to code an input set in the genome</string>
+              </property>
+              <property name="text">
+               <string>Input sets bit code size</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="3">
+             <widget class="QLineEdit" name="lineOutVarsCode">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Number of bits used to code an output variable in the genome</string>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineInSetsPos">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="toolTip">
                <string>Number of bits used to code the position parameters for the input sets</string>
               </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string/>
+              </property>
               <property name="text">
-               <string>Input sets pos. code size</string>
+               <string>4</string>
               </property>
              </widget>
             </item>
@@ -1083,119 +1191,48 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_35">
-              <property name="toolTip">
-               <string>Number of bits used to code the position parameters for the output sets</string>
-              </property>
-              <property name="text">
-               <string>Output sets pos. code size</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="3">
-             <widget class="QLineEdit" name="lineOutSetsPos">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_34">
               <property name="minimumSize">
                <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Number of bits used to code the position parameters for the output sets</string>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string/>
-              </property>
-              <property name="text">
-               <string>4</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="3">
-             <widget class="QLineEdit" name="lineOutVarsCode">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Number of bits used to code an output variable in the genome</string>
-              </property>
-              <property name="text">
-               <string>1</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="lineInSetsPos">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
+                <width>175</width>
                 <height>0</height>
                </size>
               </property>
               <property name="toolTip">
                <string>Number of bits used to code the position parameters for the input sets</string>
               </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="styleSheet">
-               <string/>
-              </property>
               <property name="text">
-               <string>4</string>
+               <string>Input sets pos. code size</string>
               </property>
              </widget>
             </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="label_25">
-              <property name="toolTip">
-               <string>Number of bits used to code an input set in the genome</string>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_39">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>25</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>8</pointsize>
+                <italic>true</italic>
+               </font>
               </property>
               <property name="text">
-               <string>Input sets bit code size</string>
+               <string>Rules genome :</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_21">
+              <property name="toolTip">
+               <string>Number of bits used to code an input variable in the genome</string>
+              </property>
+              <property name="text">
+               <string>Input vars bit code size</string>
               </property>
              </widget>
             </item>
@@ -1243,10 +1280,10 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="3">
-             <widget class="QLineEdit" name="lineOutSetsCode">
+            <item row="1" column="3">
+             <widget class="QLineEdit" name="lineOutSetsPos">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -1264,10 +1301,26 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Number of bits used to code an output set in the genome</string>
+               <string>Number of bits used to code the position parameters for the output sets</string>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
+              <property name="styleSheet">
+               <string/>
               </property>
               <property name="text">
-               <string>1</string>
+               <string>4</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="label_35">
+              <property name="toolTip">
+               <string>Number of bits used to code the position parameters for the output sets</string>
+              </property>
+              <property name="text">
+               <string>Output sets pos. code size</string>
               </property>
              </widget>
             </item>
@@ -1304,18 +1357,8 @@
             <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
-            <item row="6" column="0">
-             <widget class="QLabel" name="lblDontCare">
-              <property name="toolTip">
-               <string>RMSE weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>Size system weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="lineSensi">
+            <item row="1" column="4">
+             <widget class="QLineEdit" name="lineAccu">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1335,40 +1378,25 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Sensitivity weight in fitness evaluation</string>
+               <string>Accuracy weight in fitness evaluation</string>
               </property>
               <property name="text">
-               <string>1</string>
+               <string>0</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="lblRrse">
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Sensitivity weight in fitness evaluation</string>
-              </property>
-              <property name="statusTip">
-               <string/>
-              </property>
-              <property name="whatsThis">
-               <string/>
-              </property>
-              <property name="text">
-               <string>RRSE weight</string>
+            <item row="9" column="1">
+             <widget class="QComboBox" name="cbThresh">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
              </widget>
             </item>
-            <item row="6" column="3">
-             <widget class="QLineEdit" name="lineOverLearn">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
+            <item row="5" column="1">
+             <widget class="QLineEdit" name="lineDistance">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1395,8 +1423,18 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QLineEdit" name="lineAccu">
+            <item row="2" column="3">
+             <widget class="QLabel" name="label_20">
+              <property name="toolTip">
+               <string>RMSE weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>RMSE weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="3">
+             <widget class="QLineEdit" name="lineThresh">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -1417,6 +1455,148 @@
               </property>
               <property name="toolTip">
                <string>Accuracy weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>0.5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLineEdit" name="lineDontCare">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>RMSE weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLabel" name="label_19">
+              <property name="toolTip">
+               <string>PPV weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>PPV weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_17">
+              <property name="minimumSize">
+               <size>
+                <width>175</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string>Sensitivity weight in fitness evaluation</string>
+              </property>
+              <property name="statusTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text">
+               <string>Sensitivity weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="3">
+             <widget class="QLabel" name="lblMinDistance">
+              <property name="toolTip">
+               <string>RMSE weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>MDM weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="lblCorr">
+              <property name="toolTip">
+               <string>Accuracy weight in fitness evaluations evaluation</string>
+              </property>
+              <property name="text">
+               <string>Correlation weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="lineRrse">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="lineRae">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string/>
               </property>
               <property name="text">
                <string>0</string>
@@ -1454,93 +1634,7 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="lblDistance">
-              <property name="toolTip">
-               <string>Specificity weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>ADM weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLineEdit" name="lineRae">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_19">
-              <property name="toolTip">
-               <string>PPV weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>PPV weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="2">
-             <widget class="QLabel" name="lblMinDistance">
-              <property name="toolTip">
-               <string>RMSE weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>MDM weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="3">
-             <widget class="QLineEdit" name="lineMse">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>RMSE weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="3">
+            <item row="5" column="4">
              <widget class="QLineEdit" name="lineMinDistance">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1568,13 +1662,93 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="2">
-             <widget class="QLabel" name="lblMSE">
+            <item row="6" column="3">
+             <widget class="QLabel" name="lblOverLearn">
               <property name="toolTip">
                <string>RMSE weight in fitness evaluation</string>
               </property>
               <property name="text">
-               <string>MSE weight</string>
+               <string>Over Learn</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="lblRrse">
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="toolTip">
+               <string>Sensitivity weight in fitness evaluation</string>
+              </property>
+              <property name="statusTip">
+               <string/>
+              </property>
+              <property name="whatsThis">
+               <string/>
+              </property>
+              <property name="text">
+               <string>RRSE weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="lblDontCare">
+              <property name="toolTip">
+               <string>RMSE weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>Size system weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QLabel" name="label_37">
+              <property name="toolTip">
+               <string>Accuracy weight in fitness evaluations evaluation</string>
+              </property>
+              <property name="text">
+               <string>Accuracy weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_18">
+              <property name="toolTip">
+               <string>Specificity weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>Specificity weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="lineSensi">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Sensitivity weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>1</string>
               </property>
              </widget>
             </item>
@@ -1594,111 +1768,41 @@
               </property>
              </widget>
             </item>
-            <item row="6" column="2">
-             <widget class="QLabel" name="lblOverLearn">
+            <item row="3" column="4">
+             <widget class="QLineEdit" name="lineMse">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="toolTip">
                <string>RMSE weight in fitness evaluation</string>
               </property>
               <property name="text">
-               <string>Over Learn</string>
+               <string>0</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_18">
+            <item row="3" column="0">
+             <widget class="QLabel" name="lblRae">
               <property name="toolTip">
                <string>Specificity weight in fitness evaluation</string>
               </property>
               <property name="text">
-               <string>Specificity weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="2">
-             <widget class="QLineEdit" name="lineThresh">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Accuracy weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>0.5</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_17">
-              <property name="mouseTracking">
-               <bool>false</bool>
-              </property>
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="toolTip">
-               <string>Sensitivity weight in fitness evaluation</string>
-              </property>
-              <property name="statusTip">
-               <string/>
-              </property>
-              <property name="whatsThis">
-               <string/>
-              </property>
-              <property name="text">
-               <string>Sensitivity weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="9" column="1">
-             <widget class="QComboBox" name="cbThresh">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="lineRrse">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="text">
-               <string>0</string>
+               <string>RAE weight</string>
               </property>
              </widget>
             </item>
@@ -1730,7 +1834,86 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="3">
+            <item row="6" column="4">
+             <widget class="QLineEdit" name="lineOverLearn">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QLineEdit" name="linePpv">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>40</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>PPV weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="3">
+             <widget class="QLabel" name="lblMSE">
+              <property name="toolTip">
+               <string>RMSE weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>MSE weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="lblDistance">
+              <property name="toolTip">
+               <string>Specificity weight in fitness evaluation</string>
+              </property>
+              <property name="text">
+               <string>ADM weight</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="4">
              <widget class="QLineEdit" name="lineRmse">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1758,129 +1941,21 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QLineEdit" name="linePpv">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="0" column="2">
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
-              <property name="minimumSize">
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
-                <height>0</height>
+                <width>50</width>
+                <height>20</height>
                </size>
               </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>PPV weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>1</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QLabel" name="label_20">
-              <property name="toolTip">
-               <string>RMSE weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>RMSE weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="lblCorr">
-              <property name="toolTip">
-               <string>Accuracy weight in fitness evaluations evaluation</string>
-              </property>
-              <property name="text">
-               <string>Correlation weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
-             <widget class="QLineEdit" name="lineDistance">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="6" column="1">
-             <widget class="QLineEdit" name="lineDontCare">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>40</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="baseSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>RMSE weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>0</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_37">
-              <property name="toolTip">
-               <string>Accuracy weight in fitness evaluations evaluation</string>
-              </property>
-              <property name="text">
-               <string>Accuracy weight</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="lblRae">
-              <property name="toolTip">
-               <string>Specificity weight in fitness evaluation</string>
-              </property>
-              <property name="text">
-               <string>RAE weight</string>
-              </property>
-             </widget>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -2154,6 +2229,18 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBox_formulas">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>475</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="styleSheet">
         <string notr="true">QGroupBox
 {

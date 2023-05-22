@@ -135,8 +135,21 @@ EditParamsDialog::~EditParamsDialog()
   */
 void EditParamsDialog::displayFitFct()
 {
-    m_ui->labelFitFct->setText("Fitness = " + m_ui->lineSensi->text() + "*Sensi + " + m_ui->lineSpeci->text() + "*Speci + "
-                               + m_ui->linePpv->text() +"*Accuracy + " + m_ui->lineAccu->text() + "*PPV + " + m_ui->lineRmse->text() + "*RMSE");
+    QString sensi = FormatParameterDisplay(m_ui->lineSensi->text());
+    QString speci = FormatParameterDisplay(m_ui->lineSpeci->text());
+    QString ppv = FormatParameterDisplay(m_ui->linePpv->text());
+    QString accu = FormatParameterDisplay(m_ui->lineAccu->text());
+    QString rmse = FormatParameterDisplay(m_ui->lineRmse->text());
+    m_ui->labelFitFct->setText("Fitness = " + sensi + "*Sensi + " + speci + "*Speci + "
+                               + ppv + "*Accuracy + " + accu + "*PPV + " + rmse + "*RMSE");
+}
+
+QString EditParamsDialog::FormatParameterDisplay(const QString& str) {
+    if (str.length() <= 5){
+        return str;
+    }
+
+    return str.left(3) + "...";
 }
 
 /**
