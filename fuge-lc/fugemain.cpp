@@ -45,13 +45,10 @@ FugeMain::FugeMain(QWidget *parent)
     ui->btPredict->setEnabled(false);
     ui->groupBox_Script->setVisible(false);
     ui->btScript->setCheckable(true);
-    ui->btRun->setCheckable(true);
-    ui->btRunScript->setCheckable(true);
     ui->btRunScript->setVisible(false);
 
     // NOT IMPLEMENTED YET
     ui->btNewFuzzy->setVisible(false);
-
 
     // Initialise the random generator
     QTime time;
