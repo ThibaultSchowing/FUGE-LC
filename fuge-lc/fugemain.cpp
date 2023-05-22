@@ -28,7 +28,6 @@
   */
 #include "fugemain.h"
 
-
 QFile *fitLogFile;
 QSemaphore scriptSema(0);
 bool doRunFromCmd = false;
@@ -406,7 +405,8 @@ void FugeMain::onActQuit()
   */
 void FugeMain::onActOpenData()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), "../../../../datasets", "*.csv");
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), sysParams.getProjectPath(), "*.csv");
     if (!fileName.isEmpty()) {
         // Clear previous loaded data
         if (dataLoaded)
@@ -418,7 +418,6 @@ void FugeMain::onActOpenData()
         QStringList list;
 
         // Save the name of the dataset
-        SystemParameters& sysParams = SystemParameters::getInstance();
         sysParams.setDatasetName(fileName);
 
         // Read the csv file and store info in a double dimension list.
@@ -636,7 +635,7 @@ void FugeMain::onActPredictFuzzy(bool fromCmd)
     QString fileName;
 
     if (!fromCmd)
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), "../../../../datasets", "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), sysParams.getProjectPath(), "*.csv");
     else {
         fileName = sysParams.getDatasetName();
     }
@@ -751,7 +750,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
         //fileExists = file.exists();
     }
     else {
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), "../../../../datasets", "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), sysParams.getProjectPath(), "*.csv");
     }
 
     QFile file(fileName);
@@ -875,7 +874,8 @@ void FugeMain::onActEditParams()
   */
 void FugeMain::onActOpenScript()
 {
-    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), "scripts", "*.fs");
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), sysParams.getProjectPath(), "*.fs");
     if (!fileName.isEmpty()) {
         scriptLoaded = true;
         paramsLoaded = true;

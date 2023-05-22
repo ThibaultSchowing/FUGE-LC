@@ -141,7 +141,7 @@ void EditParamsDialog::displayFitFct()
     QString accu = FormatParameterDisplay(m_ui->lineAccu->text());
     QString rmse = FormatParameterDisplay(m_ui->lineRmse->text());
     m_ui->labelFitFct->setText("Fitness = " + sensi + "*Sensi + " + speci + "*Speci + "
-                               + ppv + "*Accuracy + " + accu + "*PPV + " + rmse + "*RMSE");
+                               + ppv + "*Acc + " + accu + "*PPV + " + rmse + "*RMSE");
 }
 
 QString EditParamsDialog::FormatParameterDisplay(const QString& str) {
@@ -716,7 +716,8 @@ void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
  */
 void EditParamsDialog::on_pushButton_SaveAs_clicked()
 {
-    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"),QString(tr("myfile.conf")),tr("Config files.conf (*.conf)"));
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getProjectPath() + tr("/myfile.conf")) ,tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -728,7 +729,8 @@ void EditParamsDialog::on_pushButton_SaveAs_clicked()
  */
 void EditParamsDialog::on_pushButton_LoadFile_clicked()
 {
-    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"),QString(),tr("Config files.conf (*.conf)"));
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getProjectPath(), tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         loadConfig(name);
     }

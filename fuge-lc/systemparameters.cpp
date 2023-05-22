@@ -27,6 +27,7 @@
 #include <iostream>
 
 #include <QFile>
+#include <QStandardPaths>
 
 #include "systemparameters.h"
 
@@ -85,6 +86,7 @@ SystemParameters::SystemParameters()
     learning = false;
     learningMethod = 0;
     initVarsMethod = 0;
+    projectPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 }
 
 SystemParameters::~SystemParameters()
