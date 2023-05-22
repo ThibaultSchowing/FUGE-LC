@@ -170,7 +170,7 @@ void StatsPlot::receiveData(QString name)
     // These things need to be done only once
     if (xValsPop1->last() < 2) {
         m_ui->label_pops->setText("<font color = red>"+ QString::number(stats.getSizePop1()) +"<font>"+"\\"+"<font color = blue>"+ QString::number(stats.getSizePop2()) +"<font>");
-        m_ui->label_exp->setText(sysParams.getExperimentName());
+        m_ui->groupBox_experiment->setTitle(tr("Experiment: ") + sysParams.getExperimentName());
         m_ui->label_rules->setText(QString::number(sysParams.getNbRules()));
         m_ui->label_elite->setText(QString::number(sysParams.getEliteSizePop1()));
         m_ui->label_cx->setText(QString::number(sysParams.getCxProbPop1()));
