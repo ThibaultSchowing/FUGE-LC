@@ -141,10 +141,7 @@ FugeMain::FugeMain(QWidget *parent)
     // User has to enable script
     actOpenScript->setEnabled(false);
 
-    if(!sysParams.getDatasetName().isEmpty()) {
-        QString fileName = sysParams.getDatasetName();
-        loadDataSet(fileName);
-    }
+    loadFromIni();
 }
 
 FugeMain::~FugeMain()
@@ -1095,30 +1092,8 @@ void FugeMain::onSettingWordFolder()
 
     QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getDefaultFilePath(), QFileDialog::ShowDirsOnly);
 
-    QDir workDir;
-    if (!path.isEmpty() && workDir.exists(path)) {
-        QString fuzzyPath = path + "/fuzzySystems";
-        if (!workDir.exists(fuzzyPath)) {
-            workDir.mkdir(fuzzyPath);
-        }
-        QString configPath = path + "/configs";
-        if (!workDir.exists(configPath)) {
-            workDir.mkdir(configPath);
-        }
-        QString scriptPath = path + "/scripts";
-        if (!workDir.exists(scriptPath)) {
-            workDir.mkdir(scriptPath);
-        }
-
-        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath)) {
-            ErrorDialog errDiag;
-            errDiag.setError("Error : bad path");
-            errDiag.setInfo("The selected folder cannot be written.");
-            errDiag.exec();
-            return;
-        }
-
-        sysParams.newWorkFolder(path);
+    if (sysParams.newWorkFolder(path)) {
+        resetDisplay();
     }
     else {
         ErrorDialog errDiag;
@@ -1164,5 +1139,20 @@ void FugeMain::loadDataSet(const QString& fileName) {
         ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
         actCloseData->setEnabled(true);
         ui->btCloseData->setEnabled(true);
+    }
+}
+
+void FugeMain::resetDisplay(){
+    onActCloseData();
+    onActCloseFuzzy();
+    onActCloseScript();
+}
+
+void FugeMain::loadFromIni() {
+    SystemParameters& sysParams = SystemParameters::getInstance();
+
+    if(!sysParams.getDatasetName().isEmpty()) {
+        QString fileName = sysParams.getDatasetName();
+        loadDataSet(fileName);
     }
 }

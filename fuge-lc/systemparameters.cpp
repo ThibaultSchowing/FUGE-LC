@@ -106,10 +106,34 @@ SystemParameters::~SystemParameters()
 {
 }
 
-void SystemParameters::newWorkFolder(const QString& path) {
-    savePath = path;
-    datasetName = "";
-    writeIni();
+bool SystemParameters::newWorkFolder(const QString& path) {
+    QDir workDir;
+    if (!path.isEmpty() && workDir.exists(path)) {
+        QString fuzzyPath = path + "/fuzzySystems";
+        if (!workDir.exists(fuzzyPath)) {
+            workDir.mkdir(fuzzyPath);
+        }
+        QString configPath = path + "/configs";
+        if (!workDir.exists(configPath)) {
+            workDir.mkdir(configPath);
+        }
+        QString scriptPath = path + "/scripts";
+        if (!workDir.exists(scriptPath)) {
+            workDir.mkdir(scriptPath);
+        }
+
+        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath)) {
+            return false ;
+        }
+
+        savePath = path;
+        datasetName = "";
+        writeIni();
+
+        return true;
+    }
+
+    return false;
 }
 
 void SystemParameters::writeIni() {

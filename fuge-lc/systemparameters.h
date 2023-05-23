@@ -144,7 +144,7 @@ public:
         return instance;
     }
 
-    void newWorkFolder(const QString& path);
+    bool newWorkFolder(const QString& path);
     inline void setExperimentName(QString name) {experimentName = name;}
     inline void setDatasetName(QString name) {
         datasetName = name;

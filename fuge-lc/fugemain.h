@@ -97,6 +97,8 @@ protected:
 
 private:
     void createActions();
+    void resetDisplay();
+    void loadFromIni();
     void loadDataSet(const QString& fileName);
     Ui::FugeMain* ui;
     AboutDialog* aboutDial;
