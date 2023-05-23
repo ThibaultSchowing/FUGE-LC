@@ -1124,24 +1124,33 @@ void FugeMain::onSettingWordFolder()
 
     QDir workDir;
     if (!path.isEmpty() && workDir.exists(path)) {
-        QString fuzzyPath = "/fuzzySystems";
-        if (!workDir.exists(path + fuzzyPath)) {
-            workDir.mkdir(path + fuzzyPath);
+        QString fuzzyPath = path + "/fuzzySystems";
+        if (!workDir.exists(fuzzyPath)) {
+            workDir.mkdir(fuzzyPath);
         }
-        QString configPath = "/configs";
-        if (!workDir.exists(path + configPath)) {
-            workDir.mkdir(path + configPath);
+        QString configPath = path + "/configs";
+        if (!workDir.exists(configPath)) {
+            workDir.mkdir(configPath);
         }
-        QString scriptPath = "/scripts";
-        if (!workDir.exists(path + scriptPath)) {
-            workDir.mkdir(path + scriptPath);
+        QString scriptPath = path + "/scripts";
+        if (!workDir.exists(scriptPath)) {
+            workDir.mkdir(scriptPath);
         }
+
+        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath)) {
+            ErrorDialog errDiag;
+            errDiag.setError("Error : bad path");
+            errDiag.setInfo("The selected folder cannot be written.");
+            errDiag.exec();
+            return;
+        }
+
         sysParams.setProjectPath(path);
     }
     else {
         ErrorDialog errDiag;
         errDiag.setError("Error : bad path");
-        errDiag.setInfo("Please select a writeable folder as a work folder.");
+        errDiag.setInfo("Please select an existing and writable folder as a work folder.");
         errDiag.exec();
         return;
     }
