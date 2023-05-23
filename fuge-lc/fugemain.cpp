@@ -125,6 +125,7 @@ FugeMain::FugeMain(QWidget *parent)
     scriptMenu->addAction(actOpenScript);
     scriptMenu->addAction(actCloseScript);
     scriptMenu->addAction(actRunScript);
+    scriptMenu->addAction(actEnableScript);
     fileMenu->addAction(actQuit);
     helpMenu->addAction(actHelp);
     helpMenu->addAction(actAbout);
@@ -132,6 +133,10 @@ FugeMain::FugeMain(QWidget *parent)
 
     // Fuzzy system manual creation not implemented yet...
     ui->btNewFuzzy->setEnabled(false);
+    actNewFuzzy->setEnabled(false);
+
+    // User has to enable script
+    actOpenScript->setEnabled(false);
 }
 
 FugeMain::~FugeMain()
@@ -261,6 +266,7 @@ void FugeMain::createActions()
     actQuit = new QAction(tr("&Quit"), this);
     actHelp = new QAction(tr("&Help..."), this);
     actAbout = new QAction(tr("&About..."), this);
+    actEnableScript = new QAction(tr("&Enable Script"));
     actRun->setEnabled(false);
     actStop->setEnabled(false);
     actRunScript->setEnabled(false);
@@ -300,6 +306,7 @@ void FugeMain::createActions()
     connect(actQuit, SIGNAL(triggered()), this, SLOT(onActQuit()));
     connect(actHelp, SIGNAL(triggered()), this, SLOT(onActHelp()));
     connect(actAbout, SIGNAL(triggered()), this, SLOT(onActAbout()));
+    connect(actEnableScript, SIGNAL(triggered()), this, SLOT(onShowScriptClicked()));
 }
 
 /**
@@ -1087,7 +1094,15 @@ void FugeMain::closeEvent(QCloseEvent*)
 void FugeMain::onShowScriptClicked() {
     isScriptEnabled = !isScriptEnabled;
     ui->groupBox_Script->setVisible(isScriptEnabled);
+    actOpenScript->setEnabled(isScriptEnabled && ui->btOpenScript->isEnabled());
+    actCloseScript->setEnabled(isScriptEnabled && ui->btCloseScript->isEnabled());
+    actRunScript->setEnabled(isScriptEnabled && ui->btRunScript->isEnabled());
     ui->btScript->setChecked(isScriptEnabled);
     ui->btRun->setVisible(!isScriptEnabled);
     ui->btRunScript->setVisible(isScriptEnabled);
+    if (!isScriptEnabled) {
+        actEnableScript->setText("&Enable script");
+    } else {
+        actEnableScript->setText("&Disable script");
+    }
 }

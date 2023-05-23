@@ -127,6 +127,7 @@ private:
     QAction* actQuit;
     QAction* actAbout;
     QAction* actHelp;
+    QAction* actEnableScript;
     QMenu* fileMenu;
     QMenu* dataMenu;
     QMenu* fuzzyMenu;
