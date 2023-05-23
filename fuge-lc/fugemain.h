@@ -128,6 +128,7 @@ private:
     QAction* actAbout;
     QAction* actHelp;
     QAction* actEnableScript;
+    QAction* actSetWorkFolder;
     QMenu* fileMenu;
     QMenu* dataMenu;
     QMenu* fuzzyMenu;
@@ -169,6 +170,7 @@ private slots:
     void onActHelp();
     void closeEvent(QCloseEvent*);
     void onShowScriptClicked();
+    void onSettingWordFolder();
 
 signals:
     void clearStats();

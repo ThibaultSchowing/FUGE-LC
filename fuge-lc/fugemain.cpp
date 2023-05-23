@@ -109,6 +109,7 @@ FugeMain::FugeMain(QWidget *parent)
     paramsMenu = menuBar()->addMenu(tr("&Parameters"));
     scriptMenu = menuBar()->addMenu(tr("&Script"));
     helpMenu = menuBar()->addMenu(tr("&Help"));
+    fileMenu->addAction(actSetWorkFolder);
     fileMenu->addAction(actRun);
     fileMenu->addAction(actStop);
     dataMenu->addAction(actOpenData);
@@ -267,6 +268,7 @@ void FugeMain::createActions()
     actHelp = new QAction(tr("&Help..."), this);
     actAbout = new QAction(tr("&About..."), this);
     actEnableScript = new QAction(tr("&Enable Script"));
+    actSetWorkFolder = new QAction(tr("&Set work folder..."));
     actRun->setEnabled(false);
     actStop->setEnabled(false);
     actRunScript->setEnabled(false);
@@ -307,6 +309,7 @@ void FugeMain::createActions()
     connect(actHelp, SIGNAL(triggered()), this, SLOT(onActHelp()));
     connect(actAbout, SIGNAL(triggered()), this, SLOT(onActAbout()));
     connect(actEnableScript, SIGNAL(triggered()), this, SLOT(onShowScriptClicked()));
+    connect(actSetWorkFolder, SIGNAL(triggered()), this, SLOT(onSettingWordFolder()));
 }
 
 /**
@@ -1091,6 +1094,9 @@ void FugeMain::closeEvent(QCloseEvent*)
     this->close();
 }
 
+/**
+ * Slot called when script is enabled or disabled
+ */
 void FugeMain::onShowScriptClicked() {
     isScriptEnabled = !isScriptEnabled;
     ui->groupBox_Script->setVisible(isScriptEnabled);
@@ -1104,5 +1110,27 @@ void FugeMain::onShowScriptClicked() {
         actEnableScript->setText("&Enable script");
     } else {
         actEnableScript->setText("&Disable script");
+    }
+}
+
+/**
+  * Slot called when the user asks for an evalutation.
+  */
+void FugeMain::onSettingWordFolder()
+{
+    SystemParameters& sysParams = SystemParameters::getInstance();
+
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getProjectPath(), QFileDialog::ShowDirsOnly);
+
+    QDir workDir;
+    if (!path.isEmpty() && workDir.exists(path)) {
+        // TODO
+    }
+    else {
+        ErrorDialog errDiag;
+        errDiag.setError("Error : bad path");
+        errDiag.setInfo("Please select a writeable folder as a work folder.");
+        errDiag.exec();
+        return;
     }
 }
