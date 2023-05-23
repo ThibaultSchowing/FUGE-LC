@@ -1143,9 +1143,12 @@ void FugeMain::loadDataSet(const QString& fileName) {
 }
 
 void FugeMain::resetDisplay(){
+    paramsLoaded = false;
     onActCloseData();
     onActCloseFuzzy();
     onActCloseScript();
+    isScriptEnabled = true;
+    onShowScriptClicked();
 }
 
 void FugeMain::loadFromIni() {
