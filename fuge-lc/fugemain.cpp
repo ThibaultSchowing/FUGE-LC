@@ -1124,7 +1124,19 @@ void FugeMain::onSettingWordFolder()
 
     QDir workDir;
     if (!path.isEmpty() && workDir.exists(path)) {
-        // TODO
+        QString fuzzyPath = "/fuzzySystems";
+        if (!workDir.exists(path + fuzzyPath)) {
+            workDir.mkdir(path + fuzzyPath);
+        }
+        QString configPath = "/configs";
+        if (!workDir.exists(path + configPath)) {
+            workDir.mkdir(path + configPath);
+        }
+        QString scriptPath = "/scripts";
+        if (!workDir.exists(path + scriptPath)) {
+            workDir.mkdir(path + scriptPath);
+        }
+        sysParams.setProjectPath(path);
     }
     else {
         ErrorDialog errDiag;
