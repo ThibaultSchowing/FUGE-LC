@@ -47,6 +47,8 @@ FugeMain::FugeMain(QWidget *parent)
     ui->btScript->setCheckable(true);
     ui->btRunScript->setVisible(false);
 
+    SystemParameters& sysParams = SystemParameters::getInstance();
+
     // NOT IMPLEMENTED YET
     ui->btNewFuzzy->setVisible(false);
 
@@ -138,6 +140,11 @@ FugeMain::FugeMain(QWidget *parent)
 
     // User has to enable script
     actOpenScript->setEnabled(false);
+
+    if(!sysParams.getDatasetName().isEmpty()) {
+        QString fileName = sysParams.getDatasetName();
+        loadDataSet(fileName);
+    }
 }
 
 FugeMain::~FugeMain()
@@ -413,42 +420,8 @@ void FugeMain::onActQuit()
 void FugeMain::onActOpenData()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), sysParams.getProjectPath(), "*.csv");
-    if (!fileName.isEmpty()) {
-        // Clear previous loaded data
-        if (dataLoaded)
-            listFile->clear();
-        QFile file(fileName);
-        file.open(QIODevice::ReadOnly);
-        QTextStream csvFile(&file);
-        QString line;
-        QStringList list;
-
-        // Save the name of the dataset
-        sysParams.setDatasetName(fileName);
-
-        // Read the csv file and store info in a double dimension list.
-        while (!csvFile.atEnd()) {
-            line = csvFile.readLine();
-            list = line.split(';');
-            listFile->append(list);
-        }
-        dataLoaded = true;
-        file.close();
-        if (paramsLoaded) {
-            ui->btRun->setEnabled(true);
-            actRun->setEnabled(true);
-        }
-        if (scriptLoaded) {
-            ui->btRunScript->setEnabled(true);
-            actRunScript->setEnabled(true);
-        }
-        ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + fileName + "<font>");
-        ui->label_dataVars->setText(QString::number(listFile->at(0).size()-1) + " variables");
-        ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
-        actCloseData->setEnabled(true);
-        ui->btCloseData->setEnabled(true);
-    }
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), sysParams.getDefaultFilePath(), "*.csv");
+    loadDataSet(fileName);
 }
 
 /**
@@ -642,7 +615,7 @@ void FugeMain::onActPredictFuzzy(bool fromCmd)
     QString fileName;
 
     if (!fromCmd)
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), sysParams.getProjectPath(), "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), sysParams.getDefaultFilePath(), "*.csv");
     else {
         fileName = sysParams.getDatasetName();
     }
@@ -757,7 +730,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
         //fileExists = file.exists();
     }
     else {
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), sysParams.getProjectPath(), "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), sysParams.getDefaultFilePath(), "*.csv");
     }
 
     QFile file(fileName);
@@ -882,7 +855,7 @@ void FugeMain::onActEditParams()
 void FugeMain::onActOpenScript()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), sysParams.getProjectPath(), "*.fs");
+    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), sysParams.getDefaultFilePath(), "*.fs");
     if (!fileName.isEmpty()) {
         scriptLoaded = true;
         paramsLoaded = true;
@@ -1120,7 +1093,7 @@ void FugeMain::onSettingWordFolder()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
 
-    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getProjectPath(), QFileDialog::ShowDirsOnly);
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getDefaultFilePath(), QFileDialog::ShowDirsOnly);
 
     QDir workDir;
     if (!path.isEmpty() && workDir.exists(path)) {
@@ -1145,7 +1118,7 @@ void FugeMain::onSettingWordFolder()
             return;
         }
 
-        sysParams.setProjectPath(path);
+        sysParams.setSavePath(path);
     }
     else {
         ErrorDialog errDiag;
@@ -1153,5 +1126,43 @@ void FugeMain::onSettingWordFolder()
         errDiag.setInfo("Please select an existing and writable folder as a work folder.");
         errDiag.exec();
         return;
+    }
+}
+
+void FugeMain::loadDataSet(const QString& fileName) {
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    if (!fileName.isEmpty()) {
+        if (dataLoaded)
+            listFile->clear();
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly);
+        QTextStream csvFile(&file);
+        QString line;
+        QStringList list;
+
+        // Save the name of the dataset
+        sysParams.setDatasetName(fileName);
+
+        // Read the csv file and store info in a double dimension list.
+        while (!csvFile.atEnd()) {
+            line = csvFile.readLine();
+            list = line.split(';');
+            listFile->append(list);
+        }
+        dataLoaded = true;
+        file.close();
+        if (paramsLoaded) {
+            ui->btRun->setEnabled(true);
+            actRun->setEnabled(true);
+        }
+        if (scriptLoaded) {
+            ui->btRunScript->setEnabled(true);
+            actRunScript->setEnabled(true);
+        }
+        ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + fileName + "<font>");
+        ui->label_dataVars->setText(QString::number(listFile->at(0).size()-1) + " variables");
+        ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
+        actCloseData->setEnabled(true);
+        ui->btCloseData->setEnabled(true);
     }
 }

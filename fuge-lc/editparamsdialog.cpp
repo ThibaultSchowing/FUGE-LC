@@ -717,7 +717,7 @@ void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
 void EditParamsDialog::on_pushButton_SaveAs_clicked()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getProjectPath() + tr("/myfile.conf")) ,tr("Config files.conf (*.conf)"));
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getDefaultFilePath() + tr("/myfile.conf")) ,tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -730,7 +730,7 @@ void EditParamsDialog::on_pushButton_SaveAs_clicked()
 void EditParamsDialog::on_pushButton_LoadFile_clicked()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getProjectPath(), tr("Config files.conf (*.conf)"));
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getDefaultFilePath(), tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         loadConfig(name);
     }

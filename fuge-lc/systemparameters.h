@@ -50,7 +50,9 @@ private:
     // Save path
     QString savePath;
     // Path to project
-    QString projectPath;
+    QString defaultFilePath;
+    // Global FUGE files
+    QString globalFilesPath;
 
     // Verbose mode flag
     bool verbose;
@@ -142,7 +144,7 @@ public:
     inline void setExperimentName(QString name) {experimentName = name;}
     inline void setDatasetName(QString name) {datasetName = name;}
     inline void setSavePath(QString path) {savePath = path;}
-    inline void setProjectPath(QString path) {projectPath = path;}
+    inline void setProjectPath(QString path) {defaultFilePath = path;}
     inline void setVerbose(bool value) {verbose = value;}
     inline void setFixedVars(bool value) {fixedVars = value;}
     //MODIF - Bujard - 18.03.2010
@@ -205,7 +207,7 @@ public:
     inline QString getExperimentName() {return experimentName;}
     inline QString getDatasetName() {return datasetName;}
     inline QString getSavePath() {return savePath;}
-    inline QString getProjectPath() {return projectPath;}
+    inline QString getDefaultFilePath() {return defaultFilePath;}
     inline bool getVerbose() {return verbose;}
     inline bool getFixedVars() {return fixedVars;}
     //MODIF - Bujard - 18.03.2010

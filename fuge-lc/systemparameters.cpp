@@ -28,11 +28,13 @@
 
 #include <QFile>
 #include <QStandardPaths>
+#include <QDir>
 
 #include "systemparameters.h"
 
 SystemParameters::SystemParameters()
 {
+    datasetName = "";
     fixedVars = false;
     verbose = false;
     //MODIF - Bujard - 18.03.2010
@@ -86,7 +88,51 @@ SystemParameters::SystemParameters()
     learning = false;
     learningMethod = 0;
     initVarsMethod = 0;
-    projectPath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir fugeDir;
+    QFile inifile(globalFilesPath + "/currentSession.ini");
+    if (!fugeDir.exists(globalFilesPath)) {
+        fugeDir.mkdir(globalFilesPath);
+        if (!inifile.open(QIODevice::WriteOnly | QIODevice::Text)){
+            qDebug() << "Could not create the file.";
+        }else{
+            QTextStream out(&inifile);
+            out << "ahoy";
+            inifile.close();
+        }
+    } else {
+        if (inifile.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream in(&inifile);
+
+            QString line;
+            QStringList content;
+            while(!(line = in.readLine()).isEmpty())
+            {
+                // Remove all spaces
+                line = line.trimmed();
+                line.replace(" ", "");
+                content = line.split("=");
+
+                if(content.size() == 2){
+                    if(content.at(0).compare("currFoderPath", Qt::CaseInsensitive)==0) {
+                        savePath = content.at(1);
+                    }
+                    else if(content.at(0).compare("currDataSet", Qt::CaseInsensitive)==0){
+                        datasetName = content.at(1);
+                    }
+
+                }
+            }
+            inifile.close();
+        }
+        else{
+            qDebug() << "Could not open ini file";
+        }
+    }
+    assert(fugeDir.exists(globalFilesPath)); // DEBUG
+
 }
 
 SystemParameters::~SystemParameters()
