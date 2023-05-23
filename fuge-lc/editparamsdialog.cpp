@@ -632,9 +632,11 @@ bool EditParamsDialog::validateFloatEntry(QString stringValue, float min, float 
   */
 void EditParamsDialog::onBtPathPressed()
 {
+    SystemParameters& sysParams = SystemParameters::getInstance();
     QFileDialog pathDialog;
     connect(&pathDialog, SIGNAL(currentChanged(QString)), this, SLOT(changePath(QString)));
     pathDialog.setFileMode(QFileDialog::Directory);
+    pathDialog.setDirectory(sysParams.getSavePath() + tr("configs/"));
     pathDialog.exec();
 }
 
@@ -703,8 +705,8 @@ void EditParamsDialog::on_buttonBoxClose_accepted()
  */
 void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
 {
-    QDir saveCurrent = QDir::current();
-    QString name = saveCurrent.absolutePath() +  DEFAULTCONFIGNAME;
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = sysParams.getSavePath() + "configs/" +  DEFAULTCONFIGNAME;
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -717,7 +719,7 @@ void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
 void EditParamsDialog::on_pushButton_SaveAs_clicked()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getDefaultFilePath() + tr("/myfile.conf")) ,tr("Config files.conf (*.conf)"));
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getSavePath() + tr("configs/myfile.conf")) ,tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -730,7 +732,7 @@ void EditParamsDialog::on_pushButton_SaveAs_clicked()
 void EditParamsDialog::on_pushButton_LoadFile_clicked()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getDefaultFilePath(), tr("Config files.conf (*.conf)"));
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getSavePath()+ tr("configs/"), tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         loadConfig(name);
     }
@@ -742,8 +744,8 @@ void EditParamsDialog::on_pushButton_LoadFile_clicked()
  */
 void EditParamsDialog::on_pushButton_LoadUserDefault_clicked()
 {
-    QDir saveCurrent = QDir::current();
-    QString name = saveCurrent.absolutePath() +  DEFAULTCONFIGNAME;
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = sysParams.getSavePath() + "configs/" +  DEFAULTCONFIGNAME;
     loadConfig(name);
 }
 

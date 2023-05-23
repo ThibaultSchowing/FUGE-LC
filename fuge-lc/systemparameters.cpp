@@ -88,8 +88,8 @@ SystemParameters::SystemParameters()
     learning = false;
     learningMethod = 0;
     initVarsMethod = 0;
-    defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/";
+    globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/";
     QDir fugeDir;
     QFile inifile(globalFilesPath + "/currentSession.ini");
     if (!fugeDir.exists(globalFilesPath)) {
@@ -108,16 +108,16 @@ SystemParameters::~SystemParameters()
 
 bool SystemParameters::newWorkFolder(const QString& path) {
     QDir workDir;
-    if (!path.isEmpty() && workDir.exists(path)) {
-        QString fuzzyPath = path + "/fuzzySystems";
+    if (path != "/" && workDir.exists(path)) {
+        QString fuzzyPath = path + "fuzzySystems";
         if (!workDir.exists(fuzzyPath)) {
             workDir.mkdir(fuzzyPath);
         }
-        QString configPath = path + "/configs";
+        QString configPath = path + "configs";
         if (!workDir.exists(configPath)) {
             workDir.mkdir(configPath);
         }
-        QString scriptPath = path + "/scripts";
+        QString scriptPath = path + "scripts";
         if (!workDir.exists(scriptPath)) {
             workDir.mkdir(scriptPath);
         }
@@ -137,8 +137,8 @@ bool SystemParameters::newWorkFolder(const QString& path) {
 }
 
 void SystemParameters::writeIni() {
-    QFile::remove(globalFilesPath + "/currentSession.ini");
-    QFile inifile(globalFilesPath + "/currentSession.ini");
+    QFile::remove(globalFilesPath + "currentSession.ini");
+    QFile inifile(globalFilesPath + "currentSession.ini");
     if (!inifile.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "Could not create the file.";
     }else{
@@ -152,7 +152,7 @@ void SystemParameters::writeIni() {
 }
 
 void SystemParameters::readIni() {
-    QFile inifile(globalFilesPath + "/currentSession.ini");
+    QFile inifile(globalFilesPath + "currentSession.ini");
     if (inifile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&inifile);
 

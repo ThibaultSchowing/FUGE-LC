@@ -417,7 +417,8 @@ void FugeMain::onActQuit()
 void FugeMain::onActOpenData()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), sysParams.getDefaultFilePath(), "*.csv");
+    QString openPath = sysParams.getSavePath() == "./" ? sysParams.getDefaultFilePath() : sysParams.getSavePath();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), openPath, "*.csv");
     loadDataSet(fileName);
 }
 
@@ -852,7 +853,8 @@ void FugeMain::onActEditParams()
 void FugeMain::onActOpenScript()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), sysParams.getDefaultFilePath(), "*.fs");
+    QString openPath = sysParams.getSavePath() == "./" ? sysParams.getDefaultFilePath() : sysParams.getSavePath() + "scripts/";
+    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), openPath, "*.fs");
     if (!fileName.isEmpty()) {
         scriptLoaded = true;
         paramsLoaded = true;
@@ -1090,7 +1092,7 @@ void FugeMain::onSettingWordFolder()
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
 
-    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getDefaultFilePath(), QFileDialog::ShowDirsOnly);
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getDefaultFilePath(), QFileDialog::ShowDirsOnly) + "/";
 
     if (sysParams.newWorkFolder(path)) {
         resetDisplay();
