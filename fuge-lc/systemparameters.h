@@ -43,6 +43,9 @@ private:
     SystemParameters(const SystemParameters&);
     SystemParameters& operator=(const SystemParameters&);
 
+    void writeIni();
+    void readIni();
+
     // Experiment name
     QString experimentName;
     // Database name
@@ -141,8 +144,12 @@ public:
         return instance;
     }
 
+    void newWorkFolder(const QString& path);
     inline void setExperimentName(QString name) {experimentName = name;}
-    inline void setDatasetName(QString name) {datasetName = name;}
+    inline void setDatasetName(QString name) {
+        datasetName = name;
+        writeIni();
+    }
     inline void setSavePath(QString path) {savePath = path;}
     inline void setProjectPath(QString path) {defaultFilePath = path;}
     inline void setVerbose(bool value) {verbose = value;}

@@ -94,42 +94,9 @@ SystemParameters::SystemParameters()
     QFile inifile(globalFilesPath + "/currentSession.ini");
     if (!fugeDir.exists(globalFilesPath)) {
         fugeDir.mkdir(globalFilesPath);
-        if (!inifile.open(QIODevice::WriteOnly | QIODevice::Text)){
-            qDebug() << "Could not create the file.";
-        }else{
-            QTextStream out(&inifile);
-            out << "ahoy";
-            inifile.close();
-        }
+        writeIni();
     } else {
-        if (inifile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            QTextStream in(&inifile);
-
-            QString line;
-            QStringList content;
-            while(!(line = in.readLine()).isEmpty())
-            {
-                // Remove all spaces
-                line = line.trimmed();
-                line.replace(" ", "");
-                content = line.split("=");
-
-                if(content.size() == 2){
-                    if(content.at(0).compare("currFoderPath", Qt::CaseInsensitive)==0) {
-                        savePath = content.at(1);
-                    }
-                    else if(content.at(0).compare("currDataSet", Qt::CaseInsensitive)==0){
-                        datasetName = content.at(1);
-                    }
-
-                }
-            }
-            inifile.close();
-        }
-        else{
-            qDebug() << "Could not open ini file";
-        }
+        readIni();
     }
     assert(fugeDir.exists(globalFilesPath)); // DEBUG
 
@@ -137,4 +104,54 @@ SystemParameters::SystemParameters()
 
 SystemParameters::~SystemParameters()
 {
+}
+
+void SystemParameters::newWorkFolder(const QString& path) {
+    savePath = path;
+    datasetName = "";
+    writeIni();
+}
+
+void SystemParameters::writeIni() {
+    QFile::remove(globalFilesPath + "/currentSession.ini");
+    QFile inifile(globalFilesPath + "/currentSession.ini");
+    if (!inifile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        qDebug() << "Could not create the file.";
+    }else{
+        QTextStream out(&inifile);
+        if (!savePath.isEmpty())
+            out << "savePath=" << savePath << "\n";
+        if (!datasetName.isEmpty())
+            out << "dataSetName=" << datasetName << "\n";
+        inifile.close();
+    }
+}
+
+void SystemParameters::readIni() {
+    QFile inifile(globalFilesPath + "/currentSession.ini");
+    if (inifile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&inifile);
+
+        QString line;
+        QStringList content;
+        while(!(line = in.readLine()).isEmpty()) {
+            // Remove all spaces
+            line = line.trimmed();
+            line.replace(" ", "");
+            content = line.split("=");
+
+            if(content.size() == 2){
+                if(content.at(0).compare("savePath", Qt::CaseInsensitive)==0) {
+                    savePath = content.at(1);
+                }
+                else if(content.at(0).compare("dataSetName", Qt::CaseInsensitive)==0){
+                    datasetName = content.at(1);
+                }
+            }
+        }
+        inifile.close();
+    }
+    else {
+        qDebug() << "Could not open ini file";
+    }
 }

@@ -1118,7 +1118,7 @@ void FugeMain::onSettingWordFolder()
             return;
         }
 
-        sysParams.setSavePath(path);
+        sysParams.newWorkFolder(path);
     }
     else {
         ErrorDialog errDiag;
