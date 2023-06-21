@@ -71,8 +71,8 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     // Plus each lineedit should have his own onTextChanged slot, because they are independ
     // and there is no need to check non related fields when one change.
     connect(m_ui->lineExp, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
-    connect(m_ui->btPath, SIGNAL(pressed()), this , SLOT(onBtPathPressed()));
-    connect(m_ui->linePath, SIGNAL(textChanged(QString)), this, SLOT(onLinePathEdited(QString)));
+    //connect(m_ui->btPath, SIGNAL(pressed()), this , SLOT(onBtPathPressed()));
+    //connect(m_ui->linePath, SIGNAL(textChanged(QString)), this, SLOT(onLinePathEdited(QString)));
     connect(m_ui->lineRules, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineVarsPerRule, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineOutput, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
@@ -658,7 +658,7 @@ void EditParamsDialog::changePath(QString path)
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     sysParams.setSavePath(path);
-    m_ui->linePath->setText(path);
+    //m_ui->linePath->setText(path);
 }
 
 /**
