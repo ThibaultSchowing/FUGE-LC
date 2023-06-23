@@ -1177,7 +1177,9 @@ void FugeMain::displayRecentDatasets() {
     for (int i = 0; i < datasetVec.length(); i++) {
         QString displayName = datasetVec.at(i);
         QAction* action = new QAction(displayName);
-        action->setToolTip(displayName);
+        QObject::connect(action, &QAction::triggered, this, [this, action]() {
+            loadDataSet(action->text());
+        });
         recentDatasets.push_back(action);
         recentDatasetMenu->addAction(action);
     }

@@ -72,17 +72,20 @@ void ProjectManager::writeIni() {
             out << "savePath=" << savePath << "\n";
         if (!datasetName.isEmpty())
             out << "dataSetName=" << datasetName << "\n";
+        for (int i = 1; i < recentDatasets.length(); i++){
+            out << "recentDataset=" << recentDatasets.at(i) << "\n";
+        }
         inifile.close();
     }
 }
 
 void ProjectManager::readIni() {
     SystemParameters& sysParams = SystemParameters::getInstance();
-
     QFile inifile(globalFilesPath + "currentSession.ini");
     if (inifile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&inifile);
 
+        recentDatasets.clear();
         QString line;
         QStringList content;
         while(!(line = in.readLine()).isEmpty()) {
@@ -98,6 +101,10 @@ void ProjectManager::readIni() {
                 }
                 else if(content.at(0).compare("dataSetName", Qt::CaseInsensitive)==0){
                     datasetName = content.at(1);
+                    recentDatasets.push_back(datasetName);
+                }
+                else if(content.at(0).compare("recentDataset", Qt::CaseInsensitive)==0){
+                    recentDatasets.push_back(content.at(1));
                 }
             }
         }
@@ -112,7 +119,7 @@ void ProjectManager::handleLoadedDataset(const QString& path) {
     datasetName = path;
     for (int i = 0; i < recentDatasets.length(); i++) {
         if (path == recentDatasets.at(i)) {
-            recentDatasets.remove(i);
+            recentDatasets.remove(i, 1);
             break;
         }
     }
