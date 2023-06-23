@@ -101,6 +101,7 @@ FugeMain::FugeMain(QWidget *parent)
     connect(ui->btOpenScript, SIGNAL(clicked()), this, SLOT(onActOpenScript()));
     connect(ui->btCloseScript, SIGNAL(clicked()), this, SLOT(onActCloseScript()));
     connect(ui->btScript, SIGNAL(clicked()), this, SLOT(onShowScriptClicked()));
+    connect(ui->btRecent, SIGNAL(clicked()), this, SLOT(onShowRecentDatasets()));
 
 
     this->createActions();
@@ -132,6 +133,10 @@ FugeMain::FugeMain(QWidget *parent)
     fileMenu->addAction(actQuit);
     helpMenu->addAction(actHelp);
     helpMenu->addAction(actAbout);
+    recentDatasetMenu = new QMenu(ui->btRecent);
+    for (int i = 0; i < 5; i++) {
+        recentDatasetMenu->addAction(new QAction("test" + i));
+    }
     currentOpennedSystem = "";
 
     // Fuzzy system manual creation not implemented yet...
@@ -1160,4 +1165,9 @@ void FugeMain::loadFromIni() {
         QString fileName = sysParams.getDatasetName();
         loadDataSet(fileName);
     }
+}
+
+
+void FugeMain::onShowRecentDatasets() {
+    recentDatasetMenu->exec(ui->btRecent->mapToGlobal(QPoint(0, ui->btRecent->height())));
 }

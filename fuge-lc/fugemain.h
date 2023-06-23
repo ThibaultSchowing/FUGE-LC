@@ -138,6 +138,7 @@ private:
     QMenu* paramsMenu;
     QMenu* scriptMenu;
     QMenu* helpMenu;
+    QMenu* recentDatasetMenu;
     EditParamsDialog *editParams;
     QString currentOpennedSystem;
 
@@ -174,6 +175,7 @@ private slots:
     void closeEvent(QCloseEvent*);
     void onShowScriptClicked();
     void onSettingWordFolder();
+    void onShowRecentDatasets();
 
 signals:
     void clearStats();
