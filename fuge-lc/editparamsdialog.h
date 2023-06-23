@@ -46,6 +46,7 @@
 
 #include "systemparameters.h"
 #include "errordialog.h"
+#include "projectmanager.h"
 
 #define DEFAULTCONFIGNAME "defaultUserConfig.conf"
 

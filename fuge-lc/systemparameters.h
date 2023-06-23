@@ -43,19 +43,13 @@ private:
     SystemParameters(const SystemParameters&);
     SystemParameters& operator=(const SystemParameters&);
 
-    void writeIni();
-    void readIni();
-
+    // Those are to be used only for the script
     // Experiment name
     QString experimentName;
     // Database name
     QString datasetName;
     // Save path
     QString savePath;
-    // Path to project
-    QString defaultFilePath;
-    // Global FUGE files
-    QString globalFilesPath;
 
     // Verbose mode flag
     bool verbose;
@@ -144,14 +138,9 @@ public:
         return instance;
     }
 
-    bool newWorkFolder(const QString& path);
     inline void setExperimentName(QString name) {experimentName = name;}
-    inline void setDatasetName(QString name) {
-        datasetName = name;
-        writeIni();
-    }
+    inline void setDatasetName(QString name) {datasetName = name;}
     inline void setSavePath(QString path) {savePath = path;}
-    inline void setProjectPath(QString path) {defaultFilePath = path;}
     inline void setVerbose(bool value) {verbose = value;}
     inline void setFixedVars(bool value) {fixedVars = value;}
     //MODIF - Bujard - 18.03.2010
@@ -163,7 +152,7 @@ public:
     inline void setNbVarPerRule(int value) {nbVarPerRule = value;}
     inline void setNbInVars(int value) {nbInVars = value;}
     inline void setNbOutVars(int value) {nbOutVars = value;
-                                         threshold.resize(nbOutVars);}
+        threshold.resize(nbOutVars);}
     inline void setNbInSets(int value) {nbInSets = value;}
     inline void setNbOutSets(int value) {nbOutSets = value;}
     inline void setInVarsCodeSize(int value) {inVarsCodeSize = value;}
@@ -214,7 +203,6 @@ public:
     inline QString getExperimentName() {return experimentName;}
     inline QString getDatasetName() {return datasetName;}
     inline QString getSavePath() {return savePath;}
-    inline QString getDefaultFilePath() {return defaultFilePath;}
     inline bool getVerbose() {return verbose;}
     inline bool getFixedVars() {return fixedVars;}
     //MODIF - Bujard - 18.03.2010

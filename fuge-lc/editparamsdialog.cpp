@@ -163,9 +163,10 @@ bool EditParamsDialog::checkAndSetValues()
     bool valid = true;
 
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
     // Experiment name
-    sysParams.setExperimentName(m_ui->lineExp->text());
+    manager.setExperimentName(m_ui->lineExp->text());
 
     // Number of rules
     if (validateIntEntry(m_ui->lineRules->text(), 1, 1024)) {

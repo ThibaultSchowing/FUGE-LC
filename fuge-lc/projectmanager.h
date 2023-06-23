@@ -1,0 +1,47 @@
+#ifndef PROJECTMANAGER_H
+#define PROJECTMANAGER_H
+
+#include <QObject>
+
+class ProjectManager: public QObject
+{
+    Q_OBJECT
+
+private:
+    ProjectManager();
+    ~ProjectManager();
+    ProjectManager(const ProjectManager&);
+    ProjectManager& operator=(const ProjectManager&);
+
+    void writeIni();
+    void readIni();
+
+    // Experiment name
+    QString experimentName;
+    // Database name
+    QString datasetName;
+    // Save path
+    QString savePath;
+    // Path to project
+    QString defaultFilePath;
+    // Global FUGE files
+    QString globalFilesPath;
+
+public:
+    static ProjectManager& getInstance() {
+        static ProjectManager instance;
+        return instance;
+    }
+
+    bool newWorkFolder(const QString& path);
+    inline QString getSavePath() {return savePath;}
+    inline QString getDefaultFilePath() {return defaultFilePath;}
+
+    inline void setExperimentName(QString name) {experimentName = name;}
+    inline void setSavePath(QString path) {savePath = path;}
+    inline QString getExperimentName() {return experimentName;}
+    inline QString getDatasetName() {return datasetName;}
+    void handleLoadedDataset(const QString& path);
+};
+
+#endif // PROJECTMANAGER_H

@@ -421,8 +421,8 @@ void FugeMain::onActQuit()
   */
 void FugeMain::onActOpenData()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
-    QString openPath = sysParams.getSavePath() == "./" ? sysParams.getDefaultFilePath() : sysParams.getSavePath();
+    ProjectManager& manager = ProjectManager::getInstance();
+    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getSavePath();
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), openPath, "*.csv");
     loadDataSet(fileName);
 }
@@ -568,9 +568,9 @@ void FugeMain::onActCloseFuzzy()
   */
 void FugeMain::onActSaveFuzzy()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), sysParams.getSavePath()+"fuzzySystems" , "*.ffs");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), manager.getSavePath()+"fuzzySystems" , "*.ffs");
     if (!fileName.isEmpty()) {
         // If the evolution is running, we ask the evaluation operator to save the best system
         if (isRunning) {
@@ -615,10 +615,11 @@ void FugeMain::onActEditFuzzy()
 void FugeMain::onActPredictFuzzy(bool fromCmd)
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
     QString fileName;
 
     if (!fromCmd)
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), sysParams.getDefaultFilePath(), "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), manager.getDefaultFilePath(), "*.csv");
     else {
         fileName = sysParams.getDatasetName();
     }
@@ -723,6 +724,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
     QVector<float> expectedResults;
     QVector<float> predictedResults;
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
     QString fileName;
 
@@ -733,7 +735,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
         //fileExists = file.exists();
     }
     else {
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), sysParams.getDefaultFilePath(), "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), manager.getDefaultFilePath(), "*.csv");
     }
 
     QFile file(fileName);
@@ -857,8 +859,8 @@ void FugeMain::onActEditParams()
   */
 void FugeMain::onActOpenScript()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
-    QString openPath = sysParams.getSavePath() == "./" ? sysParams.getDefaultFilePath() : sysParams.getSavePath() + "scripts/";
+    ProjectManager& manager = ProjectManager::getInstance();
+    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getSavePath() + "scripts/";
     QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), openPath, "*.fs");
     if (!fileName.isEmpty()) {
         scriptLoaded = true;
@@ -1095,11 +1097,11 @@ void FugeMain::onShowScriptClicked() {
   */
 void FugeMain::onSettingWordFolder()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
-    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), sysParams.getDefaultFilePath(), QFileDialog::ShowDirsOnly) + "/";
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), manager.getDefaultFilePath(), QFileDialog::ShowDirsOnly) + "/";
 
-    if (sysParams.newWorkFolder(path)) {
+    if (manager.newWorkFolder(path)) {
         resetDisplay();
     }
     else {
@@ -1113,6 +1115,7 @@ void FugeMain::onSettingWordFolder()
 
 void FugeMain::loadDataSet(const QString& fileName) {
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
     if (!fileName.isEmpty()) {
         if (dataLoaded)
             listFile->clear();
@@ -1124,6 +1127,7 @@ void FugeMain::loadDataSet(const QString& fileName) {
 
         // Save the name of the dataset
         sysParams.setDatasetName(fileName);
+        manager.handleLoadedDataset(fileName);
 
         // Read the csv file and store info in a double dimension list.
         while (!csvFile.atEnd()) {
@@ -1159,10 +1163,10 @@ void FugeMain::resetDisplay(){
 }
 
 void FugeMain::loadFromIni() {
-    SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
-    if(!sysParams.getDatasetName().isEmpty()) {
-        QString fileName = sysParams.getDatasetName();
+    if(!manager.getDatasetName().isEmpty()) {
+        QString fileName = manager.getDatasetName();
         loadDataSet(fileName);
     }
 }

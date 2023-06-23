@@ -69,6 +69,7 @@
 #include "fuzzymembershipsgenome.h"
 #include "fuzzyrule.h"
 #include "fuzzysystem.h"
+#include "projectmanager.h"
 
 class ComputeThread;
 
