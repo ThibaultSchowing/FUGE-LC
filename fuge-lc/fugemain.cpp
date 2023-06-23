@@ -134,9 +134,6 @@ FugeMain::FugeMain(QWidget *parent)
     helpMenu->addAction(actHelp);
     helpMenu->addAction(actAbout);
     recentDatasetMenu = new QMenu(ui->btRecent);
-    for (int i = 0; i < 5; i++) {
-        recentDatasetMenu->addAction(new QAction("test" + i));
-    }
     currentOpennedSystem = "";
 
     // Fuzzy system manual creation not implemented yet...
@@ -1128,6 +1125,7 @@ void FugeMain::loadDataSet(const QString& fileName) {
         // Save the name of the dataset
         sysParams.setDatasetName(fileName);
         manager.handleLoadedDataset(fileName);
+        displayRecentDatasets();
 
         // Read the csv file and store info in a double dimension list.
         while (!csvFile.atEnd()) {
@@ -1164,6 +1162,7 @@ void FugeMain::resetDisplay(){
 
 void FugeMain::loadFromIni() {
     ProjectManager& manager = ProjectManager::getInstance();
+    displayRecentDatasets();
 
     if(!manager.getDatasetName().isEmpty()) {
         QString fileName = manager.getDatasetName();
@@ -1171,7 +1170,29 @@ void FugeMain::loadFromIni() {
     }
 }
 
+void FugeMain::displayRecentDatasets() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    clearRecentDatasets();
+    QVector<QString> datasetVec = manager.getRecentDatasets();
+    for (int i = 0; i < datasetVec.length(); i++) {
+        QString displayName = datasetVec.at(i);
+        QAction* action = new QAction(displayName);
+        action->setToolTip(displayName);
+        recentDatasets.push_back(action);
+        recentDatasetMenu->addAction(action);
+    }
+    recentDatasetMenu->setEnabled(!recentDatasets.isEmpty());
+}
+
+void FugeMain::clearRecentDatasets() {
+    recentDatasetMenu->clear();
+    for (int i = 0; i < recentDatasets.length(); i++){
+        delete recentDatasets.at(i);
+    }
+    recentDatasets.clear();
+    recentDatasetMenu->setEnabled(false);
+}
 
 void FugeMain::onShowRecentDatasets() {
-    recentDatasetMenu->exec(ui->btRecent->mapToGlobal(QPoint(0, ui->btRecent->height())));
+    recentDatasetMenu->exec(ui->btRecent->mapToGlobal(QPoint(-60, ui->btRecent->height())));
 }

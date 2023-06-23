@@ -2,6 +2,7 @@
 #define PROJECTMANAGER_H
 
 #include <QObject>
+#include <QVector>
 
 class ProjectManager: public QObject
 {
@@ -26,6 +27,7 @@ private:
     QString defaultFilePath;
     // Global FUGE files
     QString globalFilesPath;
+    QVector<QString> recentDatasets;
 
 public:
     static ProjectManager& getInstance() {
@@ -42,6 +44,7 @@ public:
     inline QString getExperimentName() {return experimentName;}
     inline QString getDatasetName() {return datasetName;}
     void handleLoadedDataset(const QString& path);
+    inline const QVector<QString> getRecentDatasets() {return recentDatasets;}
 };
 
 #endif // PROJECTMANAGER_H

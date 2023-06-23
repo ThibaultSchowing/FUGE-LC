@@ -7,6 +7,8 @@
 #include <QDir>
 #include "systemparameters.h"
 
+#define MAX_DISPLAYED_RECENT 10
+
 ProjectManager::~ProjectManager() {
 
 }
@@ -108,5 +110,17 @@ void ProjectManager::readIni() {
 
 void ProjectManager::handleLoadedDataset(const QString& path) {
     datasetName = path;
+    for (int i = 0; i < recentDatasets.length(); i++) {
+        if (path == recentDatasets.at(i)) {
+            recentDatasets.remove(i);
+            break;
+        }
+    }
+
+    if (recentDatasets.length() >= MAX_DISPLAYED_RECENT) {
+        recentDatasets.removeLast();
+    }
+
+    recentDatasets.push_front(path);
     writeIni();
 }

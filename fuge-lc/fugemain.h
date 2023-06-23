@@ -48,6 +48,7 @@
 #include <QMessageBox>
 #include <QSemaphore>
 #include <QProcess>
+#include <QVector>
 
 #include "fuzzysystem.h"
 
@@ -101,6 +102,8 @@ private:
     void resetDisplay();
     void loadFromIni();
     void loadDataSet(const QString& fileName);
+    void clearRecentDatasets();
+    void displayRecentDatasets();
     Ui::FugeMain* ui;
     AboutDialog* aboutDial;
     HelpDialog* help;
@@ -142,6 +145,7 @@ private:
     QMenu* recentDatasetMenu;
     EditParamsDialog *editParams;
     QString currentOpennedSystem;
+    QVector<QAction*> recentDatasets;
 
     bool fuzzyLoaded;
     bool dataLoaded;
