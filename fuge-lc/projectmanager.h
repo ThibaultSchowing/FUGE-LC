@@ -36,7 +36,8 @@ public:
         return instance;
     }
 
-    bool newWorkFolder(const QString& path);
+    bool newProjectFolder(const QString& path);
+    bool openExistingProject(const QString& path);
     inline QString getSavePath() {return savePath;}
     inline QString getDefaultFilePath() {return defaultFilePath;}
 

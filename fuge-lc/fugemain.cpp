@@ -317,7 +317,7 @@ void FugeMain::createActions()
     connect(actHelp, SIGNAL(triggered()), this, SLOT(onActHelp()));
     connect(actAbout, SIGNAL(triggered()), this, SLOT(onActAbout()));
     connect(actEnableScript, SIGNAL(triggered()), this, SLOT(onShowScriptClicked()));
-    connect(actSetWorkFolder, SIGNAL(triggered()), this, SLOT(onSettingWordFolder()));
+    connect(actSetWorkFolder, SIGNAL(triggered()), this, SLOT(onSettingProject()));
 }
 
 /**
@@ -1092,15 +1092,15 @@ void FugeMain::onShowScriptClicked() {
 }
 
 /**
-  * Slot called when the user asks for an evalutation.
+  * Slot called when the user creates a new project
   */
-void FugeMain::onSettingWordFolder()
+void FugeMain::onSettingProject()
 {
     ProjectManager& manager = ProjectManager::getInstance();
 
-    QString path = QFileDialog::getExistingDirectory(this, tr("Select a work folder."), manager.getDefaultFilePath(), QFileDialog::ShowDirsOnly) + "/";
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select a folder."), manager.getDefaultFilePath(), QFileDialog::ShowDirsOnly) + "/";
 
-    if (manager.newWorkFolder(path)) {
+    if (manager.newProjectFolder(path)) {
         resetDisplay();
     }
     else {
@@ -1162,6 +1162,7 @@ void FugeMain::resetDisplay(){
     onShowScriptClicked();
     displayRecentDatasets();
     displayRecentProjects();
+    updateWindowTitle();
 }
 
 void FugeMain::loadFromIni() {
@@ -1173,6 +1174,17 @@ void FugeMain::loadFromIni() {
         QString fileName = manager.getDatasetName();
         loadDataSet(fileName);
     }
+    updateWindowTitle();
+}
+
+void FugeMain::updateWindowTitle() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    QString workFolder = manager.getSavePath();
+    QString title = "FUGE-LC";
+    if (workFolder != "./") {
+        title += " - Project open in " + workFolder;
+    }
+    setWindowTitle(title);
 }
 
 void FugeMain::displayRecentDatasets() {
@@ -1210,8 +1222,9 @@ void FugeMain::displayRecentProjects() {
         QAction* action = new QAction(displayName);
         QObject::connect(action, &QAction::triggered, this, [this, action]() {
             ProjectManager& manager = ProjectManager::getInstance();
-            if (manager.newWorkFolder(action->text())) {
+            if (manager.openExistingProject(action->text())) {
                 resetDisplay();
+                loadDataSet(manager.getDatasetName());
             }
             else {
                 ErrorDialog errDiag;

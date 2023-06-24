@@ -183,8 +183,9 @@ private slots:
     void onActHelp();
     void closeEvent(QCloseEvent*);
     void onShowScriptClicked();
-    void onSettingWordFolder();
+    void onSettingProject();
     void onShowRecentDatasets();
+    void updateWindowTitle();
 
 signals:
     void clearStats();

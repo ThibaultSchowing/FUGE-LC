@@ -30,7 +30,7 @@ ProjectManager::ProjectManager() {
 }
 
 
-bool ProjectManager::newWorkFolder(const QString& path) {
+bool ProjectManager::newProjectFolder(const QString& path) {
     QDir workDir;
     if (path != "/" && workDir.exists(path)) {
         QString fuzzyPath = path + "fuzzySystems";
@@ -56,6 +56,27 @@ bool ProjectManager::newWorkFolder(const QString& path) {
         updateRecentProjects(path);
         writeIni();
 
+        return true;
+    }
+
+    return false;
+}
+
+bool ProjectManager::openExistingProject(const QString& path) {
+    QDir workDir;
+    if (path != "/" && workDir.exists(path)) {
+        QString fuzzyPath = path + "fuzzySystems";
+        QString configPath = path + "configs";
+        QString scriptPath = path + "scripts";
+        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath)) {
+            return false ;
+        }
+        SystemParameters& sysParams = SystemParameters::getInstance();
+        sysParams.setSavePath(path);
+        savePath = path;
+        datasetName = recentDatasets.at(0);
+        updateRecentProjects(path);
+        writeIni();
         return true;
     }
 
