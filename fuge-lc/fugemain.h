@@ -104,6 +104,8 @@ private:
     void loadDataSet(const QString& fileName);
     void clearRecentDatasets();
     void displayRecentDatasets();
+    void clearRecentProjects();
+    void displayRecentProjects();
     Ui::FugeMain* ui;
     AboutDialog* aboutDial;
     HelpDialog* help;
@@ -143,9 +145,11 @@ private:
     QMenu* scriptMenu;
     QMenu* helpMenu;
     QMenu* recentDatasetMenu;
+    QMenu* recentProjectsMenu;
     EditParamsDialog *editParams;
     QString currentOpennedSystem;
     QVector<QAction*> recentDatasets;
+    QVector<QAction*> recentProjects;
 
     bool fuzzyLoaded;
     bool dataLoaded;

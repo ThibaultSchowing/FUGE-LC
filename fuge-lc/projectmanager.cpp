@@ -53,6 +53,7 @@ bool ProjectManager::newWorkFolder(const QString& path) {
         sysParams.setSavePath(path);
         savePath = path;
         datasetName = "";
+        updateRecentProjects(path);
         writeIni();
 
         return true;
@@ -74,6 +75,9 @@ void ProjectManager::writeIni() {
             out << "dataSetName=" << datasetName << "\n";
         for (int i = 1; i < recentDatasets.length(); i++){
             out << "recentDataset=" << recentDatasets.at(i) << "\n";
+        }
+        for (int i = 1; i < recentProjects.length(); i++){
+            out << "recentProject=" << recentProjects.at(i) << "\n";
         }
         inifile.close();
     }
@@ -98,6 +102,7 @@ void ProjectManager::readIni() {
                 if(content.at(0).compare("savePath", Qt::CaseInsensitive)==0) {
                     savePath = content.at(1);
                     sysParams.setSavePath(savePath);
+                    recentProjects.push_back(savePath);
                 }
                 else if(content.at(0).compare("dataSetName", Qt::CaseInsensitive)==0){
                     datasetName = content.at(1);
@@ -105,6 +110,9 @@ void ProjectManager::readIni() {
                 }
                 else if(content.at(0).compare("recentDataset", Qt::CaseInsensitive)==0){
                     recentDatasets.push_back(content.at(1));
+                }
+                else if(content.at(0).compare("recentProject", Qt::CaseInsensitive)==0){
+                    recentProjects.push_back(content.at(1));
                 }
             }
         }
@@ -129,5 +137,22 @@ void ProjectManager::handleLoadedDataset(const QString& path) {
     }
 
     recentDatasets.push_front(path);
+    writeIni();
+}
+
+void ProjectManager::updateRecentProjects(const QString& path) {
+    savePath = path;
+    for (int i = 0; i < recentProjects.length(); i++) {
+        if (path == recentProjects.at(i)) {
+            recentProjects.remove(i, 1);
+            break;
+        }
+    }
+
+    if (recentProjects.length() >= MAX_DISPLAYED_RECENT) {
+        recentProjects.removeLast();
+    }
+
+    recentProjects.push_front(path);
     writeIni();
 }

@@ -28,6 +28,7 @@ private:
     // Global FUGE files
     QString globalFilesPath;
     QVector<QString> recentDatasets;
+    QVector<QString> recentProjects;
 
 public:
     static ProjectManager& getInstance() {
@@ -44,7 +45,9 @@ public:
     inline QString getExperimentName() {return experimentName;}
     inline QString getDatasetName() {return datasetName;}
     void handleLoadedDataset(const QString& path);
+    void updateRecentProjects(const QString& path);
     inline const QVector<QString> getRecentDatasets() {return recentDatasets;}
+    inline const QVector<QString> getRecentProjects() {return recentProjects;}
 };
 
 #endif // PROJECTMANAGER_H

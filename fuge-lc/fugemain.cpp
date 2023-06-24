@@ -112,7 +112,9 @@ FugeMain::FugeMain(QWidget *parent)
     paramsMenu = menuBar()->addMenu(tr("&Parameters"));
     scriptMenu = menuBar()->addMenu(tr("&Script"));
     helpMenu = menuBar()->addMenu(tr("&Help"));
+    recentProjectsMenu = new QMenu("&Recent...");
     fileMenu->addAction(actSetWorkFolder);
+    fileMenu->addMenu(recentProjectsMenu);
     fileMenu->addAction(actRun);
     fileMenu->addAction(actStop);
     dataMenu->addAction(actOpenData);
@@ -1158,11 +1160,14 @@ void FugeMain::resetDisplay(){
     onActCloseScript();
     isScriptEnabled = true;
     onShowScriptClicked();
+    displayRecentDatasets();
+    displayRecentProjects();
 }
 
 void FugeMain::loadFromIni() {
     ProjectManager& manager = ProjectManager::getInstance();
     displayRecentDatasets();
+    displayRecentProjects();
 
     if(!manager.getDatasetName().isEmpty()) {
         QString fileName = manager.getDatasetName();
@@ -1188,11 +1193,48 @@ void FugeMain::displayRecentDatasets() {
 
 void FugeMain::clearRecentDatasets() {
     recentDatasetMenu->clear();
+
     for (int i = 0; i < recentDatasets.length(); i++){
         delete recentDatasets.at(i);
     }
     recentDatasets.clear();
     recentDatasetMenu->setEnabled(false);
+}
+
+void FugeMain::displayRecentProjects() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    clearRecentProjects();
+    QVector<QString> projectsVec = manager.getRecentProjects();
+    for (int i = 0; i < projectsVec.length(); i++) {
+        QString displayName = projectsVec.at(i);
+        QAction* action = new QAction(displayName);
+        QObject::connect(action, &QAction::triggered, this, [this, action]() {
+            ProjectManager& manager = ProjectManager::getInstance();
+            if (manager.newWorkFolder(action->text())) {
+                resetDisplay();
+            }
+            else {
+                ErrorDialog errDiag;
+                errDiag.setError("Error : bad path");
+                errDiag.setInfo("The selected project couldn't be found");
+                errDiag.exec();
+                return;
+            }
+        });
+        recentProjects.push_back(action);
+        recentProjectsMenu->addAction(action);
+    }
+    recentProjectsMenu->setEnabled(!recentProjects.isEmpty());
+}
+
+void FugeMain::clearRecentProjects() {
+    recentProjectsMenu->clear();
+
+    for (int i = 0; i < recentProjects.length(); i++){
+        delete recentProjects.at(i);
+    }
+    recentProjects.clear();
+    recentProjectsMenu->setEnabled(false);
 }
 
 void FugeMain::onShowRecentDatasets() {
