@@ -1190,9 +1190,9 @@ void FugeMain::updateWindowTitle() {
 void FugeMain::displayRecentDatasets() {
     ProjectManager& manager = ProjectManager::getInstance();
     clearRecentDatasets();
-    QVector<QString> datasetVec = manager.getRecentDatasets();
-    for (int i = 0; i < datasetVec.length(); i++) {
-        QString displayName = datasetVec.at(i);
+    QVector<QString> projectDatasetVec = manager.getProjectRecentDatasets();
+    for (int i = 0; i < projectDatasetVec.length(); i++) {
+        QString displayName = projectDatasetVec.at(i);
         QAction* action = new QAction(displayName);
         QObject::connect(action, &QAction::triggered, this, [this, action]() {
             loadDataSet(action->text());
@@ -1200,7 +1200,25 @@ void FugeMain::displayRecentDatasets() {
         recentDatasets.push_back(action);
         recentDatasetMenu->addAction(action);
     }
-    recentDatasetMenu->setEnabled(!recentDatasets.isEmpty());
+
+    QVector<QString> globalDatasetVec = manager.getGlobalRecentDatasets();
+
+    if(!globalDatasetVec.isEmpty() && !projectDatasetVec.isEmpty()) {
+        QAction* action = new QAction("-----");
+        action->setEnabled(false);
+        recentDatasets.push_back(action);
+        recentDatasetMenu->addAction(action);
+    }
+
+    for (int i = 0; i < globalDatasetVec.length(); i++) {
+        QString displayName = globalDatasetVec.at(i);
+        QAction* action = new QAction(displayName);
+        QObject::connect(action, &QAction::triggered, this, [this, action]() {
+            loadDataSet(action->text());
+        });
+        recentDatasets.push_back(action);
+        recentDatasetMenu->addAction(action);
+    }
 }
 
 void FugeMain::clearRecentDatasets() {
@@ -1210,7 +1228,6 @@ void FugeMain::clearRecentDatasets() {
         delete recentDatasets.at(i);
     }
     recentDatasets.clear();
-    recentDatasetMenu->setEnabled(false);
 }
 
 void FugeMain::displayRecentProjects() {

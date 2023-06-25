@@ -9,6 +9,15 @@
 
 #define MAX_DISPLAYED_RECENT 10
 
+const QString ProjectManager::FUZZY_FOLDER = "fuzzySystems/";
+const QString ProjectManager::CONFIG_FOLDER = "configs/";
+const QString ProjectManager::SCRIPT_FOLDER = "scripts/";
+const QString ProjectManager::PROJECT_FOLDER = ".FUGE/";
+const QString ProjectManager::PROJECT_DATA_FILE_NAME = "recent";
+const QString ProjectManager::SHARED_DATA_FILE_NAME = "recent";
+const QString ProjectManager::FIELD_DATASETS = "recentDatasets";
+const QString ProjectManager::FIELD_PROJECTS = "recentProjects";
+
 ProjectManager::~ProjectManager() {
 
 }
@@ -19,29 +28,48 @@ ProjectManager::ProjectManager() {
     defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/";
     globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/";
     QDir fugeDir;
-    QFile inifile(globalFilesPath + "/currentSession.ini");
+    QFile inifile(globalFilesPath + SHARED_DATA_FILE_NAME);
     if (!fugeDir.exists(globalFilesPath)) {
         fugeDir.mkdir(globalFilesPath);
-        writeIni();
+        writeSharedData();
     } else {
-        readIni();
+        readSharedData();
+        readProjectData();
     }
-    assert(fugeDir.exists(globalFilesPath)); // DEBUG
 }
 
 
 bool ProjectManager::newProjectFolder(const QString& path) {
     QDir workDir;
+
+    if (openExistingProject(path)) {
+        return true;
+    }
+
     if (path != "/" && workDir.exists(path)) {
-        QString fuzzyPath = path + "fuzzySystems";
+        recentDatasetsProject.clear();
+        QString projectPath = path + PROJECT_FOLDER;
+        if (!workDir.exists(projectPath)) {
+            workDir.mkdir(projectPath);
+            QFile::remove(projectPath + PROJECT_DATA_FILE_NAME);
+            QFile recent(projectPath + PROJECT_DATA_FILE_NAME);
+            if (!recent.open(QIODevice::WriteOnly | QIODevice::Text)){
+                qDebug() << "Could not create the file for recent.";
+                return false;
+            }
+
+            recent.close();
+        }
+
+        QString fuzzyPath = path + FUZZY_FOLDER;
         if (!workDir.exists(fuzzyPath)) {
             workDir.mkdir(fuzzyPath);
         }
-        QString configPath = path + "configs";
+        QString configPath = path + CONFIG_FOLDER;
         if (!workDir.exists(configPath)) {
             workDir.mkdir(configPath);
         }
-        QString scriptPath = path + "scripts";
+        QString scriptPath = path + SCRIPT_FOLDER;
         if (!workDir.exists(scriptPath)) {
             workDir.mkdir(scriptPath);
         }
@@ -54,7 +82,7 @@ bool ProjectManager::newProjectFolder(const QString& path) {
         savePath = path;
         datasetName = "";
         updateRecentProjects(path);
-        writeIni();
+        writeSharedData();
 
         return true;
     }
@@ -63,54 +91,58 @@ bool ProjectManager::newProjectFolder(const QString& path) {
 }
 
 bool ProjectManager::openExistingProject(const QString& path) {
+    recentDatasetsProject.clear();
     QDir workDir;
-    if (path != "/" && workDir.exists(path)) {
-        QString fuzzyPath = path + "fuzzySystems";
-        QString configPath = path + "configs";
-        QString scriptPath = path + "scripts";
-        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath)) {
-            return false ;
-        }
+    QString projectPath = path + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME;
+    if (path != "/" && workDir.exists(projectPath)) {
         SystemParameters& sysParams = SystemParameters::getInstance();
         sysParams.setSavePath(path);
         savePath = path;
-        datasetName = recentDatasets.at(0);
         updateRecentProjects(path);
-        writeIni();
+        readProjectData();
+        readSharedData();
         return true;
     }
 
     return false;
 }
 
-void ProjectManager::writeIni() {
-    QFile::remove(globalFilesPath + "currentSession.ini");
-    QFile inifile(globalFilesPath + "currentSession.ini");
+void ProjectManager::writeSharedData() {
+    QFile::remove(globalFilesPath + SHARED_DATA_FILE_NAME);
+    QFile inifile(globalFilesPath + SHARED_DATA_FILE_NAME);
     if (!inifile.open(QIODevice::WriteOnly | QIODevice::Text)){
-        qDebug() << "Could not create the file.";
+        qDebug() << "Could not create the ini file.";
     }else{
         QTextStream out(&inifile);
-        if (!savePath.isEmpty())
-            out << "savePath=" << savePath << "\n";
-        if (!datasetName.isEmpty())
-            out << "dataSetName=" << datasetName << "\n";
-        for (int i = 1; i < recentDatasets.length(); i++){
-            out << "recentDataset=" << recentDatasets.at(i) << "\n";
+        for (int i = 0; i < recentDatasetsGlobal.length(); i++){
+            out << FIELD_DATASETS << "=" << recentDatasetsGlobal.at(i) << "\n";
         }
-        for (int i = 1; i < recentProjects.length(); i++){
-            out << "recentProject=" << recentProjects.at(i) << "\n";
+        for (int i = 0; i < recentProjects.length(); i++){
+            out << FIELD_PROJECTS << "=" << recentProjects.at(i) << "\n";
         }
         inifile.close();
     }
 }
 
-void ProjectManager::readIni() {
-    SystemParameters& sysParams = SystemParameters::getInstance();
-    QFile inifile(globalFilesPath + "currentSession.ini");
-    if (inifile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QTextStream in(&inifile);
+void ProjectManager::writeProjectData() {
+    QFile::remove(savePath + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME);
+    QFile recentFile(savePath + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME);
+    if (!recentFile.open(QIODevice::WriteOnly | QIODevice::Text)){
+        qDebug() << "Could not create the recent file.";
+    }else{
+        QTextStream out(&recentFile);
+        for (int i = 0; i < recentDatasetsProject.length(); i++){
+            out << FIELD_DATASETS << "=" << recentDatasetsProject.at(i) << "\n";
+        }
+        recentFile.close();
+    }
+}
 
-        recentDatasets.clear();
+void ProjectManager::readProjectData() {
+    recentDatasetsProject.clear();
+    QFile fileRecent(savePath + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME);
+    if (fileRecent.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&fileRecent);
         QString line;
         QStringList content;
         while(!(line = in.readLine()).isEmpty()) {
@@ -120,24 +152,53 @@ void ProjectManager::readIni() {
             content = line.split("=");
 
             if(content.size() == 2){
-                if(content.at(0).compare("savePath", Qt::CaseInsensitive)==0) {
-                    savePath = content.at(1);
-                    sysParams.setSavePath(savePath);
-                    recentProjects.push_back(savePath);
+                if(content.at(0).compare(FIELD_DATASETS, Qt::CaseInsensitive)==0){
+                    recentDatasetsProject.push_back(content.at(1));
                 }
-                else if(content.at(0).compare("dataSetName", Qt::CaseInsensitive)==0){
-                    datasetName = content.at(1);
-                    recentDatasets.push_back(datasetName);
+            }
+        }
+        fileRecent.close();
+
+        datasetName = "";
+        if (!recentDatasetsProject.isEmpty()) {
+            datasetName = recentDatasetsProject.at(0);
+        }
+    }
+    else {
+        qDebug() << "Could not open recent file";
+    }
+}
+
+void ProjectManager::readSharedData() {
+    recentDatasetsGlobal.clear();
+    recentProjects.clear();
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QFile inifile(globalFilesPath + SHARED_DATA_FILE_NAME);
+    if (inifile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&inifile);
+        QString line;
+        QStringList content;
+        while(!(line = in.readLine()).isEmpty()) {
+            // Remove all spaces
+            line = line.trimmed();
+            line.replace(" ", "");
+            content = line.split("=");
+
+            if(content.size() == 2){
+                if(content.at(0).compare(FIELD_DATASETS, Qt::CaseInsensitive)==0){
+                    recentDatasetsGlobal.push_back(content.at(1));
                 }
-                else if(content.at(0).compare("recentDataset", Qt::CaseInsensitive)==0){
-                    recentDatasets.push_back(content.at(1));
-                }
-                else if(content.at(0).compare("recentProject", Qt::CaseInsensitive)==0){
+                else if(content.at(0).compare(FIELD_PROJECTS, Qt::CaseInsensitive)==0){
                     recentProjects.push_back(content.at(1));
                 }
             }
         }
         inifile.close();
+
+        if (!recentProjects.isEmpty()) {
+            savePath = recentProjects.at(0);
+            sysParams.setSavePath(savePath);
+        }
     }
     else {
         qDebug() << "Could not open ini file";
@@ -146,19 +207,33 @@ void ProjectManager::readIni() {
 
 void ProjectManager::handleLoadedDataset(const QString& path) {
     datasetName = path;
-    for (int i = 0; i < recentDatasets.length(); i++) {
-        if (path == recentDatasets.at(i)) {
-            recentDatasets.remove(i, 1);
+    for (int i = 0; i < recentDatasetsProject.length(); i++) {
+        if (path == recentDatasetsProject.at(i)) {
+            recentDatasetsProject.remove(i, 1);
             break;
         }
     }
 
-    if (recentDatasets.length() >= MAX_DISPLAYED_RECENT) {
-        recentDatasets.removeLast();
+    if (recentDatasetsProject.length() >= MAX_DISPLAYED_RECENT) {
+        recentDatasetsProject.removeLast();
     }
 
-    recentDatasets.push_front(path);
-    writeIni();
+    recentDatasetsProject.push_front(path);
+
+    for (int i = 0; i < recentDatasetsGlobal.length(); i++) {
+        if (path == recentDatasetsGlobal.at(i)) {
+            recentDatasetsGlobal.remove(i, 1);
+            break;
+        }
+    }
+
+    if (recentDatasetsGlobal.length() >= MAX_DISPLAYED_RECENT) {
+        recentDatasetsGlobal.removeLast();
+    }
+
+    recentDatasetsGlobal.push_front(path);
+    writeProjectData();
+    writeSharedData();
 }
 
 void ProjectManager::updateRecentProjects(const QString& path) {
@@ -175,5 +250,23 @@ void ProjectManager::updateRecentProjects(const QString& path) {
     }
 
     recentProjects.push_front(path);
-    writeIni();
+    writeSharedData();
+}
+
+const QVector<QString> ProjectManager::getGlobalRecentDatasets() {
+    QVector<QString> temp;
+    for (int i = 0; i < recentDatasetsGlobal.length(); i++){
+        bool isNotHere = true;
+        for (int j = 0; j < recentDatasetsProject.length(); j++) {
+            if (recentDatasetsGlobal.at(i) == recentDatasetsProject.at(j)) {
+                isNotHere = false;
+                break;
+            }
+        }
+        if (isNotHere) {
+            temp.push_back(recentDatasetsGlobal.at(i));
+        }
+    }
+
+    return temp;
 }

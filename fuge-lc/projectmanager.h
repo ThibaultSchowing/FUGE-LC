@@ -14,8 +14,10 @@ private:
     ProjectManager(const ProjectManager&);
     ProjectManager& operator=(const ProjectManager&);
 
-    void writeIni();
-    void readIni();
+    void writeProjectData();
+    void readProjectData();
+    void writeSharedData();
+    void readSharedData();
 
     // Experiment name
     QString experimentName;
@@ -27,9 +29,18 @@ private:
     QString defaultFilePath;
     // Global FUGE files
     QString globalFilesPath;
-    QVector<QString> recentDatasets;
+    QVector<QString> recentDatasetsGlobal;
     QVector<QString> recentProjects;
+    QVector<QString> recentDatasetsProject;
 
+    static const QString FUZZY_FOLDER;
+    static const QString CONFIG_FOLDER;
+    static const QString SCRIPT_FOLDER;
+    static const QString PROJECT_FOLDER;
+    static const QString PROJECT_DATA_FILE_NAME;
+    static const QString SHARED_DATA_FILE_NAME;
+    static const QString FIELD_DATASETS;
+    static const QString FIELD_PROJECTS;
 public:
     static ProjectManager& getInstance() {
         static ProjectManager instance;
@@ -47,8 +58,9 @@ public:
     inline QString getDatasetName() {return datasetName;}
     void handleLoadedDataset(const QString& path);
     void updateRecentProjects(const QString& path);
-    inline const QVector<QString> getRecentDatasets() {return recentDatasets;}
+    inline const QVector<QString> getProjectRecentDatasets() {return recentDatasetsProject;}
     inline const QVector<QString> getRecentProjects() {return recentProjects;}
+    const QVector<QString> getGlobalRecentDatasets();
 };
 
 #endif // PROJECTMANAGER_H
