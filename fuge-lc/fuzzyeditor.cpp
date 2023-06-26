@@ -875,13 +875,13 @@ void FuzzyEditor::onNbInSetsChanged(int idx)
             while (left) {
                 // Check wether we need to add or remove a set
                 if (delta > 0) {
-                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i, k)->widget());
+                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2, k)->widget());
                     cbSet->addItem(fSystem->getRule(i)->getInVarAtPos(varIdx)->getSet(idx-left+1)->getName());
                     left--;
                 }
                 // We remove a set
                 else {
-                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i, k)->widget());
+                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2, k)->widget());
                     cbSet->removeItem(cbSet->count()-1);
                     left++;
                 }
@@ -938,20 +938,20 @@ void FuzzyEditor::onNbOutSetsChanged(int idx)
     // Update the rulesBox display
     // Rules
     for (int i = 0; i < fSystem->getNbRules(); i++) {
-        int baseIdx = MAX_ANTE*4;
+        int baseIdx = THEN_START;
         for (int k = 3 + baseIdx, varIdx = 0; k < fSystem->getRule(i)->getNbOutPairs()*4 + baseIdx; k+=4, varIdx++) {
 
             int left = delta;
             while (left) {
                 // Check wether we need to add or remove a set
                 if (delta > 0) {
-                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i, k)->widget());
+                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition((i * 2) + 1, k)->widget());
                     cbSet->addItem(fSystem->getRule(i)->getOutVarAtPos(varIdx)->getSet(idx-left+1)->getName());
                     left--;
                 }
                 // We remove a set
                 else {
-                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i, k)->widget());
+                    RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition((i * 2) + 1, k)->widget());
                     cbSet->removeItem(cbSet->count()-1);
                     left++;
                 }
@@ -961,7 +961,7 @@ void FuzzyEditor::onNbOutSetsChanged(int idx)
     // Default rule
     for (int k = 3, index = 0; k < fSystem->getNbOutVars()*4; k+=4, index++) {
         // Clear the combo boxes
-        RefComboBox* cbSetDef = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(fSystem->getNbRules()+1, k)->widget());
+        RefComboBox* cbSetDef = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(fSystem->getNbRules() * 2 + 1, k)->widget());
         cbSetDef->clear();
         for (int z = 0; z < nbOutSets; z++) {
             cbSetDef->addItem(fSystem->getOutVar(index)->getSet(z)->getName());
@@ -1081,9 +1081,9 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
         // Update the rulesBox display
         // Rules
         for (int i = 0; i < fSystem->getNbRules(); i++) {
-            int baseIdx = MAX_ANTE*4;
+            int baseIdx = THEN_START;
             for (int k = 3 + baseIdx, varIdx = 0; k < fSystem->getRule(i)->getNbOutPairs()*4 + baseIdx; k+=4, varIdx++) {
-                RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i, k)->widget());
+                RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2 + 1, k)->widget());
                 for (int z = 0; z < m_ui->cbOutSets->currentIndex()+1; z++) {
                     cbSet->setItemText(li-1, newName);
                 }
@@ -1092,7 +1092,7 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
         // Default rule
         for (int k = 3, index = 0; k < fSystem->getNbOutVars()*4; k+=4, index++) {
             // Clear the combo boxes
-            RefComboBox* cbSetDef = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(fSystem->getNbRules()+1, k)->widget());
+            RefComboBox* cbSetDef = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(fSystem->getNbRules() * 2 + 1, k)->widget());
             cbSetDef->clear();
             for (int z = 0; z < m_ui->cbOutSets->currentIndex()+1; z++) {
                 cbSetDef->addItem(fSystem->getOutVar(index)->getSet(z)->getName());
