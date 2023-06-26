@@ -63,6 +63,7 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
     m_ui->btOk->setAutoDefault(false);
     m_ui->btCancel->setAutoDefault(false);
 
+    m_ui->tabVars->setEnabled(false); // This part causes crashes easily, gotta fix renaming and changing rules amount
     this->fSystem = fSystem;
 
     displayVars();
@@ -447,6 +448,10 @@ void FuzzyEditor::onRulesChanged(int idx, int li, int col)
         }
         // ComboBox is a set
         else {
+            // very ugly hack. But for some reasons li is only half of its value when changing set
+            if (col % 3 == 0 && li % 2 == 0) {
+                li *= 2;
+            }
             updateRule(li);
         }
     }
