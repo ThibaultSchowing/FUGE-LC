@@ -145,6 +145,8 @@ FugeMain::FugeMain(QWidget *parent)
     // User has to enable script
     actOpenScript->setEnabled(false);
 
+    ui->btRecent->setIcon(ui->btRecent->style()->standardIcon(QStyle::SP_ArrowDown));
+
     loadFromIni();
 }
 

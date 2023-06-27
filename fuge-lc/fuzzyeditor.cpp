@@ -63,7 +63,7 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
     m_ui->btOk->setAutoDefault(false);
     m_ui->btCancel->setAutoDefault(false);
 
-    m_ui->tabVars->setEnabled(false); // This part causes crashes easily, gotta fix renaming and changing rules amount
+    //m_ui->tabVars->setEnabled(false); // This part causes crashes easily, gotta fix renaming and changing rules amount
     this->fSystem = fSystem;
 
     displayVars();
@@ -159,12 +159,23 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
         m_ui->comboBox->addItem(fSystem->getOutVar(i)->getName());
     }
 
+    // TODO : selecting a set/var amount smaller than the amount present in the fsystem
+    // causes the program to crash. Current workaround is to disable the smaller indexes
+
     // Prepare the sets/var comboboxes
-    for (int i = 0; i < MAX_IN_SETS; i++)
+    for (int i = 0; i < MAX_IN_SETS; i++) {
         m_ui->cbInSets->addItem(QString::number(i+1));
+        if (i < fSystem->getNbInSets() - 1) {
+            m_ui->cbInSets->setItemData(i, false, Qt::UserRole - 1);
+        }
+    }
     m_ui->cbInSets->setCurrentIndex(fSystem->getNbInSets()-1);
-    for (int i = 0; i < MAX_OUT_SETS; i++)
+    for (int i = 0; i < MAX_OUT_SETS; i++) {
         m_ui->cbOutSets->addItem(QString::number(i+1));
+        if (i < fSystem->getNbOutSets() - 1) {
+            m_ui->cbOutSets->setItemData(i, false, Qt::UserRole - 1);
+        }
+    }
     m_ui->cbOutSets->setCurrentIndex(fSystem->getNbOutSets()-1);
 
     // Set the current set position in the line edit
@@ -304,7 +315,7 @@ void FuzzyEditor::displayRulesBox()
 
             RefComboBox* cbBox2 = new RefComboBox(this,i,index+3);
             for (int z = 0; z < fSystem->getNbInSets(); z++) {
-                cbBox2->addItem(fSystem->getInVar(0)->getSet(z)->getName());
+                cbBox2->addItem(fSystem->getInVar(cbBox->currentIndex() / 2)->getSet(z)->getName());
             }
             if (k < rulesVector[i]->getNbInPairs()) {
                 cbBox2->setCurrentIndex(cbBox2->findText(rulesVector[i]->getInSetAtPos(k)->getName()));
@@ -359,7 +370,7 @@ void FuzzyEditor::displayRulesBox()
 
             RefComboBox* cbBox2 = new RefComboBox(this,displayIndex,index+3);
             for (int z = 0; z < fSystem->getNbOutSets(); z++) {
-                cbBox2->addItem(fSystem->getOutVar(0)->getSet(z)->getName());
+                cbBox2->addItem(fSystem->getOutVar(cbBox->currentIndex() / 2)->getSet(z)->getName());
             }
 
             if (k < rulesVector[i]->getNbOutPairs())
@@ -803,7 +814,7 @@ void FuzzyEditor::onSaveFuzzy()
 {
     CoevStats& coevStats = CoevStats::getInstance();
     SystemParameters& sysParams = SystemParameters::getInstance();
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"),  QString(sysParams.getSavePath() + tr("fuzzySystem/")), "*.ffs");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"),  QString(sysParams.getSavePath() + tr("fuzzySystem/fuzzysystem.ffs")), "*.ffs");
     if (!fileName.isEmpty()) {
         fSystem->saveToFile(fileName, coevStats.getFitMaxPop1());
     }
@@ -1060,6 +1071,7 @@ void FuzzyEditor::pruneInvalidConsequents(int invalidSetNum)
   */
 void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
 {
+
     // Check wether we are modifying an input or an output var
     // Input var
     if (m_ui->listVars->currentRow() < fSystem->getNbInVars()) {
@@ -1069,9 +1081,12 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
             for (int k = 3, varIdx = 0; k < fSystem->getRule(i)->getNbInPairs()*4; k+=4, varIdx++) {
                 // Update the name of the set
                 RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2, k)->widget());
-                for (int z = 0; z < m_ui->cbInSets->currentIndex()+1; z++) {
+                RefComboBox* cbVar = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2, k - 2)->widget());
+                /*for (int z = 0; z < m_ui->cbInSets->currentIndex()+1; z++) {
                     cbSet->setItemText(li-1, newName);
-                }
+                }*/
+                QString name = fSystem->getInVar(cbVar->currentIndex())->getSet(li-1)->getName();
+                cbSet->setItemText(li-1, name);
             }
         }
         // Update the set combo box in the memberships function editor
@@ -1089,9 +1104,11 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
             int baseIdx = THEN_START;
             for (int k = 3 + baseIdx, varIdx = 0; k < fSystem->getRule(i)->getNbOutPairs()*4 + baseIdx; k+=4, varIdx++) {
                 RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2 + 1, k)->widget());
-                for (int z = 0; z < m_ui->cbOutSets->currentIndex()+1; z++) {
+
+                /*for (int z = 0; z < m_ui->cbOutSets->currentIndex()+1; z++) {
                     cbSet->setItemText(li-1, newName);
-                }
+                }*/
+                cbSet->setItemText(li-1, newName);
             }
         }
         // Default rule
@@ -1106,6 +1123,7 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
     }
     // Display the modified sets
     displaySets();
+
 }
 
 /**
