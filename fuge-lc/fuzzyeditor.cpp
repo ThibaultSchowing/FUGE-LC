@@ -109,10 +109,8 @@ FuzzyEditor::FuzzyEditor(QWidget *parent, FuzzySystem* fSystem) :
     }
     assert(axisX != nullptr);
     assert(axisY != nullptr);
-    axisX->setTitleText("Generation");
     axisX->setTitleVisible();
     axisX->setLabelFormat("%d");
-    axisY->setTitleText("Fitness");
     axisY->setTitleVisible();
     myPlotView->setMinimumHeight(350);
 
@@ -609,6 +607,27 @@ void FuzzyEditor::onSelectVar()
     }
     */
 
+    double maxX = 0;
+    double minX = 0;
+    double newX = 0;
+    for (int i = 0; i < fSystem->getVar(varNum)->getSetsCount(); i++) {
+        if (i != 0) {
+             newX = fSystem->getVar(varNum)->getSet(i-1)->getPosition();
+             maxX = maxX < newX ? newX : maxX;
+             minX = minX > newX ? newX : minX;
+        }
+        if (i == fSystem->getVar(varNum)->getSetsCount() - 1) {
+             newX = fSystem->getVar(varNum)->getSet(i)->getPosition()*1.2;
+        }
+        else {
+             newX = fSystem->getVar(varNum)->getSet(i+1)->getPosition();
+        }
+
+        maxX = maxX < newX ? newX : maxX;
+        minX = minX > newX ? newX : minX;
+    }
+    axisX->setRange(minX, maxX);
+
     // Update the plot
     for (int i = 0; i < fSystem->getVar(varNum)->getSetsCount(); i++) {
         xVals.clear();
@@ -636,12 +655,17 @@ void FuzzyEditor::onSelectVar()
 
         curves.at(i)->setPen(QPen (colorTab[i%(sizeof(colorTab)/sizeof(QColor))],3));
         curves.at(i)->clear();
+
+        // Need to set a min and a max, otherwise will assume that first and last values start at 0 and end
+        curves.at(i)->append(minX, yVals.first());
         for(auto j = 0; j < xVals.length(); ++j) {
             curves.at(i)->append(xVals.at(j), yVals.at(j));
         }
-        if (myPlot->series().indexOf(curves.at(i)) < 0 ) {
-            myPlot->addSeries(curves.at(i));
-        }
+        curves.at(i)->append(maxX, yVals.last());
+
+        // need to remove then add to update the values of the curve
+        myPlot->removeSeries(curves.at(i));
+        myPlot->addSeries(curves.at(i));
 
         /* OLD_QWT_CODE
         curves.at(i)->setPen(QPen (colorTab[i%(sizeof(colorTab)/sizeof(QColor))],3));
@@ -1089,6 +1113,7 @@ void FuzzyEditor::onSetNameChanged(QString newName, int li, int)
         for (int i = 0; i < fSystem->getNbRules(); i++) {
             for (int k = 3, varIdx = 0; k < fSystem->getRule(i)->getNbInPairs()*4; k+=4, varIdx++) {
                 // Update the name of the set
+
                 RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2, k)->widget());
                 RefComboBox* cbVar = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(i * 2, k - 2)->widget());
                 /*for (int z = 0; z < m_ui->cbInSets->currentIndex()+1; z++) {
