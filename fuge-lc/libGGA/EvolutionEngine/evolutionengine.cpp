@@ -82,6 +82,10 @@ void EvolutionEngine::startEvolution(QMutex *leftLock, QMutex *rightLock, quint3
 
     // JOIN both evolution
     if(leftLock && rightLock){
+        // small hack, because it crashes on QT 6+
+        while(!leftLock->tryLock()) {
+            leftLock->unlock();
+        }
         leftLock->unlock();
         rightLock->lock();
         leftLock->unlock();
