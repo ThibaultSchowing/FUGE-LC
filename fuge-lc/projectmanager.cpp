@@ -9,6 +9,7 @@
 
 #define MAX_DISPLAYED_RECENT 10
 
+const QString ProjectManager::FUGE_SHARED_FOLDER = "FUGE/";
 const QString ProjectManager::FUZZY_FOLDER = "fuzzySystems/";
 const QString ProjectManager::CONFIG_FOLDER = "configs/";
 const QString ProjectManager::SCRIPT_FOLDER = "scripts/";
@@ -28,6 +29,8 @@ ProjectManager::ProjectManager() {
     defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/";
     globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/";
     QDir fugeDir;
+    fugeDir.mkdir(defaultFilePath + FUGE_SHARED_FOLDER);
+    fugeDir.mkdir(defaultFilePath + FUGE_SHARED_FOLDER + CONFIG_FOLDER);
     QFile inifile(globalFilesPath + SHARED_DATA_FILE_NAME);
     if (!fugeDir.exists(globalFilesPath)) {
         fugeDir.mkdir(globalFilesPath);

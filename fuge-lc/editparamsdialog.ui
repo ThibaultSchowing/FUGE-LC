@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>500</height>
+    <height>520</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -2059,16 +2059,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLineEdit" name="lineExp">
-          <property name="toolTip">
-           <string>Name of the current experiment</string>
-          </property>
-          <property name="text">
-           <string>Experience_1</string>
-          </property>
-         </widget>
-        </item>
         <item row="4" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
@@ -2096,6 +2086,40 @@
           </property>
           <property name="text">
            <string>Only Line inputs are saved /!\</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButton_LoadFileGlobal">
+            <property name="text">
+             <string>Load global config ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_SaveAsGlobal">
+            <property name="text">
+             <string>Save global config as ...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLineEdit" name="lineExp">
+          <property name="toolTip">
+           <string>Name of the current experiment</string>
+          </property>
+          <property name="text">
+           <string>Experience_1</string>
           </property>
          </widget>
         </item>

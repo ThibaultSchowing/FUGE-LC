@@ -33,6 +33,7 @@ private:
     QVector<QString> recentProjects;
     QVector<QString> recentDatasetsProject;
 
+    static const QString FUGE_SHARED_FOLDER;
     static const QString FUZZY_FOLDER;
     static const QString CONFIG_FOLDER;
     static const QString SCRIPT_FOLDER;
@@ -56,6 +57,7 @@ public:
     inline void setSavePath(QString path) {savePath = path;}
     inline QString getExperimentName() {return experimentName;}
     inline QString getDatasetName() {return datasetName;}
+    inline QString getGlobalConfFolder() {return defaultFilePath + FUGE_SHARED_FOLDER + CONFIG_FOLDER;}
     void handleLoadedDataset(const QString& path);
     void updateRecentProjects(const QString& path);
     inline const QVector<QString> getProjectRecentDatasets() {return recentDatasetsProject;}

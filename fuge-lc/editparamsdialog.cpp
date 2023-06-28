@@ -702,12 +702,12 @@ void EditParamsDialog::on_buttonBoxClose_accepted()
 
 /**
  * @brief EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked
- * Save current default config as user default values (config).
+ * Save current config as user default values (config).
  */
-void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
+void EditParamsDialog::on_pushButton_SaveAsGlobal_clicked()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
-    QString name = sysParams.getSavePath() + "configs/" +  DEFAULTCONFIGNAME;
+    ProjectManager& pm = ProjectManager::getInstance();
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(pm.getGlobalConfFolder() + tr("myfile.conf")) ,tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -743,11 +743,13 @@ void EditParamsDialog::on_pushButton_LoadFile_clicked()
  * @brief EditParamsDialog::on_pushButton_LoadUserDefault_clicked
  * Load users default config.
  */
-void EditParamsDialog::on_pushButton_LoadUserDefault_clicked()
+void EditParamsDialog::on_pushButton_LoadFileGlobal_clicked()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
-    QString name = sysParams.getSavePath() + "configs/" +  DEFAULTCONFIGNAME;
-    loadConfig(name);
+    ProjectManager& pm = ProjectManager::getInstance();
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), pm.getGlobalConfFolder(), tr("Config files.conf (*.conf)"));
+    if(!name.isEmpty()){
+        loadConfig(name);
+    }
 }
 
 /**

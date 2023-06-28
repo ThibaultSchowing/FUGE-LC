@@ -89,10 +89,10 @@ private slots:
     void onLinePathEdited(QString path);
     void onChbActivateThresh();
     void on_buttonBoxClose_accepted();
-    void on_pushButton_SaveAsUserDefault_clicked();
+    void on_pushButton_SaveAsGlobal_clicked();
     void on_pushButton_SaveAs_clicked();
     void on_pushButton_LoadFile_clicked();
-    void on_pushButton_LoadUserDefault_clicked();
+    void on_pushButton_LoadFileGlobal_clicked();
     void on_comboBox_LearningMethod_activated(int index);
     void on_comboBox_MembershipInitialization_activated(int index);
     void toggle_level_two(bool b);
