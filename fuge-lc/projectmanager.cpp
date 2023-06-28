@@ -7,7 +7,8 @@
 #include <QDir>
 #include "systemparameters.h"
 
-#define MAX_DISPLAYED_RECENT 10
+#define MAX_DISPLAYED_RECENT_GLOBAL 15
+#define MAX_DISPLAYED_RECENT_PROJECT 5
 
 const QString ProjectManager::FUGE_SHARED_FOLDER = "FUGE/";
 const QString ProjectManager::FUZZY_FOLDER = "fuzzySystems/";
@@ -217,7 +218,7 @@ void ProjectManager::handleLoadedDataset(const QString& path) {
         }
     }
 
-    if (recentDatasetsProject.length() >= MAX_DISPLAYED_RECENT) {
+    if (recentDatasetsProject.length() >= MAX_DISPLAYED_RECENT_PROJECT) {
         recentDatasetsProject.removeLast();
     }
 
@@ -230,7 +231,7 @@ void ProjectManager::handleLoadedDataset(const QString& path) {
         }
     }
 
-    if (recentDatasetsGlobal.length() >= MAX_DISPLAYED_RECENT) {
+    if (recentDatasetsGlobal.length() >= MAX_DISPLAYED_RECENT_GLOBAL) {
         recentDatasetsGlobal.removeLast();
     }
 
@@ -248,7 +249,7 @@ void ProjectManager::updateRecentProjects(const QString& path) {
         }
     }
 
-    if (recentProjects.length() >= MAX_DISPLAYED_RECENT) {
+    if (recentProjects.length() >= MAX_DISPLAYED_RECENT_GLOBAL) {
         recentProjects.removeLast();
     }
 
