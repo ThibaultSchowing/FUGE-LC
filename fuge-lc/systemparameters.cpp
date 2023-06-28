@@ -27,11 +27,14 @@
 #include <iostream>
 
 #include <QFile>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "systemparameters.h"
 
 SystemParameters::SystemParameters()
 {
+    datasetName = "";
     fixedVars = false;
     verbose = false;
     //MODIF - Bujard - 18.03.2010

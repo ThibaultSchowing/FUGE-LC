@@ -62,14 +62,17 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     // Display the fitness function
     displayFitFct();
 
+    // Display basic level of parameters
+    display_level_one();
+
 
     // FIXME: Can be all done in the ui form.
     // Automatically check and set values inserted and connect every signal with the desired slot.
     // Plus each lineedit should have his own onTextChanged slot, because they are independ
     // and there is no need to check non related fields when one change.
     connect(m_ui->lineExp, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
-    connect(m_ui->btPath, SIGNAL(pressed()), this , SLOT(onBtPathPressed()));
-    connect(m_ui->linePath, SIGNAL(textChanged(QString)), this, SLOT(onLinePathEdited(QString)));
+    //connect(m_ui->btPath, SIGNAL(pressed()), this , SLOT(onBtPathPressed()));
+    //connect(m_ui->linePath, SIGNAL(textChanged(QString)), this, SLOT(onLinePathEdited(QString)));
     connect(m_ui->lineRules, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineVarsPerRule, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineOutput, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
@@ -116,6 +119,9 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     connect(m_ui->lineAccu, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->linePpv, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->lineRmse, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
+    connect(m_ui->radioButton_basic, SIGNAL(pressed()), this, SLOT(display_level_one()));
+    connect(m_ui->radioButton_advanced, SIGNAL(pressed()), this, SLOT(display_level_two()));
+    connect(m_ui->radioButton_expert, SIGNAL(pressed()), this, SLOT(display_level_three()));
 }
 
 EditParamsDialog::~EditParamsDialog()
@@ -129,8 +135,21 @@ EditParamsDialog::~EditParamsDialog()
   */
 void EditParamsDialog::displayFitFct()
 {
-    m_ui->labelFitFct->setText("Fitness = " + m_ui->lineSensi->text() + "*Sensi + " + m_ui->lineSpeci->text() + "*Speci + "
-                               + m_ui->linePpv->text() +"*Accuracy + " + m_ui->lineAccu->text() + "*PPV + " + m_ui->lineRmse->text() + "*RMSE");
+    QString sensi = FormatParameterDisplay(m_ui->lineSensi->text());
+    QString speci = FormatParameterDisplay(m_ui->lineSpeci->text());
+    QString ppv = FormatParameterDisplay(m_ui->linePpv->text());
+    QString accu = FormatParameterDisplay(m_ui->lineAccu->text());
+    QString rmse = FormatParameterDisplay(m_ui->lineRmse->text());
+    m_ui->labelFitFct->setText("Fitness = " + sensi + "*Sensi + " + speci + "*Speci + "
+                               + ppv + "*Acc + " + accu + "*PPV + " + rmse + "*RMSE");
+}
+
+QString EditParamsDialog::FormatParameterDisplay(const QString& str) {
+    if (str.length() <= 5){
+        return str;
+    }
+
+    return str.left(3) + "...";
 }
 
 /**
@@ -144,9 +163,10 @@ bool EditParamsDialog::checkAndSetValues()
     bool valid = true;
 
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
     // Experiment name
-    sysParams.setExperimentName(m_ui->lineExp->text());
+    manager.setExperimentName(m_ui->lineExp->text());
 
     // Number of rules
     if (validateIntEntry(m_ui->lineRules->text(), 1, 1024)) {
@@ -613,9 +633,11 @@ bool EditParamsDialog::validateFloatEntry(QString stringValue, float min, float 
   */
 void EditParamsDialog::onBtPathPressed()
 {
+    SystemParameters& sysParams = SystemParameters::getInstance();
     QFileDialog pathDialog;
     connect(&pathDialog, SIGNAL(currentChanged(QString)), this, SLOT(changePath(QString)));
     pathDialog.setFileMode(QFileDialog::Directory);
+    pathDialog.setDirectory(sysParams.getSavePath() + tr("configs/"));
     pathDialog.exec();
 }
 
@@ -637,7 +659,7 @@ void EditParamsDialog::changePath(QString path)
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     sysParams.setSavePath(path);
-    m_ui->linePath->setText(path);
+    //m_ui->linePath->setText(path);
 }
 
 /**
@@ -680,12 +702,12 @@ void EditParamsDialog::on_buttonBoxClose_accepted()
 
 /**
  * @brief EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked
- * Save current default config as user default values (config).
+ * Save current config as user default values (config).
  */
-void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
+void EditParamsDialog::on_pushButton_SaveAsGlobal_clicked()
 {
-    QDir saveCurrent = QDir::current();
-    QString name = saveCurrent.absolutePath() +  DEFAULTCONFIGNAME;
+    ProjectManager& pm = ProjectManager::getInstance();
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(pm.getGlobalConfFolder() + tr("myfile.conf")) ,tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -697,7 +719,8 @@ void EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked()
  */
 void EditParamsDialog::on_pushButton_SaveAs_clicked()
 {
-    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"),QString(tr("myfile.conf")),tr("Config files.conf (*.conf)"));
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getSavePath() + tr("configs/myfile.conf")) ,tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         saveConfig(name);
     }
@@ -709,7 +732,8 @@ void EditParamsDialog::on_pushButton_SaveAs_clicked()
  */
 void EditParamsDialog::on_pushButton_LoadFile_clicked()
 {
-    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"),QString(),tr("Config files.conf (*.conf)"));
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getSavePath()+ tr("configs/"), tr("Config files.conf (*.conf)"));
     if(!name.isEmpty()){
         loadConfig(name);
     }
@@ -719,11 +743,13 @@ void EditParamsDialog::on_pushButton_LoadFile_clicked()
  * @brief EditParamsDialog::on_pushButton_LoadUserDefault_clicked
  * Load users default config.
  */
-void EditParamsDialog::on_pushButton_LoadUserDefault_clicked()
+void EditParamsDialog::on_pushButton_LoadFileGlobal_clicked()
 {
-    QDir saveCurrent = QDir::current();
-    QString name = saveCurrent.absolutePath() +  DEFAULTCONFIGNAME;
-    loadConfig(name);
+    ProjectManager& pm = ProjectManager::getInstance();
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), pm.getGlobalConfFolder(), tr("Config files.conf (*.conf)"));
+    if(!name.isEmpty()){
+        loadConfig(name);
+    }
 }
 
 /**
@@ -943,3 +969,76 @@ void EditParamsDialog::setEnabledCoevParams(bool value){
     SystemParameters& sysParams = SystemParameters::getInstance();
     sysParams.setCoevolutionary(value);
 }
+
+void EditParamsDialog::toggle_level_two(bool b) {
+    // POPULATION
+    m_ui->label_9_lv2->setVisible(b);
+    m_ui->label_10_lv2->setVisible(b);
+    m_ui->label_11_lv2->setVisible(b);
+    m_ui->label_12_lv2->setVisible(b);
+    m_ui->label_13_lv2->setVisible(b);
+    m_ui->label_14_lv2->setVisible(b);
+    m_ui->label_15_lv2->setVisible(b);
+    m_ui->label_16_lv2->setVisible(b);
+    m_ui->label_30_lv2->setVisible(b);
+    m_ui->lineElitePop1->setVisible(b);
+    m_ui->lineElitePop2->setVisible(b);
+    m_ui->lineCxPop1->setVisible(b);
+    m_ui->lineCxPop2->setVisible(b);
+    m_ui->lineMutBitPop1->setVisible(b);
+    m_ui->lineMutBitPop2->setVisible(b);
+    m_ui->lineMutIndPop1->setVisible(b);
+    m_ui->lineMutIndPop2->setVisible(b);
+    m_ui->label_Cooperators_lv2->setVisible(b);
+    m_ui->spinBoxCooperators->setVisible(b);
+
+    // FITNESS
+    m_ui->lblCorr->setVisible(b);
+    m_ui->lblDistance->setVisible(b);
+    m_ui->lblDontCare->setVisible(b);
+    m_ui->lblMinDistance->setVisible(b);
+    m_ui->lblOverLearn->setVisible(b);
+    m_ui->lblRae->setVisible(b);
+    m_ui->lblRrse->setVisible(b);
+    m_ui->lblMSE->setVisible(b);
+
+    m_ui->lineCorr->setVisible(b);
+    m_ui->lineDistance->setVisible(b);
+    m_ui->lineDontCare->setVisible(b);
+    m_ui->lineMinDistance->setVisible(b);
+    m_ui->lineOverLearn->setVisible(b);
+    m_ui->lineRae->setVisible(b);
+    m_ui->lineRrse->setVisible(b);
+    m_ui->lineMse->setVisible(b);
+}
+
+void EditParamsDialog::toggle_level_three(bool b) {
+    // BITS FOR RULES
+    m_ui->groupBox_FuzzyEvolution->setVisible(b);
+}
+
+void EditParamsDialog::display_level_one() {
+    toggle_level_two(false);
+    toggle_level_three(false);
+    m_ui->radioButton_basic->setChecked(true);
+    m_ui->radioButton_advanced->setChecked(false);
+    m_ui->radioButton_expert->setChecked(false);
+}
+
+void EditParamsDialog::display_level_two() {
+    toggle_level_two(true);
+    toggle_level_three(false);
+    m_ui->radioButton_basic->setChecked(false);
+    m_ui->radioButton_advanced->setChecked(true);
+    m_ui->radioButton_expert->setChecked(false);
+}
+
+void EditParamsDialog::display_level_three() {
+    toggle_level_two(true);
+    toggle_level_three(true);
+    m_ui->radioButton_basic->setChecked(false);
+    m_ui->radioButton_advanced->setChecked(false);
+    m_ui->radioButton_expert->setChecked(true);
+}
+
+

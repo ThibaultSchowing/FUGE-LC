@@ -156,6 +156,18 @@ EvalPlot::EvalPlot(QWidget *parent) :
 EvalPlot::~EvalPlot()
 {
     delete m_ui;
+
+    delete valsMesured;
+    delete valsExpected;
+    delete valsPredicted;
+    delete threshCurve;
+    delete myPlot;
+    delete myPlotView;
+    delete xVals;
+    delete yValsMesured;
+    delete yValsExpected;
+    delete yValsPredicted;
+    delete yValsThresh;
 }
 
 void EvalPlot::changeEvent(QEvent *e)

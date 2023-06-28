@@ -48,6 +48,7 @@
 #include <QMessageBox>
 #include <QSemaphore>
 #include <QProcess>
+#include <QVector>
 
 #include "fuzzysystem.h"
 
@@ -69,6 +70,7 @@
 #include "fuzzymembershipsgenome.h"
 #include "fuzzyrule.h"
 #include "fuzzysystem.h"
+#include "projectmanager.h"
 
 class ComputeThread;
 
@@ -97,6 +99,13 @@ protected:
 
 private:
     void createActions();
+    void resetDisplay();
+    void loadFromIni();
+    void loadDataSet(const QString& fileName);
+    void clearRecentDatasets();
+    void displayRecentDatasets();
+    void clearRecentProjects();
+    void displayRecentProjects();
     Ui::FugeMain* ui;
     AboutDialog* aboutDial;
     HelpDialog* help;
@@ -127,20 +136,27 @@ private:
     QAction* actQuit;
     QAction* actAbout;
     QAction* actHelp;
+    QAction* actEnableScript;
+    QAction* actSetWorkFolder;
     QMenu* fileMenu;
     QMenu* dataMenu;
     QMenu* fuzzyMenu;
     QMenu* paramsMenu;
     QMenu* scriptMenu;
     QMenu* helpMenu;
+    QMenu* recentDatasetMenu;
+    QMenu* recentProjectsMenu;
     EditParamsDialog *editParams;
     QString currentOpennedSystem;
+    QVector<QAction*> recentDatasets;
+    QVector<QAction*> recentProjects;
 
     bool fuzzyLoaded;
     bool dataLoaded;
     bool scriptLoaded;
     bool paramsLoaded;
     bool isRunning;
+    bool isScriptEnabled;
 
 public slots:
     void onComputeFinished();
@@ -166,6 +182,10 @@ private slots:
     void onActAbout();
     void onActHelp();
     void closeEvent(QCloseEvent*);
+    void onShowScriptClicked();
+    void onSettingProject();
+    void onShowRecentDatasets();
+    void updateWindowTitle();
 
 signals:
     void clearStats();

@@ -43,6 +43,7 @@ private:
     SystemParameters(const SystemParameters&);
     SystemParameters& operator=(const SystemParameters&);
 
+    // Those are to be used only for the script
     // Experiment name
     QString experimentName;
     // Database name
@@ -151,7 +152,7 @@ public:
     inline void setNbVarPerRule(int value) {nbVarPerRule = value;}
     inline void setNbInVars(int value) {nbInVars = value;}
     inline void setNbOutVars(int value) {nbOutVars = value;
-                                         threshold.resize(nbOutVars);}
+        threshold.resize(nbOutVars);}
     inline void setNbInSets(int value) {nbInSets = value;}
     inline void setNbOutSets(int value) {nbOutSets = value;}
     inline void setInVarsCodeSize(int value) {inVarsCodeSize = value;}

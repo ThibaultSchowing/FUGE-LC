@@ -28,7 +28,6 @@
   */
 #include "fugemain.h"
 
-
 QFile *fitLogFile;
 QSemaphore scriptSema(0);
 bool doRunFromCmd = false;
@@ -44,6 +43,14 @@ FugeMain::FugeMain(QWidget *parent)
     ui->btValidate->setEnabled(false);
     ui->btEvaluate->setEnabled(false);
     ui->btPredict->setEnabled(false);
+    ui->groupBox_Script->setVisible(false);
+    ui->btScript->setCheckable(true);
+    ui->btRunScript->setVisible(false);
+
+    SystemParameters& sysParams = SystemParameters::getInstance();
+
+    // NOT IMPLEMENTED YET
+    ui->btNewFuzzy->setVisible(false);
 
     // Initialise the random generator
     QTime time;
@@ -55,6 +62,7 @@ FugeMain::FugeMain(QWidget *parent)
     scriptLoaded = false;
     paramsLoaded = false;
     isRunning = false;
+    isScriptEnabled = false;
 
     ComputeThread::bestFSystem = 0;
     fSystemRules = 0;
@@ -92,6 +100,9 @@ FugeMain::FugeMain(QWidget *parent)
     connect(ui->btEditParams, SIGNAL(clicked()), this, SLOT(onActEditParams()));
     connect(ui->btOpenScript, SIGNAL(clicked()), this, SLOT(onActOpenScript()));
     connect(ui->btCloseScript, SIGNAL(clicked()), this, SLOT(onActCloseScript()));
+    connect(ui->btScript, SIGNAL(clicked()), this, SLOT(onShowScriptClicked()));
+    connect(ui->btRecent, SIGNAL(clicked()), this, SLOT(onShowRecentDatasets()));
+
 
     this->createActions();
     // TODO: There's a ui, form file for this, it shouldn't be implemented in code
@@ -101,6 +112,9 @@ FugeMain::FugeMain(QWidget *parent)
     paramsMenu = menuBar()->addMenu(tr("&Parameters"));
     scriptMenu = menuBar()->addMenu(tr("&Script"));
     helpMenu = menuBar()->addMenu(tr("&Help"));
+    recentProjectsMenu = new QMenu("&Recent...");
+    fileMenu->addAction(actSetWorkFolder);
+    fileMenu->addMenu(recentProjectsMenu);
     fileMenu->addAction(actRun);
     fileMenu->addAction(actStop);
     dataMenu->addAction(actOpenData);
@@ -117,13 +131,23 @@ FugeMain::FugeMain(QWidget *parent)
     scriptMenu->addAction(actOpenScript);
     scriptMenu->addAction(actCloseScript);
     scriptMenu->addAction(actRunScript);
+    scriptMenu->addAction(actEnableScript);
     fileMenu->addAction(actQuit);
     helpMenu->addAction(actHelp);
     helpMenu->addAction(actAbout);
+    recentDatasetMenu = new QMenu(ui->btRecent);
     currentOpennedSystem = "";
 
     // Fuzzy system manual creation not implemented yet...
     ui->btNewFuzzy->setEnabled(false);
+    actNewFuzzy->setEnabled(false);
+
+    // User has to enable script
+    actOpenScript->setEnabled(false);
+
+    ui->btRecent->setIcon(ui->btRecent->style()->standardIcon(QStyle::SP_ArrowDown));
+
+    loadFromIni();
 }
 
 FugeMain::~FugeMain()
@@ -253,6 +277,8 @@ void FugeMain::createActions()
     actQuit = new QAction(tr("&Quit"), this);
     actHelp = new QAction(tr("&Help..."), this);
     actAbout = new QAction(tr("&About..."), this);
+    actEnableScript = new QAction(tr("&Enable Script"));
+    actSetWorkFolder = new QAction(tr("&Set work folder..."));
     actRun->setEnabled(false);
     actStop->setEnabled(false);
     actRunScript->setEnabled(false);
@@ -292,6 +318,8 @@ void FugeMain::createActions()
     connect(actQuit, SIGNAL(triggered()), this, SLOT(onActQuit()));
     connect(actHelp, SIGNAL(triggered()), this, SLOT(onActHelp()));
     connect(actAbout, SIGNAL(triggered()), this, SLOT(onActAbout()));
+    connect(actEnableScript, SIGNAL(triggered()), this, SLOT(onShowScriptClicked()));
+    connect(actSetWorkFolder, SIGNAL(triggered()), this, SLOT(onSettingProject()));
 }
 
 /**
@@ -356,7 +384,6 @@ void FugeMain::onActRun()
         ui->btCloseData->setEnabled(false);
         ui->btOpenFuzzy->setEnabled(false);
         ui->btEditParams->setEnabled(false);
-
     }
     else if (!dataLoaded) {
         ErrorDialog errDiag;
@@ -395,43 +422,10 @@ void FugeMain::onActQuit()
   */
 void FugeMain::onActOpenData()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), "../../../../datasets", "*.csv");
-    if (!fileName.isEmpty()) {
-        // Clear previous loaded data
-        if (dataLoaded)
-            listFile->clear();
-        QFile file(fileName);
-        file.open(QIODevice::ReadOnly);
-        QTextStream csvFile(&file);
-        QString line;
-        QStringList list;
-
-        // Save the name of the dataset
-        SystemParameters& sysParams = SystemParameters::getInstance();
-        sysParams.setDatasetName(fileName);
-
-        // Read the csv file and store info in a double dimension list.
-        while (!csvFile.atEnd()) {
-            line = csvFile.readLine();
-            list = line.split(';');
-            listFile->append(list);
-        }
-        dataLoaded = true;
-        file.close();
-        if (paramsLoaded) {
-            ui->btRun->setEnabled(true);
-            actRun->setEnabled(true);
-        }
-        if (scriptLoaded) {
-            ui->btRunScript->setEnabled(true);
-            actRunScript->setEnabled(true);
-        }
-        ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + fileName + "<font>");
-        ui->label_dataVars->setText(QString::number(listFile->at(0).size()-1) + " variables");
-        ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
-        actCloseData->setEnabled(true);
-        ui->btCloseData->setEnabled(true);
-    }
+    ProjectManager& manager = ProjectManager::getInstance();
+    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getSavePath();
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open dataset"), openPath, "*.csv");
+    loadDataSet(fileName);
 }
 
 /**
@@ -575,9 +569,9 @@ void FugeMain::onActCloseFuzzy()
   */
 void FugeMain::onActSaveFuzzy()
 {
-    SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), sysParams.getSavePath()+"fuzzySystems" , "*.ffs");
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), manager.getSavePath()+"fuzzySystems" , "*.ffs");
     if (!fileName.isEmpty()) {
         // If the evolution is running, we ask the evaluation operator to save the best system
         if (isRunning) {
@@ -622,10 +616,11 @@ void FugeMain::onActEditFuzzy()
 void FugeMain::onActPredictFuzzy(bool fromCmd)
 {
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
     QString fileName;
 
     if (!fromCmd)
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), "../../../../datasets", "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset (WITHOUT OUPTUT VALUES)"), manager.getDefaultFilePath(), "*.csv");
     else {
         fileName = sysParams.getDatasetName();
     }
@@ -711,6 +706,7 @@ void FugeMain::onActPredictFuzzy(bool fromCmd)
     }
 }
 
+
 /**
   * Slot called when the user asks for a validation.
   */
@@ -729,6 +725,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
     QVector<float> expectedResults;
     QVector<float> predictedResults;
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
     QString fileName;
 
@@ -739,7 +736,7 @@ void FugeMain::onActEvalFuzzy(bool doValid, bool fromCmd)
         //fileExists = file.exists();
     }
     else {
-        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), "../../../../datasets", "*.csv");
+        fileName = QFileDialog::getOpenFileName(this, tr("Open a test dataset"), manager.getDefaultFilePath(), "*.csv");
     }
 
     QFile file(fileName);
@@ -863,7 +860,9 @@ void FugeMain::onActEditParams()
   */
 void FugeMain::onActOpenScript()
 {
-    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), "scripts", "*.fs");
+    ProjectManager& manager = ProjectManager::getInstance();
+    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getSavePath() + "scripts/";
+    QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), openPath, "*.fs");
     if (!fileName.isEmpty()) {
         scriptLoaded = true;
         paramsLoaded = true;
@@ -1073,4 +1072,203 @@ void FugeMain::closeEvent(QCloseEvent*)
 
     statsPlot->close();
     this->close();
+}
+
+/**
+ * Slot called when script is enabled or disabled
+ */
+void FugeMain::onShowScriptClicked() {
+    isScriptEnabled = !isScriptEnabled;
+    ui->groupBox_Script->setVisible(isScriptEnabled);
+    actOpenScript->setEnabled(isScriptEnabled && ui->btOpenScript->isEnabled());
+    actCloseScript->setEnabled(isScriptEnabled && ui->btCloseScript->isEnabled());
+    actRunScript->setEnabled(isScriptEnabled && ui->btRunScript->isEnabled());
+    ui->btScript->setChecked(isScriptEnabled);
+    ui->btRun->setVisible(!isScriptEnabled);
+    ui->btRunScript->setVisible(isScriptEnabled);
+    if (!isScriptEnabled) {
+        actEnableScript->setText("&Enable script");
+    } else {
+        actEnableScript->setText("&Disable script");
+    }
+}
+
+/**
+  * Slot called when the user creates a new project
+  */
+void FugeMain::onSettingProject()
+{
+    ProjectManager& manager = ProjectManager::getInstance();
+
+    QString path = QFileDialog::getExistingDirectory(this, tr("Select a folder."), manager.getDefaultFilePath(), QFileDialog::ShowDirsOnly) + "/";
+
+    if (manager.newProjectFolder(path)) {
+        resetDisplay();
+    }
+    else {
+        ErrorDialog errDiag;
+        errDiag.setError("Error : bad path");
+        errDiag.setInfo("Please select an existing and writable folder as a work folder.");
+        errDiag.exec();
+        return;
+    }
+}
+
+void FugeMain::loadDataSet(const QString& fileName) {
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
+    if (!fileName.isEmpty()) {
+        if (dataLoaded)
+            listFile->clear();
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly);
+        QTextStream csvFile(&file);
+        QString line;
+        QStringList list;
+
+        // Save the name of the dataset
+        sysParams.setDatasetName(fileName);
+        manager.handleLoadedDataset(fileName);
+        displayRecentDatasets();
+
+        // Read the csv file and store info in a double dimension list.
+        while (!csvFile.atEnd()) {
+            line = csvFile.readLine();
+            list = line.split(';');
+            listFile->append(list);
+        }
+        dataLoaded = true;
+        file.close();
+        if (paramsLoaded) {
+            ui->btRun->setEnabled(true);
+            actRun->setEnabled(true);
+        }
+        if (scriptLoaded) {
+            ui->btRunScript->setEnabled(true);
+            actRunScript->setEnabled(true);
+        }
+        ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + fileName + "<font>");
+        ui->label_dataVars->setText(QString::number(listFile->at(0).size()-1) + " variables");
+        ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
+        actCloseData->setEnabled(true);
+        ui->btCloseData->setEnabled(true);
+    }
+}
+
+void FugeMain::resetDisplay(){
+    paramsLoaded = false;
+    onActCloseData();
+    onActCloseFuzzy();
+    onActCloseScript();
+    isScriptEnabled = true;
+    onShowScriptClicked();
+    displayRecentDatasets();
+    displayRecentProjects();
+    updateWindowTitle();
+}
+
+void FugeMain::loadFromIni() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    displayRecentDatasets();
+    displayRecentProjects();
+
+    if(!manager.getDatasetName().isEmpty()) {
+        QString fileName = manager.getDatasetName();
+        loadDataSet(fileName);
+    }
+    updateWindowTitle();
+}
+
+void FugeMain::updateWindowTitle() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    QString workFolder = manager.getSavePath();
+    QString title = "FUGE-LC";
+    if (workFolder != "./") {
+        title += " - Project open in " + workFolder;
+    }
+    setWindowTitle(title);
+}
+
+void FugeMain::displayRecentDatasets() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    clearRecentDatasets();
+    QVector<QString> projectDatasetVec = manager.getProjectRecentDatasets();
+    for (int i = 0; i < projectDatasetVec.length(); i++) {
+        QString displayName = projectDatasetVec.at(i);
+        QAction* action = new QAction(displayName);
+        QObject::connect(action, &QAction::triggered, this, [this, action]() {
+            loadDataSet(action->text());
+        });
+        recentDatasets.push_back(action);
+        recentDatasetMenu->addAction(action);
+    }
+
+    QVector<QString> globalDatasetVec = manager.getGlobalRecentDatasets();
+
+    if(!globalDatasetVec.isEmpty() && !projectDatasetVec.isEmpty()) {
+        QAction* action = new QAction("-----");
+        action->setEnabled(false);
+        recentDatasets.push_back(action);
+        recentDatasetMenu->addAction(action);
+    }
+
+    for (int i = 0; i < globalDatasetVec.length(); i++) {
+        QString displayName = globalDatasetVec.at(i);
+        QAction* action = new QAction(displayName);
+        QObject::connect(action, &QAction::triggered, this, [this, action]() {
+            loadDataSet(action->text());
+        });
+        recentDatasets.push_back(action);
+        recentDatasetMenu->addAction(action);
+    }
+}
+
+void FugeMain::clearRecentDatasets() {
+    recentDatasetMenu->clear();
+
+    for (int i = 0; i < recentDatasets.length(); i++){
+        delete recentDatasets.at(i);
+    }
+    recentDatasets.clear();
+}
+
+void FugeMain::displayRecentProjects() {
+    ProjectManager& manager = ProjectManager::getInstance();
+    clearRecentProjects();
+    QVector<QString> projectsVec = manager.getRecentProjects();
+    for (int i = 0; i < projectsVec.length(); i++) {
+        QString displayName = projectsVec.at(i);
+        QAction* action = new QAction(displayName);
+        QObject::connect(action, &QAction::triggered, this, [this, action]() {
+            ProjectManager& manager = ProjectManager::getInstance();
+            if (manager.openExistingProject(action->text())) {
+                resetDisplay();
+                loadDataSet(manager.getDatasetName());
+            }
+            else {
+                ErrorDialog errDiag;
+                errDiag.setError("Error : bad path");
+                errDiag.setInfo("The selected project couldn't be found");
+                errDiag.exec();
+                return;
+            }
+        });
+        recentProjects.push_back(action);
+        recentProjectsMenu->addAction(action);
+    }
+    recentProjectsMenu->setEnabled(!recentProjects.isEmpty());
+}
+
+void FugeMain::clearRecentProjects() {
+    recentProjectsMenu->clear();
+
+    for (int i = 0; i < recentProjects.length(); i++){
+        delete recentProjects.at(i);
+    }
+    recentProjects.clear();
+    recentProjectsMenu->setEnabled(false);
+}
+
+void FugeMain::onShowRecentDatasets() {
+    recentDatasetMenu->exec(ui->btRecent->mapToGlobal(QPoint(-60, ui->btRecent->height())));
 }

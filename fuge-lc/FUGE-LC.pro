@@ -26,6 +26,7 @@ SOURCES += main.cpp \
     aboutdialog.cpp \
     errordialog.cpp \
     fuzzymembershipssingle.cpp \
+    projectmanager.cpp \
     statsplot.cpp \
     computethread.cpp \
     systemparameters.cpp \
@@ -40,6 +41,7 @@ HEADERS += fugemain.h \
     aboutdialog.h \
     errordialog.h \
     fuzzymembershipssingle.h \
+    projectmanager.h \
     statsplot.h \
     computethread.h \
     systemparameters.h \

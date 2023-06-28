@@ -46,6 +46,7 @@
 
 #include "systemparameters.h"
 #include "errordialog.h"
+#include "projectmanager.h"
 
 #define DEFAULTCONFIGNAME "defaultUserConfig.conf"
 
@@ -77,6 +78,8 @@ private:
     void saveConfig(QString filename);
     void loadConfig(QString filename);
     void setEnabledCoevParams(bool value);
+    QString FormatParameterDisplay(const QString& str);
+
 private slots:
     void accept();
     void displayFitFct();
@@ -86,12 +89,17 @@ private slots:
     void onLinePathEdited(QString path);
     void onChbActivateThresh();
     void on_buttonBoxClose_accepted();
-    void on_pushButton_SaveAsUserDefault_clicked();
+    void on_pushButton_SaveAsGlobal_clicked();
     void on_pushButton_SaveAs_clicked();
     void on_pushButton_LoadFile_clicked();
-    void on_pushButton_LoadUserDefault_clicked();
+    void on_pushButton_LoadFileGlobal_clicked();
     void on_comboBox_LearningMethod_activated(int index);
     void on_comboBox_MembershipInitialization_activated(int index);
+    void toggle_level_two(bool b);
+    void toggle_level_three(bool b);
+    void display_level_one();
+    void display_level_two();
+    void display_level_three();
 };
 
 #endif // EDITPARAMSDIALOG_H
