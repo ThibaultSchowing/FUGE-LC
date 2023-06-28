@@ -314,16 +314,18 @@ void FuzzyEditor::displayRulesBox()
             m_ui->rulesGrid->addWidget(lblIs, displayIndex, index+2);
 
             RefComboBox* cbBox2 = new RefComboBox(this,i,index+3);
+            QVector<QString> thisshitsucks;
             for (int z = 0; z < fSystem->getNbInSets(); z++) {
                 cbBox2->addItem(fSystem->getInVar(cbBox->currentIndex() / 2)->getSet(z)->getName());
+                thisshitsucks.push_back(fSystem->getInVar(cbBox->currentIndex() / 2)->getSet(z)->getName());
             }
             if (k < rulesVector[i]->getNbInPairs()) {
-                cbBox2->setCurrentIndex(cbBox2->findText(rulesVector[i]->getInSetAtPos(k)->getName()));
+                cbBox2->setCurrentIndex(rulesVector[i]->getInSetAtPos(k)->getNumber());
             }
             else {
                 cbBox2->setCurrentIndex(cbBox->findText(""));
                 cbBox2->setStyleSheet("background-color: rgb(200, 200, 200);");
-                cbBox2->setEnabled(false);
+                cbBox2->setEnabled(true); // TODO DEBUG
             }
 
             cbBox2->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -450,10 +452,16 @@ void FuzzyEditor::onRulesChanged(int idx, int li, int col)
             }
             // Update the rule
             else {
-                m_ui->rulesGrid->itemAtPosition(li,col)->widget()->setStyleSheet("");
-                m_ui->rulesGrid->itemAtPosition(li,col+2)->widget()->setStyleSheet("");
-                m_ui->rulesGrid->itemAtPosition(li,col+2)->widget()->setEnabled(true);
-                qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(li,col+2)->widget())->setCurrentIndex(0);
+                RefComboBox* cbVar = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(li, col)->widget());
+                RefComboBox* cbSet = qobject_cast<RefComboBox*>(m_ui->rulesGrid->itemAtPosition(li, col + 2)->widget());
+                cbVar->setStyleSheet("");
+                cbSet->setStyleSheet("");
+                cbSet->setEnabled(true);
+                for (int i = 0; i < fSystem->getNbInSets(); i++) {
+                    QString name = fSystem->getInVar(cbVar->currentIndex())->getSet(i)->getName();
+                    cbSet->setItemText(i, name);
+                }
+                qobject_cast<RefComboBox*>(cbSet)->setCurrentIndex(0);
                 updateRule(li);
             }
         }
@@ -887,6 +895,7 @@ void FuzzyEditor::onNbInSetsChanged(int idx)
     // Update the rulesBox display
     for (int i = 0; i < fSystem->getNbRules(); i++) {
         for (int k = 3, varIdx = 0; k < fSystem->getRule(i)->getNbInPairs()*4; k+=4, varIdx++) {
+        //for (int k = 3, varIdx = 0; k < MAX_ANTE*4; k+=4, varIdx++) {
             int left = delta;
             while (left) {
                 // Check wether we need to add or remove a set
