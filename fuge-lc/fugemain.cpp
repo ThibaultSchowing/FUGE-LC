@@ -35,7 +35,7 @@ QList<QStringList>* FugeMain::listFile = 0;
 
 FugeMain::FugeMain(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::FugeMain),
-      fSystemRules(0), fSystemVars(0), editParams(0)
+    fSystemRules(0), fSystemVars(0), editParams(0), datasetSplitter(0)
 {
     ui->setupUi(this);
     ui->btRunScript->setEnabled(false);
@@ -102,7 +102,7 @@ FugeMain::FugeMain(QWidget *parent)
     connect(ui->btCloseScript, SIGNAL(clicked()), this, SLOT(onActCloseScript()));
     connect(ui->btScript, SIGNAL(clicked()), this, SLOT(onShowScriptClicked()));
     connect(ui->btRecent, SIGNAL(clicked()), this, SLOT(onShowRecentDatasets()));
-
+    connect(ui->btnValidator, SIGNAL(clicked()), this, SLOT(onValidatorClicked()));
 
     this->createActions();
     // TODO: There's a ui, form file for this, it shouldn't be implemented in code
@@ -146,6 +146,7 @@ FugeMain::FugeMain(QWidget *parent)
     actOpenScript->setEnabled(false);
 
     ui->btRecent->setIcon(ui->btRecent->style()->standardIcon(QStyle::SP_ArrowDown));
+    ui->btnValidator->setEnabled(false);
 
     loadFromIni();
 }
@@ -440,6 +441,7 @@ void FugeMain::onActCloseData()
     dataLoaded = false;
     ui->btRun->setEnabled(false);
     actRun->setEnabled(false);
+    ui->btnValidator->setEnabled(false);
 }
 
 /**
@@ -1152,6 +1154,7 @@ void FugeMain::loadDataSet(const QString& fileName) {
         ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
         actCloseData->setEnabled(true);
         ui->btCloseData->setEnabled(true);
+        ui->btnValidator->setEnabled(true);
     }
 }
 
@@ -1271,4 +1274,13 @@ void FugeMain::clearRecentProjects() {
 
 void FugeMain::onShowRecentDatasets() {
     recentDatasetMenu->exec(ui->btRecent->mapToGlobal(QPoint(-60, ui->btRecent->height())));
+}
+
+void FugeMain::onValidatorClicked() {
+    if(datasetSplitter) {
+        delete datasetSplitter;
+    }
+    SystemParameters& sp = SystemParameters::getInstance();
+    datasetSplitter = new DatasetSplitter(this, &splitDatasetIndexes, &validatorType, listFile, sp.getDatasetName());
+    datasetSplitter->show();
 }

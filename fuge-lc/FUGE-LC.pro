@@ -22,6 +22,7 @@ include(coev/Coev.pri)
 include(Dependencies/duktape/duktape.pri)
 
 SOURCES += main.cpp \
+    datasetsplitter.cpp \
     fugemain.cpp \
     aboutdialog.cpp \
     errordialog.cpp \
@@ -39,6 +40,7 @@ SOURCES += main.cpp \
 
 HEADERS += fugemain.h \
     aboutdialog.h \
+    datasetsplitter.h \
     errordialog.h \
     fuzzymembershipssingle.h \
     projectmanager.h \
@@ -54,6 +56,7 @@ HEADERS += fugemain.h \
 
 FORMS += fugemain.ui \
     aboutdialog.ui \
+    datasetsplitter.ui \
     errordialog.ui \
     statsplot.ui \
     editparamsdialog.ui \

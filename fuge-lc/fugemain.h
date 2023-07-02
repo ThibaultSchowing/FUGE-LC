@@ -71,6 +71,7 @@
 #include "fuzzyrule.h"
 #include "fuzzysystem.h"
 #include "projectmanager.h"
+#include "datasetsplitter.h"
 
 class ComputeThread;
 
@@ -150,6 +151,7 @@ private:
     QString currentOpennedSystem;
     QVector<QAction*> recentDatasets;
     QVector<QAction*> recentProjects;
+    DatasetSplitter* datasetSplitter;
 
     bool fuzzyLoaded;
     bool dataLoaded;
@@ -157,6 +159,8 @@ private:
     bool paramsLoaded;
     bool isRunning;
     bool isScriptEnabled;
+    DatasetSplitter::ValidatorType validatorType = DatasetSplitter::ValidatorType::NONE;
+    QVector<quint32> splitDatasetIndexes;
 
 public slots:
     void onComputeFinished();
@@ -186,6 +190,7 @@ private slots:
     void onSettingProject();
     void onShowRecentDatasets();
     void updateWindowTitle();
+    void onValidatorClicked();
 
 signals:
     void clearStats();
