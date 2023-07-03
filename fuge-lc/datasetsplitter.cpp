@@ -17,6 +17,9 @@ DatasetSplitter::DatasetSplitter(QWidget *parent, QVector<quint32>* indexes, Val
     ui->label_dataVars->setText(QString::number(listFile->at(0).size()-1) + " variables");
     ui->label_dataSamples->setText(QString::number(listFile->size()-1) + " samples");
 
+    connect(ui->lineEdit_test, SIGNAL(textChanged(QString)), this, SLOT(checkValues()));
+    connect(ui->lineEdit_train, SIGNAL(textChanged(QString)), this, SLOT(checkValues()));
+    connect(ui->lineEdit_validation, SIGNAL(textChanged(QString)), this, SLOT(checkValues()));
     connect(ui->cbox_validation_type, SIGNAL(currentIndexChanged(int)), this, SLOT(onSelectedValidationType(int)));
     connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(onOk()));
 
@@ -123,4 +126,37 @@ void DatasetSplitter::treatKFold() {
     int nbPartitions = ui->cbox_partition_amount->currentIndex() + 2;
     *vt = K_FOLD;
     generateIndexesKFold(indexes, listFile, nbPartitions);
+}
+
+void DatasetSplitter::checkValues() {
+    QString trainStr = ui->lineEdit_train->text();
+    QString validateStr = ui->lineEdit_validation->text();
+    QString testStr = ui->lineEdit_test->text();
+
+    int train = trainStr.toInt();
+    int validate = validateStr.toInt();
+    int test = testStr.toInt();
+
+    int total = train + validate + test;
+
+    if (validate <= 0 || total != 100) {
+        ui->lineEdit_validation->setStyleSheet("background-color: rgb(255, 0, 0);");
+    }
+    else {
+        ui->lineEdit_validation->setStyleSheet("");
+    }
+
+    if (train <= 0 || total != 100) {
+        ui->lineEdit_train->setStyleSheet("background-color: rgb(255, 0, 0);");
+    }
+    else {
+        ui->lineEdit_train->setStyleSheet("");
+    }
+
+    if (test <= 0 || total != 100) {
+        ui->lineEdit_test->setStyleSheet("background-color: rgb(255, 0, 0);");
+    }
+    else {
+        ui->lineEdit_test->setStyleSheet("");
+    }
 }

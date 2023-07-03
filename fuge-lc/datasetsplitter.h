@@ -38,6 +38,7 @@ private:
 private slots:
     void onSelectedValidationType(int);
     void onOk();
+    void checkValues();
 };
 
 #endif // DATASETSPLITTER_H
