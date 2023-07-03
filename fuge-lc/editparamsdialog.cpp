@@ -1010,6 +1010,9 @@ void EditParamsDialog::toggle_level_two(bool b) {
     m_ui->lineRae->setVisible(b);
     m_ui->lineRrse->setVisible(b);
     m_ui->lineMse->setVisible(b);
+
+    // LEARNING
+    m_ui->groupBox_Learning->setVisible(b);
 }
 
 void EditParamsDialog::toggle_level_three(bool b) {
