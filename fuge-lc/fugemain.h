@@ -159,8 +159,11 @@ private:
     bool paramsLoaded;
     bool isRunning;
     bool isScriptEnabled;
+
+
     DatasetSplitter::ValidatorType validatorType = DatasetSplitter::ValidatorType::NONE;
     QVector<quint32> splitDatasetIndexes;
+    QVector<quint32> treatedDatasetIndexes;
 
 public slots:
     void onComputeFinished();

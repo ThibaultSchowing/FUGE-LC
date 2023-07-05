@@ -42,6 +42,7 @@ private:
     static const QString SHARED_DATA_FILE_NAME;
     static const QString FIELD_DATASETS;
     static const QString FIELD_PROJECTS;
+    static const QString GENERATED_DATASET_FOLDER;
 public:
     static ProjectManager& getInstance() {
         static ProjectManager instance;
@@ -51,6 +52,11 @@ public:
     bool newProjectFolder(const QString& path);
     bool openExistingProject(const QString& path);
     inline QString getSavePath() {return savePath;}
+    inline QString getProjectConfigsPath() {return savePath + CONFIG_FOLDER;}
+    inline QString getProjectFuzzySystemsPath() {return savePath + FUZZY_FOLDER;}
+    inline QString getPojectScriptPath() {return savePath + SCRIPT_FOLDER;}
+    inline QString getPojectGeneratedDatasetPath() {return savePath + GENERATED_DATASET_FOLDER;}
+
     inline QString getDefaultFilePath() {return defaultFilePath;}
 
     inline void setExperimentName(QString name) {experimentName = name;}

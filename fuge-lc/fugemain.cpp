@@ -572,8 +572,8 @@ void FugeMain::onActCloseFuzzy()
 void FugeMain::onActSaveFuzzy()
 {
     ProjectManager& manager = ProjectManager::getInstance();
-
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), manager.getSavePath()+"fuzzySystems" , "*.ffs");
+    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getProjectFuzzySystemsPath();
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save fuzzy system"), openPath , "*.ffs");
     if (!fileName.isEmpty()) {
         // If the evolution is running, we ask the evaluation operator to save the best system
         if (isRunning) {
@@ -863,7 +863,7 @@ void FugeMain::onActEditParams()
 void FugeMain::onActOpenScript()
 {
     ProjectManager& manager = ProjectManager::getInstance();
-    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getSavePath() + "scripts/";
+    QString openPath = manager.getSavePath() == "./" ? manager.getDefaultFilePath() : manager.getPojectScriptPath();
     QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open script File"), openPath, "*.fs");
     if (!fileName.isEmpty()) {
         scriptLoaded = true;
@@ -1122,6 +1122,10 @@ void FugeMain::loadDataSet(const QString& fileName) {
     if (!fileName.isEmpty()) {
         if (dataLoaded)
             listFile->clear();
+        validatorType = DatasetSplitter::ValidatorType::NONE;
+        splitDatasetIndexes.clear();
+        treatedDatasetIndexes.clear();
+
         QFile file(fileName);
         file.open(QIODevice::ReadOnly);
         QTextStream csvFile(&file);
@@ -1168,6 +1172,10 @@ void FugeMain::resetDisplay(){
     displayRecentDatasets();
     displayRecentProjects();
     updateWindowTitle();
+
+    validatorType = DatasetSplitter::ValidatorType::NONE;
+    splitDatasetIndexes.clear();
+    treatedDatasetIndexes.clear();
 }
 
 void FugeMain::loadFromIni() {
@@ -1281,6 +1289,6 @@ void FugeMain::onValidatorClicked() {
         delete datasetSplitter;
     }
     SystemParameters& sp = SystemParameters::getInstance();
-    datasetSplitter = new DatasetSplitter(this, &splitDatasetIndexes, &validatorType, listFile, sp.getDatasetName());
+    datasetSplitter = new DatasetSplitter(this, &splitDatasetIndexes, &treatedDatasetIndexes, &validatorType, *listFile, sp.getDatasetName());
     datasetSplitter->show();
 }

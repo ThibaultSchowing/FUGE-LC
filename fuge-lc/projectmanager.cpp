@@ -19,6 +19,7 @@ const QString ProjectManager::PROJECT_DATA_FILE_NAME = "recent";
 const QString ProjectManager::SHARED_DATA_FILE_NAME = "recent";
 const QString ProjectManager::FIELD_DATASETS = "recentDatasets";
 const QString ProjectManager::FIELD_PROJECTS = "recentProjects";
+const QString ProjectManager::GENERATED_DATASET_FOLDER = "generatedDatasets/";
 
 ProjectManager::~ProjectManager() {
 
@@ -28,11 +29,13 @@ ProjectManager::ProjectManager() {
     datasetName = "";
     savePath= "./";
     defaultFilePath = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) + "/";
-    globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/";
+    globalFilesPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/";
     QDir fugeDir;
     fugeDir.mkdir(defaultFilePath + FUGE_SHARED_FOLDER);
     fugeDir.mkdir(defaultFilePath + FUGE_SHARED_FOLDER + CONFIG_FOLDER);
     QFile inifile(globalFilesPath + SHARED_DATA_FILE_NAME);
+
+    // should be called only the first time FUGE is launched on the user
     if (!fugeDir.exists(globalFilesPath)) {
         fugeDir.mkdir(globalFilesPath);
         writeSharedData();
@@ -43,9 +46,15 @@ ProjectManager::ProjectManager() {
 }
 
 
+/**
+ * @brief Creates a project with all the necessary folders
+ * @param path for the project
+ * @return True if created, false otherwise
+ */
 bool ProjectManager::newProjectFolder(const QString& path) {
     QDir workDir;
 
+    // make sure the project doesn't exist already
     if (openExistingProject(path)) {
         return true;
     }
@@ -78,9 +87,15 @@ bool ProjectManager::newProjectFolder(const QString& path) {
             workDir.mkdir(scriptPath);
         }
 
-        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath)) {
+        QString generatedDatasetPath = path + GENERATED_DATASET_FOLDER;
+        if (!workDir.exists(generatedDatasetPath)) {
+            workDir.mkdir(generatedDatasetPath);
+        }
+
+        if (!workDir.exists(scriptPath) || !workDir.exists(configPath) || !workDir.exists(scriptPath) || !workDir.exists(generatedDatasetPath)) {
             return false ;
         }
+
         SystemParameters& sysParams = SystemParameters::getInstance();
         sysParams.setSavePath(path);
         savePath = path;
@@ -94,6 +109,12 @@ bool ProjectManager::newProjectFolder(const QString& path) {
     return false;
 }
 
+/**
+ * @brief Opens a project that already exists.
+ *        The existence of the project is defined by the existence of the .FUGE/ folder
+ * @param path
+ * @return True if the project exists, false otherwise
+ */
 bool ProjectManager::openExistingProject(const QString& path) {
     recentDatasetsProject.clear();
     QDir workDir;
@@ -111,6 +132,9 @@ bool ProjectManager::openExistingProject(const QString& path) {
     return false;
 }
 
+/**
+ * Writes data in AppLocalDataFolder, that is going to be shared between projects
+ */
 void ProjectManager::writeSharedData() {
     QFile::remove(globalFilesPath + SHARED_DATA_FILE_NAME);
     QFile inifile(globalFilesPath + SHARED_DATA_FILE_NAME);
@@ -128,6 +152,9 @@ void ProjectManager::writeSharedData() {
     }
 }
 
+/**
+ * Updates the data for a project
+ */
 void ProjectManager::writeProjectData() {
     QFile::remove(savePath + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME);
     QFile recentFile(savePath + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME);
@@ -142,6 +169,9 @@ void ProjectManager::writeProjectData() {
     }
 }
 
+/**
+ * Retrieves all the data related to a project
+ */
 void ProjectManager::readProjectData() {
     recentDatasetsProject.clear();
     QFile fileRecent(savePath + PROJECT_FOLDER + PROJECT_DATA_FILE_NAME);
@@ -150,14 +180,11 @@ void ProjectManager::readProjectData() {
         QString line;
         QStringList content;
         while(!(line = in.readLine()).isEmpty()) {
-            // Remove all spaces
-            line = line.trimmed();
-            line.replace(" ", "");
             content = line.split("=");
 
             if(content.size() == 2){
                 if(content.at(0).compare(FIELD_DATASETS, Qt::CaseInsensitive)==0){
-                    recentDatasetsProject.push_back(content.at(1));
+                    recentDatasetsProject.push_back(content.mid(1).join(""));
                 }
             }
         }
@@ -173,6 +200,9 @@ void ProjectManager::readProjectData() {
     }
 }
 
+/**
+ * @brief Retrieves the data in AppLocalDataFolder, that is going to be shared between projects
+ */
 void ProjectManager::readSharedData() {
     recentDatasetsGlobal.clear();
     recentProjects.clear();
@@ -183,17 +213,14 @@ void ProjectManager::readSharedData() {
         QString line;
         QStringList content;
         while(!(line = in.readLine()).isEmpty()) {
-            // Remove all spaces
-            line = line.trimmed();
-            line.replace(" ", "");
             content = line.split("=");
 
             if(content.size() == 2){
                 if(content.at(0).compare(FIELD_DATASETS, Qt::CaseInsensitive)==0){
-                    recentDatasetsGlobal.push_back(content.at(1));
+                    recentDatasetsGlobal.push_back(content.mid(1).join(""));
                 }
                 else if(content.at(0).compare(FIELD_PROJECTS, Qt::CaseInsensitive)==0){
-                    recentProjects.push_back(content.at(1));
+                    recentProjects.push_back(content.mid(1).join(""));
                 }
             }
         }
@@ -209,6 +236,10 @@ void ProjectManager::readSharedData() {
     }
 }
 
+/**
+ * @brief Updates the list of all the recently loaded datasets.
+ *        When an existing dataset gets added, its position gets updated on top, both in the global and the recent datasets.
+ */
 void ProjectManager::handleLoadedDataset(const QString& path) {
     datasetName = path;
     for (int i = 0; i < recentDatasetsProject.length(); i++) {
@@ -240,6 +271,10 @@ void ProjectManager::handleLoadedDataset(const QString& path) {
     writeSharedData();
 }
 
+/**
+ * @brief Updates the list of all the recent projects.
+ *        When an existing project gets added, its position gets updated on top.
+ */
 void ProjectManager::updateRecentProjects(const QString& path) {
     savePath = path;
     for (int i = 0; i < recentProjects.length(); i++) {
@@ -257,6 +292,9 @@ void ProjectManager::updateRecentProjects(const QString& path) {
     writeSharedData();
 }
 
+/**
+ * @brief Returns all the recently loaded data sets, that were not loaded in the current project
+ */
 const QVector<QString> ProjectManager::getGlobalRecentDatasets() {
     QVector<QString> temp;
     for (int i = 0; i < recentDatasetsGlobal.length(); i++){

@@ -19,21 +19,26 @@ public:
         NONE
     };
 
-    explicit DatasetSplitter(QWidget *parent, QVector<quint32>* indexes, ValidatorType* vt, QList<QStringList>* listFile, QString datasetName);
+    explicit DatasetSplitter(QWidget *parent, QVector<quint32>* indexes, QVector<quint32>* updatedIndexes, ValidatorType* vt, const QList<QStringList>& listFile, QString datasetName);
     ~DatasetSplitter();
 
-    static void generateIndexesHoldout(QVector<quint32>* indexes, QList<QStringList>* listFile, int train , int validate, int test);
-    static void generateIndexesKFold(QVector<quint32>* indexes, QList<QStringList>* listFile, int nbPartitions);
+    static void generateIndexesHoldout(QVector<quint32>* indexes, const QList<QStringList>& listFile, QVector<quint32>* updatedIndexes, int train , int validate, int test);
+    static void generateIndexesKFold(QVector<quint32>* indexes, const QList<QStringList>& listFile, QVector<quint32>* updatedIndexes, int nbPartitions);
 
 private:
     Ui::DatasetSplitter *ui;
     QVector<QGroupBox*> validationGroups;
-    QVector<quint32>* indexes;
+    QVector<quint32>* separatorIndexes;
     ValidatorType* vt;
-    QList<QStringList>* listFile;
+    const QList<QStringList>& listFile;
+    QVector<quint32>* updatedIndexes;
     QString datasetName;
     void treatHoldout();
     void treatKFold();
+    static void defaultTreatDataset(QVector<quint32>* updatedIndexes, const QList<QStringList>& listFile);
+    void displayError(const QString& title, const QString& message);
+    int askYesNo(const QString& title, const QString& message);
+    void writeInFile(const QString& path, int min, int max);
 
 private slots:
     void onSelectedValidationType(int);
