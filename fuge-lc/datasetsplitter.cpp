@@ -17,6 +17,8 @@ DatasetSplitter::DatasetSplitter(QWidget *parent, QVector<quint32>* separatorInd
 {
     ui->setupUi(this);
 
+    this->setWindowTitle("Validation set tool");
+
     ui->label_dataInfo->setText("<font color = green> Dataset loaded : " + datasetName + "<font>");
     ui->label_dataVars->setText(QString::number(listFile.at(0).size()-1) + " variables");
     ui->label_dataSamples->setText(QString::number(listFile.size()-1) + " samples");
@@ -175,6 +177,12 @@ void DatasetSplitter::treatKFold() {
             writeInFile(path + dsetName + "_fold_" + QString::number(i + 1) + ".csv" , separatorIndexes->at(i - 1), separatorIndexes->at(i));
         }
         writeInFile(path + dsetName + "_fold_" + QString::number(separatorIndexes->length() + 1) + ".csv", separatorIndexes->last(), listFile.length());
+
+        // remove extra folds that might have been generated in the past
+        int j = separatorIndexes->length() + 2;
+        while (QFile::remove(path + dsetName + "_fold_" + QString::number(j) + ".csv")) {
+            j++;
+        }
     }
 }
 
@@ -266,3 +274,4 @@ void DatasetSplitter::writeInFile(const QString& path, int min, int max) {
         file.close();
     }
 }
+
