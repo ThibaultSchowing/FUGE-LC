@@ -14,5 +14,4 @@ TournamentSelection::TournamentSelection() : EntitySelection()
 //            pos = RandomGenerator::getGeneratorInstance()->random(0,size-1);
 //         }
 //     }
-     return vector<PopEntity *>();
  }

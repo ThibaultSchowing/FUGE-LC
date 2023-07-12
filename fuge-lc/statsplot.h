@@ -36,12 +36,19 @@
 #include <QCloseEvent>
 #include <QTime>
 
+#include <QLineSeries>
+#include <QChart>
+#include <QChartView>
+#include <QValueAxis>
+
+/*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_array.h>
-#include <qwt_legend.h>
+#include <qwt_legend.h>*/
 
 #include <iostream>
+#include <unistd.h>
 
 #include "ui_statsplot.h"
 #include "systemparameters.h"
@@ -50,6 +57,11 @@
 namespace Ui {
     class StatsPlot;
 }
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    using namespace QtCharts;
+#endif
+
 
 class StatsPlot : public QDialog {
     Q_OBJECT
@@ -71,17 +83,33 @@ protected:
 
 private:
     Ui::StatsPlot *m_ui;
-    QwtPlot *myPlot;
-    QVector<double>* xVals;
+    QVector<double>* xValsPop1;
+    QVector<double>* xValsPop2;
     QVector<double>* yValsPop1;
     QVector<double>* yValsPop2;
     QVector<double>* yValsAvgPop1;
     QVector<double>* yValsAvgPop2;
+
+
+    QChart* myPlot;
+    QValueAxis* axisX;
+    QValueAxis* axisY;
+    QChartView* myPlotView;
+    QLineSeries* fitMaxPop1Curve;
+    QLineSeries* fitMaxPop2Curve;
+    QLineSeries* fitAvgPop1Curve;
+    QLineSeries* fitAvgPop2Curve;
+    qint32 pop1Index = 0;
+    qint32 pop2Index = 0;
+    qint32 curMax = 0;
+    /*
+    QwtPlot *myPlot;
     QwtPlotCurve* fitMaxPop1Curve;
     QwtPlotCurve* fitMaxPop2Curve;
     QwtPlotCurve* fitAvgPop1Curve;
     QwtPlotCurve* fitAvgPop2Curve;
-    QwtLegend* legend;
+    QwtLegend* legend;*/
+
     QFile* fitLogFile;
     QString logFileName;
     QString bestSystemDesc;

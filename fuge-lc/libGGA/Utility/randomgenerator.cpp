@@ -9,7 +9,7 @@
  * This application is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3.0 of the License, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,18 +34,25 @@
 #include <cstdlib>
 QMutex RandomGenerator::mutex;
 RandomGenerator* RandomGenerator::randomGenerator = NULL;
-
-
-//auto_ptr<RandomGenerator::randomGenerator = QSharedPointer<RandomGenerator>(new MyObject);
-
 const qreal RandomGenerator::RANDMAX_PLUSONE = (qreal)RAND_MAX+1;
 
+/**
+ * @brief RandomGenerator::RandomGenerator
+ * Constructs a random generator.
+ *
+ */
 RandomGenerator::RandomGenerator() :
     QThread()
 {
     resetSeed();
 }
 
+/**
+ * @brief RandomGenerator::getGeneratorInstance
+ * Get an instance of the random generator.
+ *
+ * @return The instance of the random generator
+ */
 RandomGenerator *RandomGenerator::getGeneratorInstance(){
     //Thread safety, automatically realeased at the end of the function.
     QMutexLocker locker(&RandomGenerator::mutex);
@@ -56,30 +63,58 @@ RandomGenerator *RandomGenerator::getGeneratorInstance(){
     return randomGenerator;
 }
 
+/**
+ * @brief RandomGenerator::random
+ * Get a random number between min and max included.
+ *
+ * @param min The minimum value of the random
+ * @param max The maximum value of the random
+ * @return The random value
+ */
 qint32 RandomGenerator::random(qint32 min, qint32 max){
     if(min > max){
-        return (qrand() / RANDMAX_PLUSONE) * (min-max+1);
+        return (rand() / RANDMAX_PLUSONE) * (min-max+1);
     }else{
-        return (qrand() / RANDMAX_PLUSONE) * (max+1-min);
+        return (rand() / RANDMAX_PLUSONE) * (max+1-min);
     }
 }
 
+/**
+ * @brief RandomGenerator::randomReal
+ * Get a random number in qreal between min and max included.
+ *
+ * @param min The minimum value of the random
+ * @param max The maximum value of the random
+ * @return The random value
+ */
 qreal RandomGenerator::randomReal(qreal min, qreal max){
     if(min > max){
-        return ((qreal)qrand() / (qreal)RANDMAX_PLUSONE) * (min-max);
+        return ((qreal)rand() / (qreal)RANDMAX_PLUSONE) * (min-max);
     }else{
-        return ((qreal)qrand() / (qreal)RANDMAX_PLUSONE) * (max-min);
+        return ((qreal)rand() / (qreal)RANDMAX_PLUSONE) * (max-min);
     }
 }
 
+/**
+ * @brief RandomGenerator::randomNoRandMax
+ * Get a random value without using the RANDMAX algorithm.
+ * @param min The minimum value of the random
+ * @param max The maximum value of the random
+ * @return The random value generated without RANDMAX
+ */
 qint32 RandomGenerator::randomNoRandMax(qint32 min, qint32 max){
     if(min < max){
-        return qrand()%(max-min+1) + min;
+        return rand()%(max-min+1) + min;
     }else{
-        return qrand()%(min-max+1) + max;
+        return rand()%(min-max+1) + max;
     }
 }
 
+/**
+ * @brief RandomGenerator::resetSeed
+ * Reset the seed of the random generator.
+ *
+ */
 void RandomGenerator::resetSeed(){
-    qsrand(QTime::currentTime().msec());
+    srand(QTime::currentTime().msec());
 }

@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
-  * @date   07.2009
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
+  * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -31,20 +33,47 @@
 
 #include <QDialog>
 
+#include <QLineSeries>
+#include <QChart>
+#include <QValueAxis>
+#include <QChartView>
+//#include <QScatterSeries>
+
+/*
 #include <qwt_plot.h>
 #include <qwt_plot_curve.h>
 #include <qwt_symbol.h>
 #include <qwt_array.h>
-#include <qwt_legend.h>
+#include <qwt_legend.h> */
 
 namespace Ui {
     class EvalPlot;
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    using namespace QtCharts;
+#endif
+
+
 class EvalPlot : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(EvalPlot)
 public:
+    struct plotValues {
+        // Default constructor will be needed if inserting into vector
+        plotValues() : mesured(), expected(), predicted() {}
+
+        plotValues( float m, float e, float p ) :
+            mesured(m), expected(e), predicted(p) {}
+
+        bool operator<( plotValues const& rPv ) const
+           { return expected < rPv.expected; }
+
+        float mesured;
+        float expected;
+        float predicted;
+    };
+
     explicit EvalPlot(QWidget *parent = 0);
     virtual ~EvalPlot();
     void loadData(QList<QStringList>* sysData);
@@ -82,8 +111,7 @@ private:
     Ui::EvalPlot *m_ui;
     QList<QStringList>* systemData;
     bool isPredictive;
-    QwtPlot* myPlot;
-    QwtLegend* legend;
+    QVector<plotValues> sortedValues;
     QVector<float> mesuredValues;
     QVector<float> expectedValues;
     QVector<float> predictedValues;
@@ -95,10 +123,24 @@ private:
     QVector<double>* yValsExpected;
     QVector<double>* yValsPredicted;
     QVector<double>* yValsThresh;
+
+    QChart* myPlot;
+    QValueAxis* axisX;
+    QValueAxis* axisY;
+    QChartView* myPlotView;
+    //QScatterSeries* valsMesured;
+    QLineSeries* valsMesured;
+    QLineSeries* valsExpected;
+    QLineSeries* valsPredicted;
+    QLineSeries* threshCurve;
+    /* QWT-OLD-CODE
+    QwtPlot* myPlot;
+    QwtLegend* legend;
     QwtPlotCurve* valsMesured;
     QwtPlotCurve* valsExpected;
     QwtPlotCurve* valsPredicted;
-    QwtPlotCurve* threshCurve;
+    QwtPlotCurve* threshCurve; */
+
     QString desc;
     int nbOutVars;
     float fitness;

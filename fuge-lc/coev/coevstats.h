@@ -66,7 +66,8 @@ private:
 
     unsigned int sizePop1;
     unsigned int sizePop2;
-    unsigned int genNumber;
+    unsigned int genNumberPop1;
+    unsigned int genNumberPop2;
     QString bestSystemDescription;
 
 public:
@@ -101,7 +102,8 @@ public:
     inline void setSizePop1(unsigned int value) {sizePop1 = value;}
     inline void setSizePop2(unsigned int value) {sizePop2 = value;}
     inline void setBestSysDesc(QString desc) {bestSystemDescription = desc;}
-    inline void setGenNumber(unsigned int value) {genNumber = value;}
+    inline void setGenNumberPop1(unsigned int value) {genNumberPop1 = value;}
+    inline void setGenNumberPop2(unsigned int value) {genNumberPop2 = value;}
 
     inline double getFitMaxPop1() {return fitMaxPop1;}
     inline double getFitMinPop1() {return fitMinPop1;}
@@ -128,8 +130,9 @@ public:
     // FIN - MODIF - Bujard - 18.03.2010
     inline double getSizePop1() {return sizePop1;}
     inline double getSizePop2() {return sizePop2;}
-    inline QString* getBestSysDesc(void) {return &bestSystemDescription;}
-    inline unsigned int getGenNumber() {return genNumber;}
+    inline QString getBestSysDesc(void) {return bestSystemDescription;}
+    inline unsigned int getGenNumberPop1() {return genNumberPop1;}
+    inline unsigned int getGenNumberPop2() {return genNumberPop2;}
 
     void transmitData(QString name);
 

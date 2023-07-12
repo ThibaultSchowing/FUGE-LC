@@ -58,12 +58,14 @@ public:
     QString getDescription();
     int getNbInPairs();
     int getNbOutPairs();
+    double getActivation();
     FuzzyVariable* getInVarAtPos(int pos);
     FuzzySet* getInSetAtPos(int pos);
     FuzzyVariable* getOutVarAtPos(int pos);
     FuzzySet* getOutSetAtPos(int pos);
 
 private:
+    double eval;
     int inVars;
     FuzzyVariable** inVarsTab;
     FuzzyVariable** outVarsTab;

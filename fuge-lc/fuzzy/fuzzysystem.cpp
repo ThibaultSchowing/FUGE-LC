@@ -28,7 +28,10 @@
   */
 
 #include "fuzzysystem.h"
-
+#include <algorithm>
+// TODO: Refractoring or even better start a new fuzzysystem project.
+// This class is 1800~ lines long.
+// FIXME : URGENT this class does not support negative outputs ! due to -1 being declared as "don't care" for rules / out vars.
 
 #define VAL_MAX 1000000.0
 #define VAL_MIN 0.0
@@ -39,7 +42,7 @@
   * Constructor.
   *
   */
-FuzzySystem::FuzzySystem()
+FuzzySystem::FuzzySystem() : learningEngine(0)
 {
     membershipsLoaded = false;
     rulesLoaded = false;
@@ -66,6 +69,9 @@ FuzzySystem::FuzzySystem()
   */
 FuzzySystem::~FuzzySystem()
 {
+    if(learningEngine)
+        delete learningEngine;
+
     // TODO : trouver un bon moyen de supprimer les règles
     // Add variables
     for (int i = 0; i < nbInVars; i++) {
@@ -98,13 +104,12 @@ FuzzySystem::~FuzzySystem()
     }
     delete[] rulesArray;
 
-    if (outMinMax != NULL) {
+    if (!outMinMax == NULL)
         //Delete min and max of each out
         for (int i = 0; i < nbOutVars ; i++) {
             delete outMinMax[i];
         }
-        delete[] outMinMax;
-    }
+    delete[] outMinMax;
 
     if (dataLoaded && varUniverseArray != NULL) {
         // Delete the universe bounds array
@@ -113,6 +118,9 @@ FuzzySystem::~FuzzySystem()
 
 }
 
+
+// FIXME: Could and should be done trough the constructor, this vars must and are only set once.
+// The object is not complete.
 /**
   * Set the parameters defining the fuzzy system.
   *
@@ -129,7 +137,7 @@ FuzzySystem::~FuzzySystem()
   * @param outSetsPosCodeSize Number of bits used to code a position for the output sets.
   */
 void FuzzySystem::setParameters(int nbRules, int nbVarPerRule, int nbOutVars, int nbInSets, int nbOutSets, int inVarsCodeSize,
-                         int outVarsCodeSize, int inSetsCodeSize, int outSetsCodeSize, int inSetsPosCodeSize, int outSetsPosCodeSize)
+                                int outVarsCodeSize, int inSetsCodeSize, int outSetsCodeSize, int inSetsPosCodeSize, int outSetsPosCodeSize)
 {
 
     // Retrieve the system parameters
@@ -239,12 +247,12 @@ void FuzzySystem::loadData(QList<QStringList>* systemData)
                 {
                     outMinMax[i][1] = results[i][k];
                 }
-          }
-       }
-    // Create the array containing the size of the universe of discourse
-    varUniverseArray = new universeBounds[nbVars];
-    // Detect the universe of discourse for all variables
-    detectVarUniverses(varUniverseArray);
+            }
+        }
+        // Create the array containing the size of the universe of discourse
+        varUniverseArray = new universeBounds[nbVars];
+        // Detect the universe of discourse for all variables
+        detectVarUniverses(varUniverseArray);
     }
 
     // The fuzzy system has been loaded from a file
@@ -261,12 +269,12 @@ void FuzzySystem::loadData(QList<QStringList>* systemData)
                 results[i][k] = systemData->at(k+1).at(systemData->at(0).count() - 1 - nbOutVars +1 + i).toDouble();
                 if (results[i][k] < outMinMax[i][0])
                 {
-                     outMinMax[i][0] = results[i][k];
+                    outMinMax[i][0] = results[i][k];
                 }
 
                 if (results[i][k] > outMinMax[i][1])
                 {
-                     outMinMax[i][1] = results[i][k];
+                    outMinMax[i][1] = results[i][k];
                 }
             }
         }
@@ -339,8 +347,12 @@ void FuzzySystem::detectVarUniverses(universeBounds* varUniArray)
         }
         varUniArray[i].valMax = valMax;
         varUniArray[i].valMin = valMin;
+        qDebug() << "varUniArray["<<i<<"].valMax = " << valMax;
+        qDebug() << "varUniArray["<<i<<"].valMin = " << valMin;
         valMin = VAL_MAX;
         valMax = VAL_MIN;
+
+
     }
 }
 
@@ -465,35 +477,49 @@ void FuzzySystem::updateSystemDescription()
     }
 }
 
+
+// FIXME : Do not use index for learning methods, but the method itself instead.
+// (Provided by classes derivated from FuzzyLearningMethod.)
 /**
   * Create the memberships functions contained in a membership functions genome.
   *
   * @param membGen Genome containing the different memberships funcions to be created.
+  * @param indexInitMethod Index of the learning method.(ui based)
   */
-void FuzzySystem::loadMembershipsGenome(FuzzyMembershipsGenome* membGen)
+void FuzzySystem::loadMembershipsGenome(FuzzyMembershipsGenome* membGen, int indexInitMethod)
 {
 
     float position = 0.0;
     float step = 0.0;
     float valMin = 0.0;
+    float diff = 0.0;
 
     QVector<float> posVector;
 
     // Loop through all input variables
     for (int i = 0; i  < nbInVars; i++) {
         valMin = varUniverseArray[i].valMin;
-        step = (varUniverseArray[i].valMax - valMin) / (pow(2, membGen->getInSetsPosCodeSize())-1);
+        diff = varUniverseArray[i].valMax - valMin;
+        step = diff / (pow(2, membGen->getInSetsPosCodeSize())-1);
         // Loop through all sets of the current variable
         for (int k = 0; k < membGen->getNbInSets(); k++) {
             // Retrieve the position encoded in the genome
-            position = ((float) membGen->getInParam(i,k) * step);
+
+            // Initialize the fuzzy system depending on the method selected.
+            if(indexInitMethod == 2)
+                position = ((float) membGen->getInParam(i,k) * step);
+            else if(indexInitMethod == 0)
+                position = ((float) (k+1)*(diff/(membGen->getNbInSets()+1.0)));
+            else if(indexInitMethod == 1)
+                position = ((float) RandomGenerator::getGeneratorInstance()->randomReal(valMin,varUniverseArray[i].valMax));
             posVector.append(position);
         }
         // Sort the vector
-        qSort(posVector);
+        std::sort(posVector.begin(), posVector.end());
         // Add the sets to the variable
         for (int l = 0; l < posVector.size(); l++) {
             inVarArray[i]->getSet(l)->setPosition(posVector.at(l)+valMin);
+            //qDebug() << "inVarArray["<<i<<"]"<< "posvector.at("<<l<<") + valMin & diff = " << posVector.at(l) << "+" << valMin << " & " << diff <<  " VALMAX : " << varUniverseArray[i].valMax;
         }
         posVector.clear();
     }
@@ -501,15 +527,21 @@ void FuzzySystem::loadMembershipsGenome(FuzzyMembershipsGenome* membGen)
     // Loop through all output variables
     for (int i = 0; i  < nbOutVars; i++) {
         valMin = varUniverseArray[i+nbInVars].valMin;
-        step = (varUniverseArray[i+nbInVars].valMax - valMin) / (pow(2, membGen->getOutSetsPosCodeSize())-1);
+        diff = varUniverseArray[i+nbInVars].valMax - valMin;
+        step = diff / (pow(2, membGen->getOutSetsPosCodeSize())-1);
         // Loop through all sets of the current variable
         for (int k = 0; k < membGen->getNbOutSets(); k++) {
             // Retrieve the position encoded in the genome
-            position = ((float) membGen->getOutParam(i,k) * step);
+            if(indexInitMethod == 2)
+                position = ((float) membGen->getOutParam(i,k) * step);
+            else if(indexInitMethod == 0)
+                position = ((float) (k+1)*(diff/(membGen->getNbOutSets()+1.0)));
+            else if(indexInitMethod == 1)
+                position = ((float) RandomGenerator::getGeneratorInstance()->randomReal(valMin,varUniverseArray[i+nbInVars].valMax));
             posVector.append(position);
         }
         // Sort the vector
-        qSort(posVector);
+        std::sort(posVector.begin(), posVector.end());
         // Add the sets to the variable
         for (int l = 0; l < posVector.size(); l++) {
             outVarArray[i]->getSet(l)->setPosition(posVector.at(l)+valMin);
@@ -550,7 +582,7 @@ void FuzzySystem::evaluateSample(int sampleNum)
 {
 
     assert(sampleNum >= 0 && sampleNum < nbSamples);
-    QVector<float> maxFiredRule(nbOutVars);
+    float maxFiredRule[nbOutVars];
 
     // Clean the previous evaluation values in the output variables sets
     for (int i = 0; i < nbOutVars; i++) {
@@ -578,6 +610,7 @@ void FuzzySystem::evaluateSample(int sampleNum)
             // Value is OK
             else {
                 inVarArray[i]->setInputValue(value);
+                //qDebug() << "inVarArray [" << i << "] = " << value;
             }
         }
     }
@@ -610,6 +643,7 @@ void FuzzySystem::evaluateSample(int sampleNum)
         const int usedOutVarsSize = usedOutVars->size();
 
         for (int k = 0; k < usedOutVarsSize; k++) {
+
             float fireLvl = rulesArray[i]->getFireLevel(k);
 
             if (fireLvl > maxFiredRule[k]) {
@@ -656,10 +690,11 @@ void FuzzySystem::evaluateSample(int sampleNum)
     // Defuzz output variables and apply threshold
     for (int i = 0; i < nbOutVars; i++) {
         defuzzValues.replace(i, outVarArray[i]->defuzz(100));
-            if (defuzzValues.at(i) == -1) {
-                std::cout << "Error : variable " << i << " defuzzification = -1 !!!" << std::endl;
-                throw;
-            }
+        if (defuzzValues.at(i) == -1) {
+            std::cout << "Error : variable " << i << " defuzzification = -1 !!!" << std::endl;
+            throw;
+        }
+        //int test = threshold(i, defuzzValues.at(i));
         threshValues.replace(i, threshold(i, defuzzValues.at(i)));
         //qDebug("value = %f", defuzzValues.at(i));
     }
@@ -673,19 +708,23 @@ QVector<float> FuzzySystem::doEvaluateFitness()
     return computedResults;
 }
 
-struct RuleInGeneralityFuzzy
-{
-    float _0,_1,_2,_3;
-    RuleInGeneralityFuzzy():_0(0),_1(0),_2(0),_3(0){}
-};
+// FIXME : This function is a mess. Inits, resets, copies of copies of copies of elements and values.
+// This needs urgent refractoring.
 
 float FuzzySystem::evaluateFitness()
 {
-
-    CoevStats& coevStats = CoevStats::getInstance();
     SystemParameters& sysParams = SystemParameters::getInstance();
 
-    QVector<fitnessStruct> fitVector(nbOutVars);
+    if(learningEngine)
+        delete learningEngine;
+
+    if(sysParams.getLearningMethod() == 1){
+        learningEngine = new LearningEngine(new WinnerTakesAll(), sysParams.getLearningFactor());
+    }else if(sysParams.getLearningMethod() == 2){
+        learningEngine = new LearningEngine(new Credits(), sysParams.getLearningFactor());
+    }
+
+    fitnessStruct fitVector[nbOutVars];
 
     for (int i = 0; i < nbOutVars; i++) {
         fitVector[i].tPosCount = 0;
@@ -751,107 +790,83 @@ float FuzzySystem::evaluateFitness()
     // Evaluate all samples
     for (int i = 0; i < nbSamples; i++) {
 
-        evaluateSample(i);
-        for (int k = 0; k < nbOutVars; k++) {
-            const float defuzzedValue = defuzzValues.at(k);
-            computedResults.replace(i*nbOutVars + k, defuzzedValue);
+        // In case of learning, we evaluate multiple time the sample and apply the learning engine to our vars.
+        for(int j = 0; j < (sysParams.isLearning() ? (sysParams.getLearningEpochs()):(1)); j++){
+            evaluateSample(i);
 
-            /* Compute regression criterra : RMSE, MSE, RRSE and RAE */
-            const float error = defuzzedValue - results[k][i]; /* Predict - Actual */
-            if (error != 0.0){
-                const float errorMoy = ( defuzzedValue + results[k][i] ) / 2.0;
-                fitVector[k].squareError += ( error / errorMoy ) * ( error / errorMoy ); /* relative square error */
-                fitVector[k].errorSum    += fabs( error ) / errorMoy;
-                fitVector[k].rmseError   += error * error;
+            // Prepare the learning engine if there is one.
+            if(learningEngine){
+                learningEngine->resetLearningEngineInformation();
+                learningEngine->setInOutVars(inVarArray,nbInVars,outVarArray,nbOutVars);
+                learningEngine->setRules(rulesArray,nbRules);
             }
 
-            /* Compute classification criterra : sensi, specy, ppv, accuracy, ADM, MDM */
-            const float resTmp = threshold(k, results[k][i]);
-            const float thresholdAtK = sysParams.getThresholdVal(k);
-            const float threshValueAtK = threshValues.at(k);
+            for (int k = 0; k < nbOutVars; k++) {
+                const float defuzzedValue = defuzzValues.at(k);
+                computedResults.replace(i*nbOutVars + k, defuzzedValue);
+
+                /* Compute regression criterra : RMSE, MSE, RRSE and RAE */
+                const float error = defuzzedValue - results[k][i]; /* Predict - Actual */
+
+                //
+                outVarArray[k]->setActivation(defuzzedValue);
+                outVarArray[k]->setError(error);
+                outVarArray[k]->setDataSetRealOutput(results[k][i]);
 
 
-            if (threshValueAtK == resTmp && resTmp == 0) { //well classified, below threshold
-                fitVector[k].tNegCount++;
-
-                const float distThreshBelow = (thresholdAtK - defuzzedValue) / (thresholdAtK - results[k][i]);
-                //distThreshBelow = (distThreshBelow) > 1.0 ? 1.0 : distThreshBelow;// to keep the adm between 0 and 1
-                //fitVector[k].sumDistBelow += distThreshBelow * (1.0-(distThreshBelow-1.0)*(distThreshBelow-1.0)*(distThreshBelow-1.0)*(distThreshBelow-1.0));
-                if (distThreshBelow >= MAX_ADM) {
-                    fitVector[k].sumDistBelow +=  1.0;
-                } else {
-                    fitVector[k].sumDistBelow += distThreshBelow * ( 2.8 - ( 1.96 * distThreshBelow ) );
+                if (error != 0.0){
+                    const float errorMoy = ( defuzzedValue + results[k][i] ) / 2.0;
+                    fitVector[k].squareError += ( error / errorMoy ) * ( error / errorMoy ); /* relative square error */
+                    fitVector[k].errorSum    += fabs( error ) / errorMoy;
+                    fitVector[k].rmseError   += error * error;
                 }
 
-                // Distance min to threshold from below
-                if( fitVector[k].distMinBelow > distThreshBelow ) {
-                    fitVector[k].distMinBelow = distThreshBelow;
-                }
-            } else if (threshValueAtK == resTmp && resTmp == 1) { //well classified, above threshold
-                fitVector[k].tPosCount++;
+                /* Compute classification criterra : sensi, specy, ppv, accuracy, ADM, MDM */
+                const float resTmp = threshold(k, results[k][i]);
+                const float thresholdAtK = sysParams.getThresholdVal(k);
+                const float threshValueAtK = threshValues.at(k);
 
-                const float distThreshAbove = (defuzzedValue - thresholdAtK) / (results[k][i] - thresholdAtK);
-                //distThreshAbove = (distThreshAbove) > 1.0 ? 1.0 : distThreshAbove;
-                //fitVector[k].sumDistAbove += distThreshAbove  * (1.0-(distThreshAbove-1.0)*(distThreshAbove-1.0)*(distThreshAbove-1.0)*(distThreshAbove-1.0));
-                if (distThreshAbove >= MAX_ADM) {
-                    fitVector[k].sumDistAbove +=  1.0;
-                } else {
-                    fitVector[k].sumDistAbove += distThreshAbove * ( 2.8 - ( 1.96 * distThreshAbove ) );
-                }
 
-                // Distance min to threshold from above
-                if( fitVector[k].distMinAbove >  distThreshAbove ) {
-                    fitVector[k].distMinAbove = distThreshAbove;
+                if (threshValueAtK == resTmp && resTmp == 0) { //well classified, below threshold
+                    fitVector[k].tNegCount++;
+
+                    const float distThreshBelow = (thresholdAtK - defuzzedValue) / (thresholdAtK - results[k][i]);
+                    //distThreshBelow = (distThreshBelow) > 1.0 ? 1.0 : distThreshBelow;// to keep the adm between 0 and 1
+                    //fitVector[k].sumDistBelow += distThreshBelow * (1.0-(distThreshBelow-1.0)*(distThreshBelow-1.0)*(distThreshBelow-1.0)*(distThreshBelow-1.0));
+                    if (distThreshBelow >= MAX_ADM) {
+                        fitVector[k].sumDistBelow +=  1.0;
+                    } else {
+                        fitVector[k].sumDistBelow += distThreshBelow * ( 2.8 - ( 1.96 * distThreshBelow ) );
+                    }
+
+                    // Distance min to threshold from below
+                    if( fitVector[k].distMinBelow > distThreshBelow ) {
+                        fitVector[k].distMinBelow = distThreshBelow;
+                    }
+                } else if (threshValueAtK == resTmp && resTmp == 1) { //well classified, above threshold
+                    fitVector[k].tPosCount++;
+
+                    const float distThreshAbove = (defuzzedValue - thresholdAtK) / (results[k][i] - thresholdAtK);
+                    //distThreshAbove = (distThreshAbove) > 1.0 ? 1.0 : distThreshAbove;
+                    //fitVector[k].sumDistAbove += distThreshAbove  * (1.0-(distThreshAbove-1.0)*(distThreshAbove-1.0)*(distThreshAbove-1.0)*(distThreshAbove-1.0));
+                    if (distThreshAbove >= MAX_ADM) {
+                        fitVector[k].sumDistAbove +=  1.0;
+                    } else {
+                        fitVector[k].sumDistAbove += distThreshAbove * ( 2.8 - ( 1.96 * distThreshAbove ) );
+                    }
+
+                    // Distance min to threshold from above
+                    if( fitVector[k].distMinAbove >  distThreshAbove ) {
+                        fitVector[k].distMinAbove = distThreshAbove;
+                    }
+                } else if (threshValueAtK != resTmp && resTmp == 0) { //wrong classified, above threshold
+                    fitVector[k].fPosCount++;
+                } else if (threshValueAtK != resTmp && resTmp == 1) { // wrong classified, below threshold
+                    fitVector[k].fNegCount++;
                 }
-            } else if (threshValueAtK != resTmp && resTmp == 0) { //wrong classified, above threshold
-                fitVector[k].fPosCount++;   
-            } else if (threshValueAtK != resTmp && resTmp == 1) { // wrong classified, below threshold
-                fitVector[k].fNegCount++;
             }
-
-
-            //TEST ADM AVEC SIN
-            /*
-            if (threshValueAtK == resTmp && resTmp == 0) { //well classified, below threshold
-                fitVector[k].tNegCount++;
-
-                float distThreshBelow = (thresholdAtK - defuzzedValue) / (thresholdAtK - results[k][i]);
-                distThreshBelow = (distThreshBelow) > 1.0 ? 1.0 : distThreshBelow;// to keep the adm between 0 and 1
-                fitVector[k].sumDistBelow += (sin(M_PI*0.5*distThreshBelow)*0.5)+0.5;
-
-                // Distance min to threshold from below
-                if( fitVector[k].distMinBelow > distThreshBelow ) {
-                    fitVector[k].distMinBelow = distThreshBelow;
-                }
-
-            } else if (threshValueAtK == resTmp && resTmp == 1) { //well classified, above threshold
-                fitVector[k].tPosCount++;
-
-                float distThreshAbove = (defuzzedValue - thresholdAtK) / (results[k][i] - thresholdAtK);
-                distThreshAbove = (distThreshAbove) > 1.0 ? 1.0 : distThreshAbove;
-                fitVector[k].sumDistAbove += (sin(M_PI*0.5*distThreshAbove)*0.5)+0.5;
-
-                // Distance min to threshold from above
-                if( fitVector[k].distMinAbove >  distThreshAbove ) {
-                    fitVector[k].distMinAbove = distThreshAbove;
-                }
-            } else if (threshValueAtK != resTmp && resTmp == 0) { //wrong classified, above threshold
-                fitVector[k].fPosCount++;
-
-                float distThreshAbove = (defuzzedValue - thresholdAtK) / (thresholdAtK);
-                distThreshAbove = (distThreshAbove) > 1.0 ? 1.0 : distThreshAbove;
-                distThreshAbove = -1.0 * distThreshAbove;
-                fitVector[k].sumDistBelow += (sin(M_PI*0.5*distThreshAbove)*0.5)+0.5;
-
-            } else if (threshValueAtK != resTmp && resTmp == 1) { // wrong classified, below threshold
-                fitVector[k].fNegCount++;
-
-                float distThreshBelow = (thresholdAtK - defuzzedValue) / (thresholdAtK);
-                distThreshBelow = (distThreshBelow) > 1.0 ? 1.0 : distThreshBelow;// to keep the adm between 0 and 1
-                distThreshBelow = -1.0 * distThreshBelow;
-                fitVector[k].sumDistAbove += (sin(M_PI*0.5*distThreshBelow)*0.5)+0.5;
-            }
-            */
+            if(learningEngine)
+                learningEngine->learn();
         }
     }
 
@@ -864,7 +879,7 @@ float FuzzySystem::evaluateFitness()
             fitVector[l].specificity = (float) fitVector[l].tNegCount / ((float) (fitVector[l].tNegCount + fitVector[l].fPosCount));
         }
         fitVector[l].accuracy = (float) (fitVector[l].tPosCount+fitVector[l].tNegCount) /
-                                ((float) (fitVector[l].tPosCount+fitVector[l].tNegCount+fitVector[l].fPosCount+fitVector[l].fNegCount));
+                ((float) (fitVector[l].tPosCount+fitVector[l].tNegCount+fitVector[l].fPosCount+fitVector[l].fNegCount));
         if ((fitVector[l].tPosCount+fitVector[l].fPosCount) > 0) {
             fitVector[l].ppv = (float) fitVector[l].tPosCount / ((float) (fitVector[l].tPosCount+fitVector[l].fPosCount));
         }
@@ -883,8 +898,8 @@ float FuzzySystem::evaluateFitness()
 
         //Compute mean distance to threshold ADM
         fitVector[l].distanceThreshold = ( (fitVector[l].sumDistBelow / (fitVector[l].tNegCount + fitVector[l].fPosCount))
-                                         + (fitVector[l].sumDistAbove / (fitVector[l].tPosCount + fitVector[l].fNegCount)) )
-                                         / 2.0;
+                                           + (fitVector[l].sumDistAbove / (fitVector[l].tPosCount + fitVector[l].fNegCount)) )
+                / 2.0;
 
 
         //Compute min distance to threshold MDM
@@ -942,26 +957,23 @@ float FuzzySystem::evaluateFitness()
     //Over learn, the grade is given by fuzzy system
 
     //Membership function for Firing
-    const float mfLow = 0.1; //trapez
-    const float mfHigh = 0.5; //trapez
+    float const mfLow = 0.1; //trapez
+    float const mfHigh = 0.5; //trapez
 
     //Membership function for Winner
-    const float mfNever = 0.1; //trapez
-    const float mfSometime = 0.4; // triangle
-    const float mfAlways = 0.7; //trapez
+    float const mfNever = 0.1; //trapez
+    float const mfSometime = 0.4; // triangle
+    float const mfAlways = 0.7; //trapez
 
-    const int nbRuleInGeneralityFuzzy = 4;
-
-    QVector<RuleInGeneralityFuzzy> arrTruthLvl(nbRules);
-    QVector<float> arrRuleGrade(nbRules);
+    int const nbRuleInGeneralityFuzzy = 4;
+    float arrTruthLvl[nbRules][nbRuleInGeneralityFuzzy];
+    float arrRuleGrade[nbRules];
 
     for ( int i = 0; i < nbRules; i++ ) {
         arrRuleGrade[i] = 1.0;
-#if 0 // already zeroed
         for ( int j = 0; j < nbRuleInGeneralityFuzzy; j++) {
             arrTruthLvl[i][j] = 0.0;
         }
-#endif
     }
 
     for( int i = 0; i < nbRules; i++ ) {
@@ -1027,20 +1039,20 @@ float FuzzySystem::evaluateFitness()
         }
 
         //Generality Rule
-        arrTruthLvl[i]._0 = firingHigh;
-        arrTruthLvl[i]._1 = std::min( firingLow, winnerNever );
-        arrTruthLvl[i]._2 = std::min( firingLow, winnerSometime );
-        arrTruthLvl[i]._3 = std::min( firingLow, winnerAlways );
+        arrTruthLvl[i][0] = firingHigh;
+        arrTruthLvl[i][1] = std::min( firingLow, winnerNever );
+        arrTruthLvl[i][2] = std::min( firingLow, winnerSometime );
+        arrTruthLvl[i][3] = std::min( firingLow, winnerAlways );
 
-        const float evalProduct = arrTruthLvl[i]._0 * 1.0 +  //high
-                                  arrTruthLvl[i]._1 * 0.7 +  //med high
-                                  arrTruthLvl[i]._2 * 0.3 +  //med low
-                                  arrTruthLvl[i]._3 * 0.0;   //low
+        const float evalProduct = arrTruthLvl[i][0] * 1.0 +  //high
+                arrTruthLvl[i][1] * 0.7 +  //med high
+                arrTruthLvl[i][2] * 0.3 +  //med low
+                arrTruthLvl[i][3] * 0.0;   //low
 
-        const float evalSum = arrTruthLvl[i]._0 +
-                              arrTruthLvl[i]._1 +
-                              arrTruthLvl[i]._2 +
-                              arrTruthLvl[i]._3;
+        const float evalSum = arrTruthLvl[i][0] +
+                arrTruthLvl[i][1] +
+                arrTruthLvl[i][2] +
+                arrTruthLvl[i][3];
 
         arrRuleGrade[i] = evalProduct / evalSum;
     }
@@ -1059,30 +1071,30 @@ float FuzzySystem::evaluateFitness()
 
 
     float num = sysParams.getSensiW() * sensitivity
-                + sysParams.getSpeciW() * specificity
-                + sysParams.getAccuracyW() * accuracy
-                + sysParams.getPpvW() * ppv
-                + sysParams.getRmseW() * pow( 2.0, -rmse )
-                + sysParams.getRrseW() * pow( 2.0,-rrse )
-                + sysParams.getRaeW() * pow( 2.0,-rae )
-                + sysParams.getMseW() * pow( 2.0, -mse )
-                //+ sysParams.getDistanceThresholdW() * distanceThreshold
-                //+ sysParams.getDistanceMinThresholdW() * distanceMinThreshold
-                + sysParams.getDontCareW() * dontCare;
-                //+ sysParams.getOverLearnW()* overLearn;
+            + sysParams.getSpeciW() * specificity
+            + sysParams.getAccuracyW() * accuracy
+            + sysParams.getPpvW() * ppv
+            + sysParams.getRmseW() * pow( 2.0, -rmse )
+            + sysParams.getRrseW() * pow( 2.0,-rrse )
+            + sysParams.getRaeW() * pow( 2.0,-rae )
+            + sysParams.getMseW() * pow( 2.0, -mse )
+            //+ sysParams.getDistanceThresholdW() * distanceThreshold
+            //+ sysParams.getDistanceMinThresholdW() * distanceMinThreshold
+            + sysParams.getDontCareW() * dontCare;
+    //+ sysParams.getOverLearnW()* overLearn;
 
     float denum = sysParams.getSensiW()
-                  + sysParams.getSpeciW()
-                  + sysParams.getAccuracyW()
-                  + sysParams.getPpvW()
-                  + sysParams.getRmseW()
-                  + sysParams.getRrseW()
-                  + sysParams.getRaeW()
-                  + sysParams.getMseW()
-                  //+ sysParams.getDistanceThresholdW()
-                  //+ sysParams.getDistanceMinThresholdW()
-                  + sysParams.getDontCareW();
-                  //+ sysParams.getOverLearnW();
+            + sysParams.getSpeciW()
+            + sysParams.getAccuracyW()
+            + sysParams.getPpvW()
+            + sysParams.getRmseW()
+            + sysParams.getRrseW()
+            + sysParams.getRaeW()
+            + sysParams.getMseW()
+            //+ sysParams.getDistanceThresholdW()
+            //+ sysParams.getDistanceMinThresholdW()
+            + sysParams.getDontCareW();
+    //+ sysParams.getOverLearnW();
 
     this->fitness = num / denum;
 
@@ -1187,7 +1199,7 @@ int FuzzySystem::getRuleBitStringSize()
 
 int FuzzySystem::getRuleMaxBitStringSize()
 {
- return (nbVarPerRule * (inVarsCodeSize+inSetsCodeSize) + nbOutVars * (outVarsCodeSize+outSetsCodeSize));
+    return (nbVarPerRule * (inVarsCodeSize+inSetsCodeSize) + nbOutVars * (outVarsCodeSize+outSetsCodeSize));
 }
 
 int FuzzySystem::getDefaultRulesBitStringSize()
@@ -1406,10 +1418,10 @@ void FuzzySystem::saveToFile(QString fileName, float fitVal)
     QDomElement defRules = doc.createElement("Default_Rules");
     rulesList.appendChild(defRules);
     for (int i = 0; i < nbOutVars; i++) {
-    QDomElement defRule = doc.createElement("Default_Rule");
-    defRules.appendChild(defRule);
-    QDomText defRuleText = doc.createTextNode(QString::number(defaultRulesSets.at(i)));
-    defRule.appendChild(defRuleText);
+        QDomElement defRule = doc.createElement("Default_Rule");
+        defRules.appendChild(defRule);
+        QDomText defRuleText = doc.createTextNode(QString::number(defaultRulesSets.at(i)));
+        defRule.appendChild(defRuleText);
     }
 
     QString xml = doc.toString();
@@ -1525,7 +1537,7 @@ void FuzzySystem::loadFromFile(QString fileName)
     // Create an empty default rule array
     defaultRulesSets.resize(nbOutVars);
     // Retrieve the rules
-    for (int i = 0; i < nbRules; i++) {             
+    for (int i = 0; i < nbRules; i++) {
         // Retrieve the input/output variables from the rule and their corresponding sets
         nodesRulesInVars = nodesRules.at(i).toElement().elementsByTagName("In_Var");
         nodesRulesOutVars = nodesRules.at(i).toElement().elementsByTagName("Out_Var");
@@ -1534,10 +1546,10 @@ void FuzzySystem::loadFromFile(QString fileName)
 
         // Create an empty intstring rule genome
         FuzzyRuleGenome *ruleGen = new FuzzyRuleGenome(nodesRulesInVars.size(), nodesRulesInVars.size(), nodesRulesOutVars.size(),
-                                                      1,1,1,1);
+                                                       1,1,1,1);
         // Create an empty instring
         int intStringSize = nodesRulesInVars.size()*2 + nodesRulesOutVars.size()*2;
-        QVector<quint16> intString(intStringSize);
+        quint16 intString[intStringSize];
 
         for (int k = 0, l = 0; k < nodesRulesInVars.size(); k++, l+=2) {
             intString[l] = getVarIndex(nodesRulesInVars.at(k).toElement().text());
@@ -1546,9 +1558,9 @@ void FuzzySystem::loadFromFile(QString fileName)
         for (int k = 0, l = nodesRulesInVars.size()*2; k < nodesRulesOutVars.size(); k++, l+=2) {
             intString[l] = getVarIndex(nodesRulesOutVars.at(k).toElement().text());
             intString[l+1] = outVarArray[intString[l]]->getSetIndexByName(nodesRulesOutSets.at(k).toElement().text());
-         }
+        }
         // Load the instring into the genome
-        ruleGen->readGenomeIntString(intString.data(), intStringSize);
+        ruleGen->readGenomeIntString(intString, intStringSize);
 
         // Create the rule
         rulesArray[i] = new FuzzyRule(inVarArray, outVarArray, ruleGen);
@@ -1571,7 +1583,7 @@ void FuzzySystem::loadFromFile(QString fileName)
         systemDescription.append(QString::number(defaultRulesSets.at(i)));
         systemDescription.append("  ");
     }
-        // Update the system description with the membership functions
+    // Update the system description with the membership functions
     // of the variables used in the rules
     systemDescription.append("\nMembership functions : \n");
     for (int i = 0; i  < nbInVars; i++) {
@@ -1731,7 +1743,8 @@ void FuzzySystem::printVerboseOutput()
 
     CoevStats& stats = CoevStats::getInstance();
 
-    std::cout << "[GENERATION] " << stats.getGenNumber() << std::endl;
+    std::cout << "[GENERATION_POP1] " << stats.getGenNumberPop1() << std::endl;
+    std::cout << "[GENERATION_POP2] " << stats.getGenNumberPop2() << std::endl;
     std::cout << "[FITNESS] " << this->getFitness() << std::endl;
     std::cout << "[SENSITIVITY] " << stats.getSensi() << std::endl;
     std::cout << "[SPECIFICITY] " << stats.getSpeci() << std::endl;
@@ -1759,4 +1772,17 @@ void FuzzySystem::setFitness(float fit)
 {
 
     this->fitness = fit;
+}
+
+
+FuzzyVariable** FuzzySystem::getInVars(){
+    return inVarArray;
+}
+
+FuzzyVariable** FuzzySystem::getOutVars(){
+    return outVarArray;
+}
+
+FuzzyRule** FuzzySystem::getRules(){
+    return rulesArray;
 }

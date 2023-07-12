@@ -293,7 +293,7 @@ QString FuzzyRule::getDescription()
   */
 void FuzzyRule::evaluate()
 {
-    double eval = DONT_CARE_EVAL_RULE;
+    eval = DONT_CARE_EVAL_RULE;
 #if 0
     // DEBUG
         //DEBUG
@@ -313,19 +313,25 @@ void FuzzyRule::evaluate()
 
     // Compute the evaluation for all input variables
     if (inVars == 1) {
-        eval = inVarsTab[0]->evaluateSet(inVarsSetsTab[0]);
+        inVarsTab[0]->setActivation(inVarsTab[0]->evaluateSet(inVarsSetsTab[0]));
+        eval = inVarsTab[0]->getActivation();
     }
     else {
+
+        // KNOW WHICH ONE IS THE SMALLEST
+
         for (int i = 0; i < inVars; i++) {
             // First two antecedents evaluated so they are evaluated together
             // and not with the previous result
-            if (i == 0) {
-                eval = fOp->operate(inVarsTab[i]->evaluateSet(inVarsSetsTab[i]), inVarsTab[i+1]->evaluateSet(inVarsSetsTab[i+1]));
+            inVarsTab[i]->setActivation(inVarsTab[i]->evaluateSet(inVarsSetsTab[i]));
+            if (i == 0) {                
+                inVarsTab[i]->setActivation(inVarsTab[i+1]->evaluateSet(inVarsSetsTab[i+1]));
+                eval = fOp->operate(inVarsTab[i]->getActivation(), inVarsTab[i+1]->getActivation());
                 // The next antecedent is the third one
                 i++;
             }
             else {
-                eval = fOp->operate(eval, inVarsTab[i]->evaluateSet(inVarsSetsTab[i]));
+                eval = fOp->operate(eval, inVarsTab[i]->getActivation());
             }
         }
     }
@@ -340,12 +346,14 @@ void FuzzyRule::evaluate()
             if (eval <= 1.0 && eval >= 0.0) {
                 // Set evaluation to the corresponding output set
                 outVarsTab[i]->setOutputSetValue(outVarsSetsTab[i], eval);
+                outVarsTab[i]->setActivation(eval);
                 //fireLevel.insert(i, eval);
                 fireLevel[i] = eval;
             }
             else {
                 // Dont'care value --> rule dropped
                 outVarsTab[i]->setOutputSetValue(outVarsSetsTab[i], 0.0);
+                outVarsTab[i]->setActivation(eval);
             }
         }
     }
@@ -439,4 +447,8 @@ FuzzyVariable* FuzzyRule::getOutVarAtPos(int pos)
 FuzzySet* FuzzyRule::getOutSetAtPos(int pos)
 {
     return outVarsTab[pos]->getSet(outVarsSetsTab[pos]);
+}
+
+double FuzzyRule::getActivation(){
+    return eval;
 }

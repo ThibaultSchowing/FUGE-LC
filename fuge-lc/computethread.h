@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
   * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -37,12 +39,12 @@
 #include <QStringList>
 #include <QString>
 #include <QMutex>
-#include <QTime>
 
 #include "coevolution.h"
 #include "fuzzysystem.h"
 #include "systemparameters.h"
 #include "evolutionengine.h"
+#include "timertool.h"
 
 class CoEvolution;
 
@@ -93,7 +95,7 @@ private:
         quint8 loggerFileLevel, loggerConsoleLevel;
     }rules, vars;
 
-    QTime startTime, endTime;
+    struct timeval startTime, endTime;
     qreal elapsedTime;
 
     void loadConfiguration(POPULATION_CONFIG_TYPE &config, QString fileNameWithDirPath);

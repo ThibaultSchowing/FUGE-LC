@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
-  * @date   07.2009
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
+  * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -36,6 +38,7 @@
 #include <stdexcept>
 #include <vector>
 #include <numeric>
+#include <unistd.h>
 
 #include <QFileDialog>
 #include <QLabel>
@@ -45,6 +48,7 @@
 #include <QMessageBox>
 #include <QSemaphore>
 #include <QProcess>
+#include <QVector>
 
 #include "fuzzysystem.h"
 
@@ -66,6 +70,8 @@
 #include "fuzzymembershipsgenome.h"
 #include "fuzzyrule.h"
 #include "fuzzysystem.h"
+#include "projectmanager.h"
+#include "datasetsplitter.h"
 
 class ComputeThread;
 
@@ -94,6 +100,13 @@ protected:
 
 private:
     void createActions();
+    void resetDisplay();
+    void loadFromIni();
+    void loadDataSet(const QString& fileName);
+    void clearRecentDatasets();
+    void displayRecentDatasets();
+    void clearRecentProjects();
+    void displayRecentProjects();
     Ui::FugeMain* ui;
     AboutDialog* aboutDial;
     HelpDialog* help;
@@ -124,21 +137,33 @@ private:
     QAction* actQuit;
     QAction* actAbout;
     QAction* actHelp;
+    QAction* actEnableScript;
+    QAction* actSetWorkFolder;
     QMenu* fileMenu;
     QMenu* dataMenu;
     QMenu* fuzzyMenu;
     QMenu* paramsMenu;
     QMenu* scriptMenu;
     QMenu* helpMenu;
-
+    QMenu* recentDatasetMenu;
+    QMenu* recentProjectsMenu;
+    EditParamsDialog *editParams;
     QString currentOpennedSystem;
-    void setDefaultSysParams();
+    QVector<QAction*> recentDatasets;
+    QVector<QAction*> recentProjects;
+    DatasetSplitter* datasetSplitter;
 
     bool fuzzyLoaded;
     bool dataLoaded;
     bool scriptLoaded;
     bool paramsLoaded;
     bool isRunning;
+    bool isScriptEnabled;
+
+
+    DatasetSplitter::ValidatorType validatorType = DatasetSplitter::ValidatorType::NONE;
+    QVector<quint32> splitDatasetIndexes;
+    QVector<quint32> treatedDatasetIndexes;
 
 public slots:
     void onComputeFinished();
@@ -164,6 +189,11 @@ private slots:
     void onActAbout();
     void onActHelp();
     void closeEvent(QCloseEvent*);
+    void onShowScriptClicked();
+    void onSettingProject();
+    void onShowRecentDatasets();
+    void updateWindowTitle();
+    void onValidatorClicked();
 
 signals:
     void clearStats();

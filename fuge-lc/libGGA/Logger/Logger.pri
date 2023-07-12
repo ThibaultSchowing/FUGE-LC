@@ -1,10 +1,10 @@
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-SOURCES += $$PWD/logger.cpp \
-    $$PWD/populationlogger.cpp \
-    $$PWD/statisticlogger.cpp
+SOURCES += logger.cpp \
+    populationlogger.cpp \
+    statisticlogger.cpp
     
-HEADERS += $$PWD/logger.h \
-    $$PWD/populationlogger.h \
-    $$PWD/statisticlogger.h
+HEADERS += logger.h \
+    populationlogger.h \
+    statisticlogger.h

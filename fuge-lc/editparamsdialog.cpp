@@ -3,13 +3,15 @@
   * @author Jean-Philippe Meylan <jean-philippe.meylan_at_heig-vd.ch>
   * @author ReDS (Reconfigurable and embedded digital systems) <www.reds.ch>
   * @author HEIG-VD (Haute école d'ingénierie et de gestion) <www.heig-vd.ch>
-  * @date   07.2009
+  * @author Yvan Da Silva <yvan.dasilva_at_heig-vd.ch>
+  * @date   06.2012
+  * @date   03.2010
   * @section LICENSE
   *
   * This application is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
   * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
+  * version 3.0 of the License, or (at your option) any later version.
   *
   * This library is distributed in the hope that it will be useful,
   * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,18 +27,9 @@
   * @brief This class implements the parameters edition dialog.
   */
 
-#include <iostream>
-#include <cmath>
-
-#include <QHelpEvent>
-#include <QToolTip>
-#include <QLineEdit>
-#include <QFileDialog>
-
 #include "editparamsdialog.h"
 #include "ui_editparamsdialog.h"
-#include "systemparameters.h"
-#include "errordialog.h"
+
 
 /**
   * Constructor
@@ -50,8 +43,6 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     m_ui(new Ui::EditParamsDialog)
 {
     m_ui->setupUi(this);
-    // Set the focus on th Ok button
-    m_ui->buttonBox->button(QDialogButtonBox::Ok)->setFocus();
 
     this->paramsLoaded = paramsLoaded;
 
@@ -60,119 +51,28 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     // Show the current values
     if (*paramsLoaded || scriptLoaded) {
         defaultValues = false;
-
-        m_ui->lineExp->setText(sysParams.getExperimentName());
-        m_ui->linePath->setText(sysParams.getSavePath());
-        m_ui->lineRules->setText(QString::number(sysParams.getNbRules()));
-        m_ui->lineVarsPerRule->setText(QString::number(sysParams.getNbVarPerRule()));
-        m_ui->lineOutput->setText(QString::number(sysParams.getNbOutVars()));
-        m_ui->lineInSets->setText(QString::number(sysParams.getNbInSets()));
-        m_ui->lineOutSets->setText(QString::number(sysParams.getNbOutSets()));
-        m_ui->lineInSetsPos->setText(QString::number(sysParams.getInSetsPosCodeSize()));
-        m_ui->lineOutSetsPos->setText(QString::number(sysParams.getOutSetPosCodeSize()));
-        m_ui->lineInVarsCode->setText(QString::number(sysParams.getInVarsCodeSize()));
-        m_ui->lineOutVarsCode->setText(QString::number(sysParams.getOutVarsCodeSize()));
-        m_ui->lineInSetsCode->setText(QString::number(sysParams.getInSetsCodeSize()));
-        m_ui->lineOutSetsCode->setText(QString::number(sysParams.getOutSetsCodeSize()));
-        m_ui->lineGenPop1->setText(QString::number(sysParams.getMaxGenPop1()));
-        m_ui->lineGenPop2->setText(QString::number(sysParams.getMaxGenPop2()));
-        m_ui->lineFitPop1->setText(QString::number(sysParams.getMaxFitPop1()));
-        m_ui->lineFitPop2->setText(QString::number(sysParams.getMaxFitPop2()));
-        m_ui->linePop1->setText(QString::number(sysParams.getPopSizePop1()));
-        m_ui->linePop2->setText(QString::number(sysParams.getPopSizePop2()));
-        m_ui->lineElitePop1->setText(QString::number(sysParams.getEliteSizePop1()));
-        m_ui->lineElitePop2->setText(QString::number(sysParams.getEliteSizePop2()));
-        m_ui->lineCxPop1->setText(QString::number(sysParams.getCxProbPop1()));
-        m_ui->lineCxPop2->setText(QString::number(sysParams.getCxProbPop2()));
-        m_ui->lineMutIndPop1->setText(QString::number(sysParams.getMutFlipIndPop1()));
-        m_ui->lineMutIndPop2->setText(QString::number(sysParams.getMutFlipIndPop2()));
-        m_ui->lineMutBitPop1->setText(QString::number(sysParams.getMutFlipBitPop1()));
-        m_ui->lineMutBitPop2->setText(QString::number(sysParams.getMutFlipBitPop2()));
-        m_ui->lineSensi->setText(QString::number(sysParams.getSensiW()));
-        m_ui->lineSpeci->setText(QString::number(sysParams.getSpeciW()));
-        m_ui->lineAccu->setText(QString::number(sysParams.getAccuracyW()));
-        m_ui->linePpv->setText(QString::number(sysParams.getPpvW()));
-        m_ui->lineRmse->setText(QString::number(sysParams.getRmseW()));
-
-        // Add some indice, usefull for regression problems
-        m_ui->lineRrse->setText(QString::number(sysParams.getRrseW    ()));
-        m_ui->lineRae-> setText(QString::number(sysParams.getRaeW     ()));
-
-        //m_ui->chkSizeBonus->setChecked(sysParams.getSizeBonus());
-        m_ui->lineMse->setText(QString::number(sysParams.getMseW()));
-        m_ui->lineDistance->setText(QString::number(sysParams.getDistanceThresholdW()));
-        m_ui->lineMinDistance->setText(QString::number(sysParams.getDistanceMinThresholdW()));
-        m_ui->lineDontCare->setText(QString::number(sysParams.getDontCareW()));
-        m_ui->lineOverLearn->setText(QString::number(sysParams.getOverLearnW()));
-
-        m_ui->lineThresh->setText(QString::number(sysParams.getThresholdVal(0)));
-        for (int i = 0; i < sysParams.getNbOutVars(); i++) {
-            m_ui->cbThresh->addItem("Out " + QString::number(i+1));
-        }
-        m_ui->chbThreshActive->setChecked(sysParams.getThreshActivated());
-        m_ui->cbThresh->setEnabled(sysParams.getThreshActivated());
-        m_ui->lineThresh->setEnabled(sysParams.getThreshActivated());
     }
-
     // No current values => put the default values
     else {
         defaultValues = true;
-        m_ui->lineExp->setText("Exp 1");
-        m_ui->lineRules->setText(QString::number(5));
-        m_ui->lineVarsPerRule->setText(QString::number(5));
-        m_ui->lineOutput->setText(QString::number(1));
-        m_ui->lineInSets->setText(QString::number(2));
-        m_ui->lineOutSets->setText(QString::number(2));
-        m_ui->lineInSetsPos->setText(QString::number(4));
-        m_ui->lineOutSetsPos->setText(QString::number(4));
-        m_ui->lineInVarsCode->setText(QString::number(4));
-        m_ui->lineOutVarsCode->setText(QString::number(1));
-        m_ui->lineInSetsCode->setText(QString::number(2));
-        m_ui->lineOutSetsCode->setText(QString::number(1));
-        m_ui->lineGenPop1->setText(QString::number(100));
-        m_ui->lineGenPop2->setText(QString::number(100));
-        m_ui->lineFitPop1->setText(QString::number(0.95));
-        m_ui->lineFitPop2->setText(QString::number(0.95));
-        m_ui->linePop1->setText(QString::number(100));
-        m_ui->linePop2->setText(QString::number(100));
-        m_ui->lineElitePop1->setText(QString::number(5));
-        m_ui->lineElitePop2->setText(QString::number(5));
-        m_ui->lineCxPop1->setText(QString::number(0.5));
-        m_ui->lineCxPop2->setText(QString::number(0.5));
-        m_ui->lineMutIndPop1->setText(QString::number(0.5));
-        m_ui->lineMutIndPop2->setText(QString::number(0.5));
-        m_ui->lineMutBitPop1->setText(QString::number(0.01));
-        m_ui->lineMutBitPop2->setText(QString::number(0.01));
-        m_ui->lineSensi->setText(QString::number(1.0));
-        m_ui->lineSpeci->setText(QString::number(0.8));
-        m_ui->lineAccu->setText(QString::number(0.0));
-        m_ui->linePpv->setText(QString::number(0.0));
-        m_ui->lineRmse->setText(QString::number(0.0));
-        m_ui->lineRrse->setText(QString::number(0.0));
-        m_ui->lineRae ->setText(QString::number(0.0));
 
-        m_ui->lineMse->setText(QString::number(0.0));
-        m_ui->lineDistance->setText(QString::number(0.0));
-        m_ui->lineMinDistance->setText(QString::number(0.0));
-        m_ui->lineDontCare->setText(QString::number(0.0));
-        m_ui->lineOverLearn->setText(QString::number(0.0));
-
-        m_ui->lineThresh->setText(QString::number(0.5));
-        m_ui->chbThreshActive->setChecked(true);
-        m_ui->lineThresh->setEnabled(true);
-        m_ui->cbThresh->addItem("Out 1");
         sysParams.resizeThreshold(1);
     }
-
+    checkAndSetValues();
     // Display the fitness function
     displayFitFct();
 
+    // Display basic level of parameters
+    display_level_one();
+
 
     // FIXME: Can be all done in the ui form.
-    // Automatically check and set values inserted
+    // Automatically check and set values inserted and connect every signal with the desired slot.
+    // Plus each lineedit should have his own onTextChanged slot, because they are independ
+    // and there is no need to check non related fields when one change.
     connect(m_ui->lineExp, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
-    connect(m_ui->btPath, SIGNAL(pressed()), this , SLOT(onBtPathPressed()));
-    connect(m_ui->linePath, SIGNAL(textChanged(QString)), this, SLOT(onLinePathEdited(QString)));
+    //connect(m_ui->btPath, SIGNAL(pressed()), this , SLOT(onBtPathPressed()));
+    //connect(m_ui->linePath, SIGNAL(textChanged(QString)), this, SLOT(onLinePathEdited(QString)));
     connect(m_ui->lineRules, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineVarsPerRule, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineOutput, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
@@ -213,13 +113,15 @@ EditParamsDialog::EditParamsDialog(QWidget *parent, bool* paramsLoaded, bool scr
     connect(m_ui->lineMinDistance, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineDontCare, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
     connect(m_ui->lineOverLearn, SIGNAL(textChanged(QString)), this, SLOT(checkAndSetValues()));
-
     // Display the fitness formula automatically
     connect(m_ui->lineSensi, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->lineSpeci, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->lineAccu, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->linePpv, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
     connect(m_ui->lineRmse, SIGNAL(textChanged(QString)), this, SLOT(displayFitFct()));
+    connect(m_ui->radioButton_basic, SIGNAL(pressed()), this, SLOT(display_level_one()));
+    connect(m_ui->radioButton_advanced, SIGNAL(pressed()), this, SLOT(display_level_two()));
+    connect(m_ui->radioButton_expert, SIGNAL(pressed()), this, SLOT(display_level_three()));
 }
 
 EditParamsDialog::~EditParamsDialog()
@@ -233,8 +135,21 @@ EditParamsDialog::~EditParamsDialog()
   */
 void EditParamsDialog::displayFitFct()
 {
-    m_ui->labelFitFct->setText("Fitness = " + m_ui->lineSensi->text() + "*Sensi + " + m_ui->lineSpeci->text() + "*Speci + "
-                               + m_ui->linePpv->text() +"*Accuracy + " + m_ui->lineAccu->text() + "*PPV + " + m_ui->lineRmse->text() + "*RMSE");
+    QString sensi = FormatParameterDisplay(m_ui->lineSensi->text());
+    QString speci = FormatParameterDisplay(m_ui->lineSpeci->text());
+    QString ppv = FormatParameterDisplay(m_ui->linePpv->text());
+    QString accu = FormatParameterDisplay(m_ui->lineAccu->text());
+    QString rmse = FormatParameterDisplay(m_ui->lineRmse->text());
+    m_ui->labelFitFct->setText("Fitness = " + sensi + "*Sensi + " + speci + "*Speci + "
+                               + ppv + "*Acc + " + accu + "*PPV + " + rmse + "*RMSE");
+}
+
+QString EditParamsDialog::FormatParameterDisplay(const QString& str) {
+    if (str.length() <= 5){
+        return str;
+    }
+
+    return str.left(3) + "...";
 }
 
 /**
@@ -244,12 +159,14 @@ bool EditParamsDialog::checkAndSetValues()
 {
 
     // FIXME: Very few of this logic is needed here, most can be done in the ui form.
+    // Plus its difficult to maintain this way (Right click on the corresponding widget -> ON SLOT (desired slot).
     bool valid = true;
 
     SystemParameters& sysParams = SystemParameters::getInstance();
+    ProjectManager& manager = ProjectManager::getInstance();
 
     // Experiment name
-    sysParams.setExperimentName(m_ui->lineExp->text());
+    manager.setExperimentName(m_ui->lineExp->text());
 
     // Number of rules
     if (validateIntEntry(m_ui->lineRules->text(), 1, 1024)) {
@@ -352,7 +269,7 @@ bool EditParamsDialog::checkAndSetValues()
         m_ui->lineInVarsCode->setStyleSheet("background-color: rgb(255, 0, 0);");
         valid = false;
     }
-     // Number of bits to code the output variables
+    // Number of bits to code the output variables
     if (validateIntEntry(m_ui->lineOutVarsCode->text(), ceil(log(sysParams.getNbOutVars()) / log(2)), 1024)) {
         sysParams.setOutVarsCodeSize(m_ui->lineOutVarsCode->text().toInt());
         m_ui->lineOutVarsCode->setStyleSheet("");
@@ -620,7 +537,7 @@ bool EditParamsDialog::checkAndSetValues()
         valid = false;
     }
 
-	// Over learn
+    // Over learn
     if (validateFloatEntry(m_ui->lineOverLearn->text(), 0, 1.0)) {
         sysParams.setOverLearnW(m_ui->lineOverLearn->text().toFloat());
         m_ui->lineOverLearn->setStyleSheet("");
@@ -641,6 +558,9 @@ bool EditParamsDialog::checkAndSetValues()
     }
 
     sysParams.setNbCooperators(m_ui->spinBoxCooperators->value());
+    sysParams.setLearningFactor(m_ui->doubleSpinBox_LearningFactor->value());
+    sysParams.setLearningEpochs(m_ui->spinBox_LearningEpochs->value());
+    on_comboBox_LearningMethod_activated(m_ui->comboBox_LearningMethod->currentIndex());
 
     // Set other internal parameters to their default value without user intervention
     sysParams.setFixedVars(false);
@@ -713,9 +633,11 @@ bool EditParamsDialog::validateFloatEntry(QString stringValue, float min, float 
   */
 void EditParamsDialog::onBtPathPressed()
 {
+    SystemParameters& sysParams = SystemParameters::getInstance();
     QFileDialog pathDialog;
     connect(&pathDialog, SIGNAL(currentChanged(QString)), this, SLOT(changePath(QString)));
     pathDialog.setFileMode(QFileDialog::Directory);
+    pathDialog.setDirectory(sysParams.getSavePath() + tr("configs/"));
     pathDialog.exec();
 }
 
@@ -737,7 +659,7 @@ void EditParamsDialog::changePath(QString path)
     SystemParameters& sysParams = SystemParameters::getInstance();
 
     sysParams.setSavePath(path);
-    m_ui->linePath->setText(path);
+    //m_ui->linePath->setText(path);
 }
 
 /**
@@ -773,7 +695,353 @@ void EditParamsDialog::onChbActivateThresh()
     sysParams.setThreshActivated(m_ui->chbThreshActive->isChecked());
 }
 
-void EditParamsDialog::on_buttonBox_accepted()
+void EditParamsDialog::on_buttonBoxClose_accepted()
 {
-
+    this->hide();
 }
+
+/**
+ * @brief EditParamsDialog::on_pushButton_SaveAsUserDefault_clicked
+ * Save current config as user default values (config).
+ */
+void EditParamsDialog::on_pushButton_SaveAsGlobal_clicked()
+{
+    ProjectManager& pm = ProjectManager::getInstance();
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(pm.getGlobalConfFolder() + tr("myfile.conf")) ,tr("Config files.conf (*.conf)"));
+    if(!name.isEmpty()){
+        saveConfig(name);
+    }
+}
+
+/**
+ * @brief EditParamsDialog::on_pushButton_SaveAs_clicked
+ * Save current config as ...
+ */
+void EditParamsDialog::on_pushButton_SaveAs_clicked()
+{
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = QFileDialog::getSaveFileName(this,tr("Save config file"), QString(sysParams.getSavePath() + tr("configs/myfile.conf")) ,tr("Config files.conf (*.conf)"));
+    if(!name.isEmpty()){
+        saveConfig(name);
+    }
+}
+
+/**
+ * @brief EditParamsDialog::on_pushButton_LoadFile_clicked
+ * Load a specific user config.
+ */
+void EditParamsDialog::on_pushButton_LoadFile_clicked()
+{
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), sysParams.getSavePath()+ tr("configs/"), tr("Config files.conf (*.conf)"));
+    if(!name.isEmpty()){
+        loadConfig(name);
+    }
+}
+
+/**
+ * @brief EditParamsDialog::on_pushButton_LoadUserDefault_clicked
+ * Load users default config.
+ */
+void EditParamsDialog::on_pushButton_LoadFileGlobal_clicked()
+{
+    ProjectManager& pm = ProjectManager::getInstance();
+    QString name = QFileDialog::getOpenFileName(this,tr("Load config file"), pm.getGlobalConfFolder(), tr("Config files.conf (*.conf)"));
+    if(!name.isEmpty()){
+        loadConfig(name);
+    }
+}
+
+/**
+ * @brief EditParamsDialog::on_pushButton_LoadUserDefault_clicked
+ * Load users default config.
+ */
+void EditParamsDialog::saveConfig(QString filename){
+    QFile file(filename);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        qDebug() << "Could not open the config file.";
+    }else{
+        QTextStream out(&file);
+        out << "nbInputRules" << " = " << m_ui->lineRules->text() << "\n";
+        out << "nbInputSets" << " = " <<  m_ui->lineInSets->text() << "\n";
+        out << "nbOutputVariables" << " = " << m_ui->lineOutput->text() << "\n";
+        out << "nbOutputSets" << " = " << m_ui->lineOutSets->text() << "\n";
+        out << "maxNbVarsPerRule" << " = " << m_ui->lineVarsPerRule->text() << "\n";
+        out << "inputSetsPosCodeSize" << " = " << m_ui->lineInSetsPos->text() << "\n";
+        out << "inputVarsBitCodeSize" << " = " << m_ui->lineInVarsCode->text() << "\n";
+        out << "inputSetsBitCodeSize" << " = " << m_ui->lineInSetsCode->text() << "\n";
+        out << "outputSetsPosCodeSize" << " = " << m_ui->lineOutSetsPos->text() << "\n";
+        out << "outputVarsBitCodeSize" << " = " << m_ui->lineOutVarsCode->text() << "\n";
+        out << "outputSetsBitCodeSize" << " = " << m_ui->lineOutSetsCode->text() << "\n";
+        out << "nbOfGenerationsPop1" << " = " << m_ui->lineGenPop1->text() << "\n";
+        out << "MaxFitnessThresholdPop1" << " = " << m_ui->lineFitPop1->text() << "\n";
+        out << "Population1Size" << " = " << m_ui->linePop1->text() << "\n";
+        out << "EliteSizePop1" << " = " << m_ui->lineElitePop1->text() << "\n";
+        out << "CrossOverProbPop1" << " = " << m_ui->lineCxPop1->text() << "\n";
+        out << "IndivMutationProbPop1" << " = " << m_ui->lineMutIndPop1->text() << "\n";
+        out << "BitMutationProbPop1" << " = " << m_ui->lineMutBitPop1->text() << "\n";
+        out << "nbOfGenerationsPop2" << " = " << m_ui->lineGenPop2->text() << "\n";
+        out << "MaxFitnessThresholdPop2" << " = " << m_ui->lineFitPop2->text() << "\n";
+        out << "Population2Size" << " = " << m_ui->linePop2->text() << "\n";
+        out << "EliteSizePop2" << " = " << m_ui->lineElitePop2->text() << "\n";
+        out << "CrossOverProbPop2" << " = " << m_ui->lineCxPop2->text() << "\n";
+        out << "IndivMutationProbPop2" << " = " << m_ui->lineMutIndPop2->text() << "\n";
+        out << "BitMutationProbPop2" << " = " << m_ui->lineMutBitPop2->text() << "\n";
+        out << "Cooperators" << " = " << m_ui->spinBoxCooperators->value() << "\n";
+        out << "SensitivityWeight" << " = " << m_ui->lineSensi->text() << "\n";
+        out << "SpecificityWeight" << " = " << m_ui->lineSpeci->text() << "\n";
+        out << "PPVWeight" << " = " << m_ui->linePpv->text() << "\n";
+        out << "AccuracyWeight" << " = " << m_ui->lineAccu->text() << "\n";
+        out << "RRSEWeight" << " = " << m_ui->lineRrse->text() << "\n";
+        out << "RAEWeight" << " = " << m_ui->lineRae->text() << "\n";
+        out << "RMSEWeight" << " = " << m_ui->lineRmse->text() << "\n";
+        out << "MSEWeight" << " = " << m_ui->lineMse->text() << "\n";
+        //                out << "Correlation weight" << " = " <<
+        //                    config.loggerConsoleLevel = content.at(1).toUInt() << "\n";
+        out << "ADMWeight" << " = " << m_ui->lineDistance->text() << "\n";
+        out << "MDMWeight" << " = " << m_ui->lineMinDistance->text() << "\n";
+        out << "SizeSystemWeight" << " = " << m_ui->lineDontCare->text() << "\n";
+        out << "OverLearn" << " = " << m_ui->lineOverLearn->text() << "\n";
+        out << "LearningFactor" << " = " << m_ui->doubleSpinBox_LearningFactor->value() << "\n";
+        out << "LearningEpochs" << " = " << m_ui->spinBox_LearningEpochs->value() << "\n";
+        file.close();
+    }
+}
+
+/**
+ * @brief EditParamsDialog::on_pushButton_LoadUserDefault_clicked
+ * Load users default config.
+ */
+void EditParamsDialog::loadConfig(QString filename){
+    QFile file(filename);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&file);
+
+        QString line;
+        QStringList content;
+        while(!(line = in.readLine()).isEmpty())
+        {
+            // Remove all spaces
+            line = line.trimmed();
+            line.replace(" ", "");
+            content = line.split("=");
+
+            if(content.size() == 2){
+                if(content.at(0).compare("nbInputRules", Qt::CaseInsensitive)==0)
+                    m_ui->lineRules->setText(content.at(1));
+                else if(content.at(0).compare("nbInputSets", Qt::CaseInsensitive)==0)
+                    m_ui->lineInSets->setText(content.at(1));
+                else if(content.at(0).compare("nbOutputVariables", Qt::CaseInsensitive)==0)
+                    m_ui->lineOutput->setText(content.at(1));
+                else if(content.at(0).compare("nbOutputSets", Qt::CaseInsensitive)==0)
+                    m_ui->lineOutSets->setText(content.at(1));
+                else if(content.at(0).compare("maxNbVarsPerRule", Qt::CaseInsensitive)==0)
+                    m_ui->lineVarsPerRule->setText(content.at(1));
+                else if(content.at(0).compare("inputSetsPosCodeSize", Qt::CaseInsensitive)==0)
+                    m_ui->lineInSetsPos->setText(content.at(1));
+                else if(content.at(0).compare("inputVarsBitCodeSize", Qt::CaseInsensitive)==0)
+                    m_ui->lineInVarsCode->setText(content.at(1));
+                else if(content.at(0).compare("inputSetsBitCodeSize", Qt::CaseInsensitive)==0)
+                    m_ui->lineInSetsCode->setText(content.at(1));
+                else if(content.at(0).compare("outputSetsPosCodeSize", Qt::CaseInsensitive)==0)
+                    m_ui->lineOutSetsPos->setText(content.at(1));
+                else if(content.at(0).compare("outputVarsBitCodeSize", Qt::CaseInsensitive)==0)
+                    m_ui->lineOutVarsCode->setText(content.at(1));
+                else if(content.at(0).compare("outputSetsBitCodeSize", Qt::CaseInsensitive)==0)
+                    m_ui->lineOutSetsCode->setText(content.at(1));
+                else if(content.at(0).compare("nbOfGenerationsPop1", Qt::CaseInsensitive)==0)
+                    m_ui->lineGenPop1->setText(content.at(1));
+                else if(content.at(0).compare("MaxFitnessThresholdPop1", Qt::CaseInsensitive)==0)
+                    m_ui->lineFitPop1->setText(content.at(1));
+                else if(content.at(0).compare("Population1Size", Qt::CaseInsensitive)==0)
+                    m_ui->linePop1->setText(content.at(1));
+                else if(content.at(0).compare("EliteSizePop1", Qt::CaseInsensitive)==0)
+                    m_ui->lineElitePop1->setText(content.at(1));
+                else if(content.at(0).compare("CrossOverProbPop1", Qt::CaseInsensitive)==0)
+                    m_ui->lineCxPop1->setText(content.at(1));
+                else if(content.at(0).compare("IndivMutationProbPop1", Qt::CaseInsensitive)==0)
+                    m_ui->lineMutIndPop1->setText(content.at(1));
+                else if(content.at(0).compare("BitMutationProbPop1", Qt::CaseInsensitive)==0)
+                    m_ui->lineMutBitPop1->setText(content.at(1));
+                else if(content.at(0).compare("nbOfGenerationsPop2", Qt::CaseInsensitive)==0)
+                    m_ui->lineGenPop2->setText(content.at(1));
+                else if(content.at(0).compare("MaxFitnessThresholdPop2", Qt::CaseInsensitive)==0)
+                    m_ui->lineFitPop2->setText(content.at(1));
+                else if(content.at(0).compare("Population2Size", Qt::CaseInsensitive)==0)
+                    m_ui->linePop2->setText(content.at(1));
+                else if(content.at(0).compare("EliteSizePop2", Qt::CaseInsensitive)==0)
+                    m_ui->lineElitePop2->setText(content.at(1));
+                else if(content.at(0).compare("CrossOverProbPop2", Qt::CaseInsensitive)==0)
+                    m_ui->lineCxPop2->setText(content.at(1));
+                else if(content.at(0).compare("IndivMutationProbPop2", Qt::CaseInsensitive)==0)
+                    m_ui->lineMutIndPop2->setText(content.at(1));
+                else if(content.at(0).compare("BitMutationProbPop2", Qt::CaseInsensitive)==0)
+                    m_ui->lineMutBitPop2->setText(content.at(1));
+                else if(content.at(0).compare("Cooperators", Qt::CaseInsensitive)==0)
+                    m_ui->spinBoxCooperators->setValue(content.at(1).toInt());
+                else if(content.at(0).compare("SensitivityWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineSensi->setText(content.at(1));
+                else if(content.at(0).compare("SpecificityWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineSpeci->setText(content.at(1));
+                else if(content.at(0).compare("PPVWeight", Qt::CaseInsensitive)==0)
+                    m_ui->linePpv->setText(content.at(1));
+                else if(content.at(0).compare("AccuracyWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineAccu->setText(content.at(1));
+                else if(content.at(0).compare("RRSEWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineRrse->setText(content.at(1));
+                else if(content.at(0).compare("RAEWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineRae->setText(content.at(1));
+                else if(content.at(0).compare("RMSEWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineRmse->setText(content.at(1));
+                else if(content.at(0).compare("MSEWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineMse->setText(content.at(1));
+                //                else if(content.at(0).compare("Correlation weight", Qt::CaseInsensitive)==0)
+                //                    config.loggerConsoleLevel = content.at(1).toUInt();
+                else if(content.at(0).compare("ADMWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineDistance->setText(content.at(1));
+                else if(content.at(0).compare("MDMWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineMinDistance->setText(content.at(1));
+                else if(content.at(0).compare("SizeSystemWeight", Qt::CaseInsensitive)==0)
+                    m_ui->lineDontCare->setText(content.at(1));
+                else if(content.at(0).compare("OverLearn", Qt::CaseInsensitive)==0)
+                    m_ui->lineOverLearn->setText(content.at(1));
+                else if(content.at(0).compare("LearningFactor", Qt::CaseInsensitive)==0)
+                    m_ui->doubleSpinBox_LearningFactor->setValue(content.at(1).toDouble());
+                else if(content.at(0).compare("LearningEpochs", Qt::CaseInsensitive)==0)
+                    m_ui->spinBox_LearningEpochs->setValue(content.at(1).toInt());
+            }
+        }
+        file.close();
+    }
+    else{
+        qDebug() << "Could not open config file";
+    }
+}
+
+void EditParamsDialog::on_comboBox_LearningMethod_activated(int index)
+{
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    sysParams.setLearningMethod(index);
+    if(index != 0){
+        m_ui->comboBox_MembershipInitialization->setEnabled(true);
+        on_comboBox_MembershipInitialization_activated(m_ui->comboBox_MembershipInitialization->currentIndex());
+    }else{
+        m_ui->comboBox_MembershipInitialization->setEnabled(false);
+        sysParams.setLearning(false);        
+        m_ui->spinBox_LearningEpochs->setEnabled(false);
+        m_ui->doubleSpinBox_LearningFactor->setEnabled(false);
+        setEnabledCoevParams(true);
+    }
+}
+
+void EditParamsDialog::on_comboBox_MembershipInitialization_activated(int index)
+{
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    sysParams.setLearning(true);
+    sysParams.setInitVarsMethod(index);
+
+    m_ui->spinBox_LearningEpochs->setEnabled(true);
+    m_ui->doubleSpinBox_LearningFactor->setEnabled(true);
+    if(index == 2){
+        setEnabledCoevParams(true);
+    }else{
+        setEnabledCoevParams(false);
+    }
+}
+
+/**
+ * @brief EditParamsDialog::setEnabledCoevParams
+ * Enable or disable the settings modification for Coevolution.
+ *
+ * @param value Parameter for setEnabled widgets of Coevolution Population 1
+ */
+void EditParamsDialog::setEnabledCoevParams(bool value){
+    m_ui->linePop1->setEnabled(value);
+    m_ui->lineCxPop1->setEnabled(value);
+    m_ui->lineElitePop1->setEnabled(value);
+    m_ui->lineFitPop1->setEnabled(value);
+    m_ui->lineGenPop1->setEnabled(value);
+    m_ui->lineMutBitPop1->setEnabled(value);
+    m_ui->lineMutIndPop1->setEnabled(value);
+    m_ui->spinBoxCooperators->setEnabled(value);
+
+    SystemParameters& sysParams = SystemParameters::getInstance();
+    sysParams.setCoevolutionary(value);
+}
+
+void EditParamsDialog::toggle_level_two(bool b) {
+    // POPULATION
+    m_ui->label_9_lv2->setVisible(b);
+    m_ui->label_10_lv2->setVisible(b);
+    m_ui->label_11_lv2->setVisible(b);
+    m_ui->label_12_lv2->setVisible(b);
+    m_ui->label_13_lv2->setVisible(b);
+    m_ui->label_14_lv2->setVisible(b);
+    m_ui->label_15_lv2->setVisible(b);
+    m_ui->label_16_lv2->setVisible(b);
+    m_ui->label_30_lv2->setVisible(b);
+    m_ui->lineElitePop1->setVisible(b);
+    m_ui->lineElitePop2->setVisible(b);
+    m_ui->lineCxPop1->setVisible(b);
+    m_ui->lineCxPop2->setVisible(b);
+    m_ui->lineMutBitPop1->setVisible(b);
+    m_ui->lineMutBitPop2->setVisible(b);
+    m_ui->lineMutIndPop1->setVisible(b);
+    m_ui->lineMutIndPop2->setVisible(b);
+    m_ui->label_Cooperators_lv2->setVisible(b);
+    m_ui->spinBoxCooperators->setVisible(b);
+
+    // FITNESS
+    m_ui->lblCorr->setVisible(b);
+    m_ui->lblDistance->setVisible(b);
+    m_ui->lblDontCare->setVisible(b);
+    m_ui->lblMinDistance->setVisible(b);
+    m_ui->lblOverLearn->setVisible(b);
+    m_ui->lblRae->setVisible(b);
+    m_ui->lblRrse->setVisible(b);
+    m_ui->lblMSE->setVisible(b);
+
+    m_ui->lineCorr->setVisible(b);
+    m_ui->lineDistance->setVisible(b);
+    m_ui->lineDontCare->setVisible(b);
+    m_ui->lineMinDistance->setVisible(b);
+    m_ui->lineOverLearn->setVisible(b);
+    m_ui->lineRae->setVisible(b);
+    m_ui->lineRrse->setVisible(b);
+    m_ui->lineMse->setVisible(b);
+
+    // LEARNING
+    m_ui->groupBox_Learning->setVisible(b);
+}
+
+void EditParamsDialog::toggle_level_three(bool b) {
+    // BITS FOR RULES
+    m_ui->groupBox_FuzzyEvolution->setVisible(b);
+}
+
+void EditParamsDialog::display_level_one() {
+    toggle_level_two(false);
+    toggle_level_three(false);
+    m_ui->radioButton_basic->setChecked(true);
+    m_ui->radioButton_advanced->setChecked(false);
+    m_ui->radioButton_expert->setChecked(false);
+}
+
+void EditParamsDialog::display_level_two() {
+    toggle_level_two(true);
+    toggle_level_three(false);
+    m_ui->radioButton_basic->setChecked(false);
+    m_ui->radioButton_advanced->setChecked(true);
+    m_ui->radioButton_expert->setChecked(false);
+}
+
+void EditParamsDialog::display_level_three() {
+    toggle_level_two(true);
+    toggle_level_three(true);
+    m_ui->radioButton_basic->setChecked(false);
+    m_ui->radioButton_advanced->setChecked(false);
+    m_ui->radioButton_expert->setChecked(true);
+}
+
+
