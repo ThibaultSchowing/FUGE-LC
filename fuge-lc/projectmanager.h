@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QVector>
+#include <QTextStream>
+#include <QDebug>
 
 class ProjectManager: public QObject
 {
