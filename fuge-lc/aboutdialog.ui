@@ -37,7 +37,7 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>33</x>
@@ -53,7 +53,6 @@
        <font>
         <family>AlArabiya</family>
         <pointsize>23</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -144,6 +143,7 @@ p, li { white-space: pre-wrap; }
       <property name="font">
        <font>
         <family>AlArabiya</family>
+        <pointsize>10</pointsize>
         <italic>true</italic>
        </font>
       </property>
@@ -180,53 +180,6 @@ p, li { white-space: pre-wrap; }
      </spacer>
     </item>
     <item>
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Evolution Framework based on : </string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_5">
-      <property name="font">
-       <font>
-        <family>AlArabiya</family>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>Open BEAGLE  </string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_6">
-      <property name="font">
-       <font>
-        <family>AlArabiya</family>
-        <pointsize>10</pointsize>
-        <italic>true</italic>
-       </font>
-      </property>
-      <property name="text">
-       <string>© 2001-2007 by Christian Gagné and Marc Parizeau</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_4">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
      <widget class="QLabel" name="label_11">
       <property name="text">
        <string>With contributions by:</string>
@@ -237,9 +190,23 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
     <item>
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>Yvan Da Silva (2012)</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QLabel" name="label_12">
       <property name="font">
        <font>
+        <pointsize>10</pointsize>
         <italic>true</italic>
        </font>
       </property>
@@ -248,6 +215,19 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="textFormat">
        <enum>Qt::PlainText</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+        <italic>true</italic>
+       </font>
+      </property>
+      <property name="text">
+       <string>Mario Tomic (2023)</string>
       </property>
      </widget>
     </item>
