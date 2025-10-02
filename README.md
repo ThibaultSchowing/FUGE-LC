@@ -1,3 +1,14 @@
+
+
+> [!WARNING]  
+> This application is now deprecated and not maintained anymore.
+
+> [!IMPORTANT]  
+> You can find the most recent developpment [here](https://github.com/arthurbabey/fuzzycocopython) where FuzzyCoCo has been integraged into a Python Package. R package will follow. 
+
+
+
+
 # FUGE-LC
 
 This application implements the FuzzyCoCo algorithm. It constructs systems that predict the outcome of a human decision-making process while providing an understandable explanation of a possible reasoning leading to it. The constructed fuzzy systems are composed of rules and linguistic variables. For more information about the method, please refer to Prof. Carlos Andrés Peña Reyes' thesis entitled "Coevolutionary Fuzzy Modeling".
